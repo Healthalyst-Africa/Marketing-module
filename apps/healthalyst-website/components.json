@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "new-york",
+  "rsc": true,
+  "tsx": true,
+  "tailwind": {
+    "config": "tailwind.config.ts",
+    "css": "src/app/globals.css",
+    "baseColor": "neutral",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "aliases": {
+    "components": "@healthalyst/ui/components",
+    "utils": "@healthalyst/ui/lib/utils",
+    "hooks": "@healthalyst/ui/hooks",
+    "lib": "@healthalyst/ui/lib",
+    "ui": "@healthalyst/ui/components"
+  },
+  "iconLibrary": "lucide"
+}

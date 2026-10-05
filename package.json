@@ -1,19 +1,25 @@
 {
-  "name": "healthalyst-africa",
-  "private": true,
+  "name": "healthalyst-client-monorepo",
   "version": "1.0.0",
-  "type": "module",
+  "private": true,
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "check-types": "turbo run check-types",
+    "test": "turbo run test",
+    "test:watch": "turbo run test:watch",
+    "test:coverage": "turbo run test:coverage",
+    "check-format": "prettier --check .",
+    "format": "prettier --write .",
+    "test-all": "pnpm check-format && pnpm lint && pnpm check-types && pnpm test && pnpm build"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^4.3.1",
-    "vite": "^5.4.0"
+    "prettier": "^3.9.9",
+    "turbo": "^2.5.5"
+  },
+  "packageManager": "pnpm@10.27.0",
+  "engines": {
+    "node": ">=22.13.0"
   }
 }

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Healthalyst Africa">
+  <rect width="64" height="64" rx="8" fill="#183020" />
+  <rect x="3" y="3" width="58" height="58" rx="6" fill="none" stroke="#B8935A" stroke-opacity="0.35" stroke-width="1.5" />
+  <path d="M20 17v30M44 17v30M20 32h24" fill="none" stroke="#B8935A" stroke-width="5" stroke-linecap="round" />
+  <path d="M32 40.5c2.6-2.1 4.4-3.6 4.4-5.6a2.7 2.7 0 0 0-5.4 0c0 2 1.8 3.5 4.4 5.6" fill="none" stroke="#CFA96E" stroke-width="0" />
+  <circle cx="32" cy="47" r="3" fill="#CFA96E" />
+</svg>

@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 40 43% 96%;
+    --foreground: 154 29% 6%;
+    --card: 0 0% 100%;
+    --card-foreground: 154 29% 6%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 154 29% 6%;
+    --primary: 154 34% 15%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 39 44% 88%;
+    --secondary-foreground: 154 34% 15%;
+    --muted: 39 44% 92%;
+    --muted-foreground: 40 11% 57%;
+    --accent: 34 38% 54%;
+    --accent-foreground: 15 22% 5%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 36 44% 87%;
+    --input: 36 44% 87%;
+    --ring: 154 34% 15%;
+    --radius: 0.25rem;
+  }
+
+  .dark {
+    --background: 154 34% 8%;
+    --foreground: 40 43% 96%;
+    --card: 154 28% 12%;
+    --card-foreground: 40 43% 96%;
+    --popover: 154 28% 12%;
+    --popover-foreground: 40 43% 96%;
+    --primary: 34 38% 54%;
+    --primary-foreground: 15 22% 5%;
+    --secondary: 154 24% 18%;
+    --secondary-foreground: 40 43% 96%;
+    --muted: 154 24% 18%;
+    --muted-foreground: 40 11% 65%;
+    --accent: 34 38% 54%;
+    --accent-foreground: 15 22% 5%;
+    --destructive: 0 62% 45%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 154 20% 22%;
+    --input: 154 20% 22%;
+    --ring: 34 38% 54%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-cream font-sans text-ink antialiased;
+    overflow-x: hidden;
+  }
+}
+
+@layer components {
+  /* ── Scroll reveal ─────────────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-1 {
+    transition-delay: 0.08s;
+  }
+  .reveal-2 {
+    transition-delay: 0.18s;
+  }
+  .reveal-3 {
+    transition-delay: 0.28s;
+  }
+  .reveal-4 {
+    transition-delay: 0.38s;
+  }
+  .reveal-5 {
+    transition-delay: 0.48s;
+  }
+  .reveal-6 {
+    transition-delay: 0.58s;
+  }
+}
+
+/* ── Reduced motion ─────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal {
+    transition: none;
+  }
+}
