@@ -449,10 +449,13 @@ repository. Hooks are configured at the monorepo root:
   commitlint and [the conventional configuration](./commitlint.config.cjs).
   Generated merge messages and other standard exceptions use the preset's default
   handling; custom file-edit messages are not exempted.
+- [`.husky/pre-push`](./.husky/pre-push) runs `pnpm build` for the monorepo before
+  each push. A failed build blocks the push; resolve the failure before retrying.
 
 Full lint, type checks, tests, and builds remain in the existing verification
-commands and continuous integration. Local hooks provide quick feedback; they do
-not replace those gates or validate pull request titles on the hosting service.
+commands and continuous integration. Local hooks enforce staged formatting,
+commit-message checks, and the build before pushing. They do not replace the full
+verification gates or validate pull request titles on the hosting service.
 
 To reinstall hooks after an installation that skipped lifecycle scripts, run
 `pnpm prepare`. To check a message file without creating a commit, use:
