@@ -38,7 +38,7 @@ export default function StepButton({
       <div
         className={cn(
           "mb-1.5 font-mono text-[11px] tracking-[0.16em] transition-colors",
-          active ? "text-gold" : "text-sand-dark"
+          active ? "text-primary" : "text-muted-foreground"
         )}
       >
         {step.number}

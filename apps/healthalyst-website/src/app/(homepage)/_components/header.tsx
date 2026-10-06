@@ -50,8 +50,8 @@ export default function Header() {
               className={cn(
                 "border-none bg-transparent p-1 font-sans text-[13px] font-medium transition-colors",
                 scrolled
-                  ? "text-muted hover:text-forest"
-                  : "text-white/55 hover:text-gold"
+                  ? "text-muted-foreground hover:text-forest"
+                  : "text-primary-foreground/85 hover:text-accent-on-primary"
               )}
             >
               {label}

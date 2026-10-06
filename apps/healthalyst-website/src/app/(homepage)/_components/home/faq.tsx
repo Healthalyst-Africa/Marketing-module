@@ -37,7 +37,7 @@ export default function FAQ() {
                   </span>
                   <span
                     aria-hidden="true"
-                    className="inline-block shrink-0 text-[22px] font-normal leading-[1.2] text-gold transition-transform duration-300 group-data-[state=open]:rotate-45"
+                    className="inline-block shrink-0 text-[22px] font-normal leading-[1.2] text-primary transition-transform duration-300 group-data-[state=open]:rotate-45"
                   >
                     +
                   </span>

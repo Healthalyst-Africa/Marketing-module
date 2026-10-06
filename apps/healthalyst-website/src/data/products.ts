@@ -5,7 +5,7 @@ export const PRODUCTS: Product[] = [
     number: "01",
     name: "HealthSchedule",
     category: "Scheduling & Patient Flow",
-    tagline: "01 — SCHEDULING & PATIENT FLOW",
+    tagline: "01 — Scheduling & patient flow",
     headline: "The scheduling layer for hospitals and clinics",
     supportingHeadline:
       "Appointment & scheduling platform for hospitals and clinics",
@@ -26,7 +26,7 @@ export const PRODUCTS: Product[] = [
     number: "02",
     name: "LabConnect",
     category: "Laboratory & Diagnostics",
-    tagline: "02 — LABORATORY & DIAGNOSTICS",
+    tagline: "02 — Laboratory & diagnostics",
     headline: "End-to-end digital workflow for diagnostic laboratories",
     supportingHeadline: "Laboratory management & digital results platform",
     description:
@@ -46,7 +46,7 @@ export const PRODUCTS: Product[] = [
     number: "03",
     name: "PharmaDesk",
     category: "Pharmacy & Dispensing",
-    tagline: "03 — PHARMACY & DISPENSING",
+    tagline: "03 — Pharmacy & dispensing",
     headline: "Digital pharmacy operations from prescription to dispensing",
     supportingHeadline: "Pharmacy & dispensing management platform",
     description:
@@ -66,7 +66,7 @@ export const PRODUCTS: Product[] = [
     number: "04",
     name: "DentaFlow",
     category: "Dental Practice Management",
-    tagline: "04 — DENTAL PRACTICE MANAGEMENT",
+    tagline: "04 — Dental practice management",
     headline: "Scheduling and clinical management built for dentistry",
     supportingHeadline: "Dental practice management platform",
     description:
@@ -86,7 +86,7 @@ export const PRODUCTS: Product[] = [
     number: "05",
     name: "ImagingHub",
     category: "Radiology & Imaging",
-    tagline: "05 — RADIOLOGY & IMAGING",
+    tagline: "05 — Radiology & imaging",
     headline: "Digital referral and reporting platform for imaging centres",
     supportingHeadline: "X-ray, radiology & diagnostics referral platform",
     description:
@@ -106,7 +106,7 @@ export const PRODUCTS: Product[] = [
     number: "06",
     name: "MedSupply",
     category: "Equipment & Supply Procurement",
-    tagline: "06 — EQUIPMENT & SUPPLY PROCUREMENT",
+    tagline: "06 — Equipment & supply procurement",
     headline: "Digital procurement for medical equipment and supplies",
     supportingHeadline: "Medical equipment & healthcare supplies platform",
     description:

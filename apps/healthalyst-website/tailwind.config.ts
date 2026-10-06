@@ -32,31 +32,33 @@ const tailwindConfiguration = {
           foreground: "hsl(var(--accent-foreground))",
         },
         muted: {
-          DEFAULT: "#9A9282",
+          DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
         },
         /** Healthalyst Africa brand palette */
         forest: {
-          DEFAULT: "#183020",
-          mid: "#254533",
-          deep: "#0E1510",
+          DEFAULT: "rgb(var(--brand-forest) / <alpha-value>)",
+          mid: "rgb(var(--brand-forest-mid) / <alpha-value>)",
+          deep: "rgb(var(--brand-forest-deep) / <alpha-value>)",
         },
         gold: {
-          DEFAULT: "#B8935A",
-          light: "#CFA96E",
+          DEFAULT: "rgb(var(--brand-gold) / <alpha-value>)",
+          light: "rgb(var(--brand-gold-light) / <alpha-value>)",
         },
+        "accent-on-primary":
+          "rgb(var(--brand-accent-on-primary) / <alpha-value>)",
         cream: {
-          DEFAULT: "#F9F6F0",
-          dark: "#F2EDE3",
-          light: "#FAF4EB",
+          DEFAULT: "rgb(var(--brand-cream) / <alpha-value>)",
+          dark: "rgb(var(--brand-cream-dark) / <alpha-value>)",
+          light: "rgb(var(--brand-cream-light) / <alpha-value>)",
         },
         sand: {
-          DEFAULT: "#E2D9C8",
-          dark: "#C8BCA8",
+          DEFAULT: "rgb(var(--brand-sand) / <alpha-value>)",
+          dark: "rgb(var(--brand-sand-dark) / <alpha-value>)",
         },
         ink: {
-          DEFAULT: "#0E1510",
-          soft: "#3D3830",
+          DEFAULT: "rgb(var(--brand-ink) / <alpha-value>)",
+          soft: "rgb(var(--brand-ink-soft) / <alpha-value>)",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",

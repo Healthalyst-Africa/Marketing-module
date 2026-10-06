@@ -17,7 +17,7 @@ function FooterLinkColumn({
 }) {
   return (
     <nav>
-      <div className="mb-6 font-mono text-[9.5px] uppercase tracking-[0.2em] text-gold">
+      <div className="mb-6 font-mono text-[9.5px] tracking-[0.2em] text-accent-on-primary">
         {heading}
       </div>
       {children}
@@ -29,7 +29,7 @@ export default function Footer() {
   const { selectProduct } = useProducts();
 
   const linkClass =
-    "mb-3 block border-none bg-transparent p-0 text-left font-sans text-[13px] font-light text-white/[0.38] transition-colors hover:text-gold-light";
+    "mb-3 block border-none bg-transparent p-0 text-left font-sans text-[13px] font-light text-primary-foreground/85 transition-colors hover:text-gold-light";
 
   return (
     <footer className="bg-forest-deep pb-10 pt-20">
@@ -39,15 +39,15 @@ export default function Footer() {
           <div>
             <LogoMark
               size="small"
-              subtitleClassName="text-white/25"
+              subtitleClassName="text-primary-foreground/85"
               className="mb-5"
             />
-            <p className="mb-5 max-w-[260px] font-sans text-[13px] font-light leading-[1.7] text-white/35">
+            <p className="mb-5 max-w-[260px] font-sans text-[13px] font-light leading-[1.7] text-primary-foreground/85">
               Building the digital infrastructure of African healthcare — one
               institution at a time.
             </p>
-            <div className="font-mono text-[9px] tracking-[0.1em] text-white/20">
-              PAN-AFRICAN / HEALTH TECHNOLOGY
+            <div className="font-mono text-[9px] tracking-[0.1em] text-primary-foreground/85">
+              Pan-African / Health technology
             </div>
           </div>
 
@@ -105,11 +105,11 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="flex flex-wrap items-center justify-between gap-4 border-t border-white/[0.06] pt-7">
-          <span className="font-sans text-[12px] text-white/[0.22]">
+          <span className="font-sans text-[12px] text-primary-foreground/85">
             © 2025 Healthalyst Africa. All rights reserved.
           </span>
-          <span className="font-mono text-[9px] tracking-[0.08em] text-white/[0.18]">
-            BUILDING THE DIGITAL INFRASTRUCTURE OF AFRICAN HEALTHCARE
+          <span className="font-mono text-[9px] tracking-[0.08em] text-primary-foreground/85">
+            Building the digital infrastructure of African healthcare
           </span>
         </div>
       </div>

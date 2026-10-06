@@ -14,13 +14,13 @@ export default function StatisticsBar() {
                 "smallScreen:border-r smallScreen:border-white/[0.08]"
             )}
           >
-            <div className="font-serif text-[clamp(2.4rem,4vw,3.4rem)] font-light leading-none text-gold">
+            <div className="font-serif text-[clamp(2.4rem,4vw,3.4rem)] font-light leading-none text-accent-on-primary">
               {statistic.number}
             </div>
             <div className="mt-2.5 text-[14px] font-semibold text-white">
               {statistic.label}
             </div>
-            <div className="mt-1 text-[12px] font-light text-white/[0.35]">
+            <div className="mt-1 text-[12px] font-light text-primary-foreground/85">
               {statistic.supportingText}
             </div>
           </div>

@@ -49,7 +49,7 @@ export default function Contact() {
                     <div className="mb-0.5 text-[14px] font-semibold text-forest">
                       {institution.name}
                     </div>
-                    <div className="text-[13px] font-light text-muted">
+                    <div className="text-[13px] font-light text-muted-foreground">
                       {institution.product} — {institution.description}
                     </div>
                   </div>
@@ -113,7 +113,7 @@ export default function Contact() {
               <Button type="submit" size="block" className="mt-1">
                 Send Message →
               </Button>
-              <p className="mt-1 text-center text-[12px] font-light text-muted">
+              <p className="mt-1 text-center text-[12px] font-light text-muted-foreground">
                 We respond to all enquiries within two business days.
               </p>
             </form>

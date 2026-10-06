@@ -57,7 +57,7 @@ export default function HowWeWork() {
 
           {/* Step content */}
           <div key={activeStep} className="pt-2">
-            <div className="mb-6 font-mono text-[10px] tracking-[0.2em] text-gold">
+            <div className="mb-6 font-mono text-[10px] tracking-[0.2em] text-primary">
               {step.tag}
             </div>
             <h3 className="mb-6 font-serif text-[clamp(1.6rem,3vw,2.4rem)] font-normal leading-[1.2] text-forest">

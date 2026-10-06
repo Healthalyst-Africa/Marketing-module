@@ -51,7 +51,7 @@ export default function ProductsDive() {
                 "-mb-px shrink-0 whitespace-nowrap border-b-2 bg-transparent px-0 py-2.5 font-sans text-[12.5px] font-medium transition-all",
                 state.activeProduct === index
                   ? "border-gold text-forest"
-                  : "border-transparent text-muted hover:text-forest"
+                  : "border-transparent text-muted-foreground hover:text-forest"
               )}
             >
               {availableProduct.name}
@@ -74,7 +74,7 @@ export default function ProductsDive() {
             </div>
 
             <div className="relative z-10">
-              <div className="mb-6 font-mono text-[10px] tracking-[0.2em] text-gold">
+              <div className="mb-6 font-mono text-[10px] tracking-[0.2em] text-accent-on-primary">
                 {product.tagline}
               </div>
               <h3 className="mb-2.5 font-serif text-[clamp(1.8rem,3.2vw,2.6rem)] font-normal leading-[1.15] text-white">
@@ -84,14 +84,14 @@ export default function ProductsDive() {
                 {product.supportingHeadline}
               </p>
               <div className="mb-7 h-px w-10 bg-gold" />
-              <p className="mb-7 text-[15px] font-light leading-[1.85] text-white/70">
+              <p className="mb-7 text-[15px] font-light leading-[1.85] text-primary-foreground/85">
                 {product.description}
               </p>
               <div className="mb-8 rounded-[3px] border border-white/10 bg-white/[0.04] px-6 py-5">
-                <div className="mb-2.5 font-mono text-[9px] tracking-[0.18em] text-gold">
-                  BUILT FOR
+                <div className="mb-2.5 font-mono text-[9px] tracking-[0.18em] text-accent-on-primary">
+                  Built for
                 </div>
-                <div className="text-[13px] font-normal leading-[1.6] text-white/60">
+                <div className="text-[13px] font-normal leading-[1.6] text-primary-foreground/85">
                   {product.builtFor}
                 </div>
               </div>
@@ -103,7 +103,7 @@ export default function ProductsDive() {
 
           {/* Right — white panel */}
           <div className="flex flex-col bg-white px-[clamp(32px,4.5vw,56px)] py-[clamp(40px,5vw,64px)]">
-            <div className="mb-8 font-mono text-[10px] font-medium uppercase tracking-[0.22em] text-muted">
+            <div className="mb-8 font-mono text-[10px] font-medium tracking-[0.22em] text-muted-foreground">
               Platform Capabilities
             </div>
             <div className="flex-1">
@@ -116,7 +116,7 @@ export default function ProductsDive() {
                       "border-b border-sand"
                   )}
                 >
-                  <div className="min-w-6 shrink-0 pt-0.5 font-mono text-[10px] text-gold">
+                  <div className="min-w-6 shrink-0 pt-0.5 font-mono text-[10px] text-primary">
                     {String(index + 1).padStart(2, "0")}
                   </div>
                   <div className="text-[14px] font-normal leading-[1.65] text-ink-soft">
@@ -125,8 +125,8 @@ export default function ProductsDive() {
                 </div>
               ))}
             </div>
-            <div className="mt-8 border-t border-sand pt-5 font-mono text-[10px] tracking-[0.1em] text-muted">
-              INTEROPERABLE · OFFLINE-FIRST · MULTILINGUAL
+            <div className="mt-8 border-t border-sand pt-5 font-mono text-[10px] tracking-[0.1em] text-muted-foreground">
+              Interoperable · Offline-first · Multilingual
             </div>
           </div>
         </Reveal>

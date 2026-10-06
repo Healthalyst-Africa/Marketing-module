@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
 import type React from "react";
 import { Cormorant_Garamond, DM_Mono, DM_Sans } from "next/font/google";
+import { ThemePreferenceProvider } from "@healthalyst/ui/components/theme-preference-provider";
+import { createThemeInitializationScript } from "@healthalyst/ui/lib/theme-preference";
+import {
+  THEME_PREFERENCE_CONFIGURATION,
+  WEBSITE_THEME_STYLES,
+} from "~/data/design-palettes";
 import "@healthalyst/ui/styles.css";
 import "./globals.css";
 
@@ -85,10 +91,26 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      data-palette={THEME_PREFERENCE_CONFIGURATION.defaultIdentifier}
+      suppressHydrationWarning
       data-scroll-behavior="smooth"
       className={`${serifFont.variable} ${sansSerifFont.variable} ${monospacedFont.variable}`}
     >
-      <body>{children}</body>
+      <head>
+        <style id="website-palette-tokens">{WEBSITE_THEME_STYLES}</style>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: createThemeInitializationScript(
+              THEME_PREFERENCE_CONFIGURATION
+            ),
+          }}
+        />
+      </head>
+      <body>
+        <ThemePreferenceProvider configuration={THEME_PREFERENCE_CONFIGURATION}>
+          {children}
+        </ThemePreferenceProvider>
+      </body>
     </html>
   );
 }

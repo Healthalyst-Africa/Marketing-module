@@ -48,6 +48,11 @@ code, repository policies, or branding into it.
 - Use shadcn components as the standard foundation for interactive interface
   primitives. All installed primitives belong in `packages/ui/src/components`,
   even when only one application currently uses them.
+- Every new or reworked reusable visual component, including page compositions,
+  navigation, form layouts and presentation controls, belongs in `packages/ui`
+  and is consumed through `@healthalyst/ui` exports. Compose the shared shadcn
+  primitives; keep route entry points, content and application behaviour in the
+  website. Do not introduce a separate application-local component foundation.
 - The package is exported as `@healthalyst/ui`. Import components through its
   published exports, for example `@healthalyst/ui/components/button`. Never reach
   into another workspace's source using relative paths or duplicate primitives
@@ -56,6 +61,8 @@ code, repository policies, or branding into it.
   `apps/healthalyst-website/src/components/ui`, but must compose the shared
   primitives. Keep HealthAlyst colours, typography, copy, layout, and business
   behavior in the application. Shared components and tokens remain product-neutral.
+- Branded wrappers are thin adapters supplying content and theme values to shared
+  components. Reusable visual structure belongs in the shared package.
 - Both the application and shared package must retain a valid `components.json`.
   Align their style, icon library, base colour, and component aliases. Keep the
   shared stylesheet and component destinations correctly resolved. Do not switch

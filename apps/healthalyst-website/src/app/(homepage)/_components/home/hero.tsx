@@ -12,7 +12,7 @@ const DELAYS = {
   eyebrow: "[transition-delay:0ms]",
   headline: "[transition-delay:80ms]",
   body: "[transition-delay:160ms]",
-  cta: "[transition-delay:240ms]",
+  callsToAction: "[transition-delay:240ms]",
   strip: "[transition-delay:320ms]",
 } as const;
 
@@ -41,7 +41,7 @@ export default function Hero() {
       {/* Radial gradient background */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_70%_40%,rgba(184,147,90,0.12)_0%,transparent_55%),radial-gradient(circle_at_15%_80%,rgba(184,147,90,0.06)_0%,transparent_45%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_70%_40%,rgb(var(--brand-gold)/0.12)_0%,transparent_55%),radial-gradient(circle_at_15%_80%,rgb(var(--brand-gold)/0.06)_0%,transparent_45%)]"
       />
 
       {/* Giant H watermark */}
@@ -55,7 +55,7 @@ export default function Hero() {
       {/* Decorative vertical text */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute right-9 top-1/2 hidden -translate-y-1/2 rotate-90 select-none whitespace-nowrap font-mono text-[9px] tracking-[0.2em] text-gold opacity-[0.28] tablet:block"
+        className="pointer-events-none absolute right-9 top-1/2 hidden -translate-y-1/2 rotate-90 select-none whitespace-nowrap font-mono text-[9px] tracking-[0.2em] text-accent-on-primary opacity-[0.28] tablet:block"
       >
         HEALTHALYST AFRICA
       </div>
@@ -70,8 +70,8 @@ export default function Hero() {
             )}
           >
             <div className="h-px w-8 shrink-0 bg-gold" />
-            <span className="font-mono text-[11px] tracking-[0.2em] text-gold">
-              HEALTH TECHNOLOGY · PAN-AFRICAN
+            <span className="font-mono text-[11px] tracking-[0.2em] text-accent-on-primary">
+              Health technology · Pan-African
             </span>
           </div>
 
@@ -86,13 +86,15 @@ export default function Hero() {
             <br />
             infrastructure of
             <br />
-            <em className="italic text-gold">African healthcare.</em>
+            <em className="italic text-accent-on-primary">
+              African healthcare.
+            </em>
           </h1>
 
           {/* Primary body */}
           <p
             className={cn(
-              "mb-4 max-w-[560px] text-[18px] font-light leading-[1.85] text-white/65",
+              "mb-4 max-w-[560px] text-[18px] font-light leading-[1.85] text-primary-foreground/85",
               entrance(DELAYS.body, visible)
             )}
           >
@@ -105,7 +107,7 @@ export default function Hero() {
           {/* Secondary body */}
           <p
             className={cn(
-              "mb-[52px] max-w-[520px] text-[15px] font-light leading-[1.8] text-white/[0.38]",
+              "mb-[52px] max-w-[520px] text-[15px] font-light leading-[1.8] text-primary-foreground/85",
               entrance(DELAYS.body, visible)
             )}
           >
@@ -118,7 +120,7 @@ export default function Hero() {
           <div
             className={cn(
               "mb-20 flex flex-wrap gap-3.5",
-              entrance(DELAYS.cta, visible)
+              entrance(DELAYS.callsToAction, visible)
             )}
           >
             <Button variant="gold" onClick={() => scrollTo("products")}>
@@ -145,7 +147,7 @@ export default function Hero() {
               {PRODUCTS.map((product, index) => (
                 <Fragment key={product.name}>
                   <button
-                    className="border-none bg-transparent p-1 font-sans text-[12px] font-medium text-white/40 transition-colors hover:text-white/85"
+                    className="border-none bg-transparent p-1 font-sans text-[12px] font-medium text-primary-foreground/85 transition-colors hover:text-white/85"
                     onClick={() => {
                       selectProduct(index);
                       scrollTo("products");
@@ -154,7 +156,10 @@ export default function Hero() {
                     {product.name}
                   </button>
                   {index < PRODUCTS.length - 1 && (
-                    <span className="text-[12px] text-white/[0.18]"> · </span>
+                    <span className="text-[12px] text-primary-foreground/85">
+                      {" "}
+                      ·{" "}
+                    </span>
                   )}
                 </Fragment>
               ))}
