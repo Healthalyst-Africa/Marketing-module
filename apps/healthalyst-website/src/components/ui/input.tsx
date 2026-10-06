@@ -1,18 +1,19 @@
 import * as React from "react";
-import { cn } from "~/lib/utils";
+import { Input as SharedInput } from "@healthalyst/ui/components/input";
+import { cn } from "~/lib/utilities";
 
-export type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
+export type InputProperties = React.InputHTMLAttributes<HTMLInputElement>;
 
-const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type = "text", ...props }, ref) => (
-    <input
-      ref={ref}
+const Input = React.forwardRef<HTMLInputElement, InputProperties>(
+  ({ className, type = "text", ...properties }, elementReference) => (
+    <SharedInput
+      ref={elementReference}
       type={type}
       className={cn(
-        "block w-full appearance-none rounded-[3px] border-[1.5px] border-solid border-sand bg-white px-4 py-[14px] font-sans text-[14px] text-ink outline-none transition-colors placeholder:text-muted focus:border-forest disabled:cursor-not-allowed disabled:opacity-50",
+        "block h-auto w-full shadow-none md:text-[14px] appearance-none rounded-[3px] border-[1.5px] border-solid border-sand bg-white px-4 py-[14px] font-sans text-[14px] text-ink outline-none transition-colors placeholder:text-muted focus:border-forest disabled:cursor-not-allowed disabled:opacity-50",
         className
       )}
-      {...props}
+      {...properties}
     />
   )
 );

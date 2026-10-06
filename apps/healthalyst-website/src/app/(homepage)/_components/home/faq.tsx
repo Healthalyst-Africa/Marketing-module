@@ -10,13 +10,13 @@ import { FAQS } from "~/data/faqs";
 import { useReveal } from "~/hooks/use-reveal";
 import { Reveal, SectionHeading, SectionLabel } from "./section-heading";
 
-export default function Faq() {
-  const [ref, visible] = useReveal<HTMLElement>();
+export default function FAQ() {
+  const [elementReference, visible] = useReveal<HTMLElement>();
 
   return (
     <section
       id="faq"
-      ref={ref}
+      ref={elementReference}
       className="bg-cream px-5 py-20 md:px-10 md:py-32"
     >
       <div className="mx-auto max-w-[860px]">
@@ -30,10 +30,10 @@ export default function Faq() {
         <Reveal visible={visible} className="border-b border-sand">
           <Accordion type="single" collapsible>
             {FAQS.map((faq, index) => (
-              <AccordionItem key={faq.q} value={`faq-${index}`}>
+              <AccordionItem key={faq.question} value={`faq-${index}`}>
                 <AccordionTrigger>
                   <span className="flex-1 font-sans text-[16px] font-medium leading-[1.45] text-forest">
-                    {faq.q}
+                    {faq.question}
                   </span>
                   <span
                     aria-hidden="true"
@@ -44,7 +44,7 @@ export default function Faq() {
                 </AccordionTrigger>
                 <AccordionContent>
                   <p className="max-w-[680px] text-[15px] font-light leading-[1.85] text-ink-soft">
-                    {faq.a}
+                    {faq.answer}
                   </p>
                 </AccordionContent>
               </AccordionItem>

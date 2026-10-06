@@ -1,56 +1,51 @@
 "use client";
 
 import * as React from "react";
-import * as AccordionPrimitive from "@radix-ui/react-accordion";
-import { cn } from "~/lib/utils";
-
-const Accordion = AccordionPrimitive.Root;
+import {
+  Accordion,
+  AccordionContent as SharedAccordionContent,
+  AccordionItem as SharedAccordionItem,
+  AccordionTrigger as SharedAccordionTrigger,
+} from "@healthalyst/ui/components/accordion";
+import { cn } from "~/lib/utilities";
 
 const AccordionItem = React.forwardRef<
-  React.ElementRef<typeof AccordionPrimitive.Item>,
-  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item>
->(({ className, ...props }, ref) => (
-  <AccordionPrimitive.Item
-    ref={ref}
-    className={cn("border-t border-sand", className)}
-    {...props}
+  React.ElementRef<typeof SharedAccordionItem>,
+  React.ComponentPropsWithoutRef<typeof SharedAccordionItem>
+>(({ className, ...properties }, elementReference) => (
+  <SharedAccordionItem
+    ref={elementReference}
+    className={cn("border-b-0 border-t border-sand", className)}
+    {...properties}
   />
 ));
 AccordionItem.displayName = "AccordionItem";
 
 const AccordionTrigger = React.forwardRef<
-  React.ElementRef<typeof AccordionPrimitive.Trigger>,
-  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>
->(({ className, children, ...props }, ref) => (
-  <AccordionPrimitive.Header className="flex">
-    <AccordionPrimitive.Trigger
-      ref={ref}
-      className={cn(
-        "group flex flex-1 items-start justify-between gap-6 py-6 text-left transition-colors hover:text-forest focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2",
-        className
-      )}
-      {...props}
-    >
-      {children}
-    </AccordionPrimitive.Trigger>
-  </AccordionPrimitive.Header>
+  React.ElementRef<typeof SharedAccordionTrigger>,
+  React.ComponentPropsWithoutRef<typeof SharedAccordionTrigger>
+>(({ className, ...properties }, elementReference) => (
+  <SharedAccordionTrigger
+    ref={elementReference}
+    showIndicator={false}
+    className={cn(
+      "group items-start gap-6 py-6 hover:text-forest hover:no-underline focus-visible:ring-gold",
+      className
+    )}
+    {...properties}
+  />
 ));
 AccordionTrigger.displayName = "AccordionTrigger";
 
 const AccordionContent = React.forwardRef<
-  React.ElementRef<typeof AccordionPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Content>
->(({ className, children, ...props }, ref) => (
-  <AccordionPrimitive.Content
-    ref={ref}
-    className={cn(
-      "overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down",
-      className
-    )}
-    {...props}
-  >
-    <div className="pb-7 pt-0">{children}</div>
-  </AccordionPrimitive.Content>
+  React.ElementRef<typeof SharedAccordionContent>,
+  React.ComponentPropsWithoutRef<typeof SharedAccordionContent>
+>(({ className, ...properties }, elementReference) => (
+  <SharedAccordionContent
+    ref={elementReference}
+    className={cn("pb-7 pt-0", className)}
+    {...properties}
+  />
 ));
 AccordionContent.displayName = "AccordionContent";
 

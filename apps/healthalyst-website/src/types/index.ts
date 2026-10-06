@@ -1,12 +1,12 @@
 /** A single Healthalyst Africa product line. */
 export interface Product {
-  /** Zero-padded display index, e.g. `01`. */
+  /** Zero-padded display index, for example `01`. */
   number: string;
   name: string;
   category: string;
   tagline: string;
   headline: string;
-  subHeadline: string;
+  supportingHeadline: string;
   description: string;
   /** Human-readable list of the institution types this product serves. */
   builtFor: string;
@@ -24,15 +24,15 @@ export interface Step {
 
 /** A frequently asked question and its answer. */
 export interface FAQ {
-  q: string;
-  a: string;
+  question: string;
+  answer: string;
 }
 
-/** A headline figure shown in the stats bar. */
-export interface Stat {
+/** A headline figure shown in the statistics bar. */
+export interface Statistic {
   number: string;
   label: string;
-  sub: string;
+  supportingText: string;
 }
 
 /** A supporting principle shown in the About section. */
@@ -46,11 +46,11 @@ export interface Pillar {
 export interface Institution {
   name: string;
   product: string;
-  desc: string;
+  description: string;
 }
 
 /** A navigation entry that scrolls to an in-page section anchor. */
-export interface NavLink {
+export interface NavigationLink {
   label: string;
-  id: string;
+  identifier: string;
 }

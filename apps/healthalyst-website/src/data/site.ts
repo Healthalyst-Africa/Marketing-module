@@ -1,28 +1,32 @@
-import type { Institution, NavLink, Pillar, Stat } from "~/types";
+import type { Institution, NavigationLink, Pillar, Statistic } from "~/types";
 
-export const NAV_LINKS: NavLink[] = [
-  { label: "Products", id: "products" },
-  { label: "What We Build", id: "what-we-build" },
-  { label: "How We Work", id: "how-we-work" },
-  { label: "About", id: "about" },
+export const NAVIGATION_LINKS: NavigationLink[] = [
+  { label: "Products", identifier: "products" },
+  { label: "What We Build", identifier: "what-we-build" },
+  { label: "How We Work", identifier: "how-we-work" },
+  { label: "About", identifier: "about" },
 ];
 
-export const STATS: Stat[] = [
+export const STATISTICS: Statistic[] = [
   {
     number: "6",
     label: "Digital Product Lines",
-    sub: "Purpose-built, not adapted",
+    supportingText: "Purpose-built, not adapted",
   },
-  { number: "54+", label: "African Nations", sub: "Continent-wide expansion" },
+  {
+    number: "54+",
+    label: "African Nations",
+    supportingText: "Continent-wide expansion",
+  },
   {
     number: "100%",
     label: "African-Context Design",
-    sub: "Offline-first architecture",
+    supportingText: "Offline-first architecture",
   },
   {
     number: "1",
     label: "Connected Ecosystem",
-    sub: "All products interoperable",
+    supportingText: "All products interoperable",
   },
 ];
 
@@ -30,12 +34,12 @@ export const PILLARS: Pillar[] = [
   {
     icon: "◈",
     title: "African Infrastructure First",
-    body: "Offline-first architecture. Low-bandwidth optimisation. SMS and USSD fallback. Multilingual support. These are foundations, not optional features.",
+    body: "Offline-first architecture. Low-bandwidth optimisation. Short message service and unstructured supplementary service data fallback. Multilingual support. These are foundations, not optional features.",
   },
   {
     icon: "⬡",
     title: "Interoperable by Design",
-    body: "A patient's journey across a hospital, lab, imaging centre, and pharmacy exists as one coherent digital record. No data silos. No manual transfers.",
+    body: "A patient's journey across a hospital, laboratory, imaging centre, and pharmacy exists as one coherent digital record. No data silos. No manual transfers.",
   },
   {
     icon: "◇",
@@ -53,32 +57,32 @@ export const INSTITUTIONS: Institution[] = [
   {
     name: "Hospitals & Clinics",
     product: "HealthSchedule",
-    desc: "patient scheduling and clinical operations",
+    description: "patient scheduling and clinical operations",
   },
   {
     name: "Laboratories",
     product: "LabConnect",
-    desc: "end-to-end digital diagnostic workflows",
+    description: "end-to-end digital diagnostic workflows",
   },
   {
     name: "Pharmacies",
     product: "PharmaDesk",
-    desc: "prescription and inventory management",
+    description: "prescription and inventory management",
   },
   {
     name: "Dental Practices",
     product: "DentaFlow",
-    desc: "scheduling, charting and patient management",
+    description: "scheduling, charting and patient management",
   },
   {
     name: "Imaging Centres",
     product: "ImagingHub",
-    desc: "referral management and radiology reporting",
+    description: "referral management and radiology reporting",
   },
   {
     name: "Equipment Suppliers & Institutions",
     product: "MedSupply",
-    desc: "digital procurement and supply chain",
+    description: "digital procurement and supply chain",
   },
 ];
 
@@ -106,7 +110,7 @@ export const CONTACT_REPRESENTATION_OPTIONS = [
   "Medical Equipment Supplier",
   "Investor / Fund",
   "Government Health Institution",
-  "NGO / Development Organisation",
+  "Non-Governmental Organisation / Development Organisation",
   "Technology Partner",
   "Other",
 ] as const;

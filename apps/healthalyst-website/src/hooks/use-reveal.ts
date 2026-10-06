@@ -5,32 +5,32 @@ import { useEffect, useRef, useState } from "react";
 /**
  * Reveal-on-scroll observer.
  *
- * Returns a ref to attach to a section and whether it has entered the
+ * Returns an element reference to attach to a section and whether it has entered the
  * viewport. The element reveals once and then disconnects.
  */
-export function useReveal<T extends HTMLElement = HTMLElement>(
+export function useReveal<ElementType extends HTMLElement = HTMLElement>(
   threshold = 0.08
-): [React.RefObject<T | null>, boolean] {
-  const ref = useRef<T>(null);
+): [React.RefObject<ElementType | null>, boolean] {
+  const elementReference = useRef<ElementType>(null);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
+    const element = elementReference.current;
+    if (!element) return;
 
-    const obs = new IntersectionObserver(
+    const intersectionObserver = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setVisible(true);
-          obs.disconnect();
+          intersectionObserver.disconnect();
         }
       },
       { threshold }
     );
 
-    obs.observe(el);
-    return () => obs.disconnect();
+    intersectionObserver.observe(element);
+    return () => intersectionObserver.disconnect();
   }, [threshold]);
 
-  return [ref, visible];
+  return [elementReference, visible];
 }

@@ -3,11 +3,11 @@
 import { Fragment, useEffect, useState } from "react";
 import { Button } from "~/components/ui/button";
 import { PRODUCTS } from "~/data/products";
-import { cn } from "~/lib/utils";
+import { cn } from "~/lib/utilities";
 import { useProducts } from "~/store/ProductsContext";
-import { scrollTo } from "~/utils/scroll";
+import { scrollTo } from "~/utilities/scroll";
 
-/** Static entrance-delay classes so Tailwind's JIT can see them. */
+/** Static entrance-delay classes so Tailwind's just-in-time compiler can see them. */
 const DELAYS = {
   eyebrow: "[transition-delay:0ms]",
   headline: "[transition-delay:80ms]",
@@ -29,8 +29,8 @@ export default function Hero() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const t = setTimeout(() => setVisible(true), 80);
-    return () => clearTimeout(t);
+    const revealTimeout = setTimeout(() => setVisible(true), 80);
+    return () => clearTimeout(revealTimeout);
   }, []);
 
   return (
@@ -114,7 +114,7 @@ export default function Hero() {
             clinical needs of African healthcare — from the ground up.
           </p>
 
-          {/* CTAs */}
+          {/* calls to action */}
           <div
             className={cn(
               "mb-20 flex flex-wrap gap-3.5",

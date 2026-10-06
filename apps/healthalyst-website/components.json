@@ -5,16 +5,16 @@
   "tsx": true,
   "tailwind": {
     "config": "tailwind.config.ts",
-    "css": "src/app/globals.css",
+    "css": "../../packages/ui/src/styles.css",
     "baseColor": "neutral",
     "cssVariables": true,
     "prefix": ""
   },
   "aliases": {
-    "components": "@healthalyst/ui/components",
-    "utils": "@healthalyst/ui/lib/utils",
-    "hooks": "@healthalyst/ui/hooks",
-    "lib": "@healthalyst/ui/lib",
+    "components": "~/components",
+    "utils": "@healthalyst/ui/lib/utilities",
+    "hooks": "~/hooks",
+    "lib": "~/lib",
     "ui": "@healthalyst/ui/components"
   },
   "iconLibrary": "lucide"

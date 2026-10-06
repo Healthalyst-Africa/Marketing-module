@@ -1,12 +1,14 @@
 "use client";
 
+import { Button as SharedButton } from "@healthalyst/ui/components/button";
+
 import { useEffect, useState } from "react";
-import { X } from "lucide-react";
+import { X as CloseIcon } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { LogoLink } from "~/components/layout/logo";
-import { NAV_LINKS } from "~/data/site";
-import { cn } from "~/lib/utils";
-import { scrollTo } from "~/utils/scroll";
+import { NAVIGATION_LINKS } from "~/data/site";
+import { cn } from "~/lib/utilities";
+import { scrollTo } from "~/utilities/scroll";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -19,8 +21,8 @@ export default function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const goTo = (id: string) => {
-    scrollTo(id);
+  const goTo = (identifier: string) => {
+    scrollTo(identifier);
     setMenuOpen(false);
   };
 
@@ -36,12 +38,15 @@ export default function Header() {
       <div className="mx-auto flex h-full max-w-[1200px] items-center justify-between px-5 md:px-10">
         <LogoLink />
 
-        {/* Center nav */}
+        {/* Center navigation */}
         <nav className="hidden items-center gap-9 tablet:flex">
-          {NAV_LINKS.map(({ label, id }) => (
-            <button
-              key={id}
-              onClick={() => goTo(id)}
+          {NAVIGATION_LINKS.map(({ label, identifier }) => (
+            <SharedButton
+              type="button"
+              variant="unstyled"
+              size="unstyled"
+              key={identifier}
+              onClick={() => goTo(identifier)}
               className={cn(
                 "border-none bg-transparent p-1 font-sans text-[13px] font-medium transition-colors",
                 scrolled
@@ -50,11 +55,11 @@ export default function Header() {
               )}
             >
               {label}
-            </button>
+            </SharedButton>
           ))}
         </nav>
 
-        {/* Right CTAs */}
+        {/* Right calls to action */}
         <div className="hidden items-center gap-3 tablet:flex">
           <Button
             variant={scrolled ? "secondary" : "ghost"}
@@ -73,22 +78,25 @@ export default function Header() {
         </div>
 
         {/* Hamburger */}
-        <button
+        <SharedButton
+          type="button"
+          variant="unstyled"
+          size="unstyled"
           className="flex flex-col gap-[5px] border-none bg-transparent p-1 tablet:hidden"
           onClick={() => setMenuOpen((open) => !open)}
           aria-label="Toggle navigation menu"
           aria-expanded={menuOpen}
         >
           {menuOpen ? (
-            <X
+            <CloseIcon
               className="h-[22px] w-[22px] text-forest"
               strokeWidth={1.5}
               aria-hidden="true"
             />
           ) : (
-            [0, 1, 2].map((i) => (
+            [0, 1, 2].map((lineIndex) => (
               <span
-                key={i}
+                key={lineIndex}
                 className={cn(
                   "block h-[1.5px] w-[22px] rounded-sm transition-colors",
                   scrolled ? "bg-ink" : "bg-white/80"
@@ -96,20 +104,23 @@ export default function Header() {
               />
             ))
           )}
-        </button>
+        </SharedButton>
       </div>
 
       {/* Mobile drawer */}
       {menuOpen && (
         <div className="border-b-2 border-forest bg-cream px-5 py-7 md:px-10">
-          {NAV_LINKS.map(({ label, id }) => (
-            <button
-              key={id}
-              onClick={() => goTo(id)}
+          {NAVIGATION_LINKS.map(({ label, identifier }) => (
+            <SharedButton
+              type="button"
+              variant="unstyled"
+              size="unstyled"
+              key={identifier}
+              onClick={() => goTo(identifier)}
               className="block w-full border-t border-sand bg-transparent py-[13px] text-left font-sans text-[14px] font-medium text-forest"
             >
               {label}
-            </button>
+            </SharedButton>
           ))}
           <div className="mt-6 flex flex-col gap-3">
             <Button

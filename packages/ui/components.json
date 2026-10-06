@@ -13,7 +13,7 @@
   "iconLibrary": "lucide",
   "aliases": {
     "components": "@healthalyst/ui/components",
-    "utils": "@healthalyst/ui/lib/utils",
+    "utils": "@healthalyst/ui/lib/utilities",
     "hooks": "@healthalyst/ui/hooks",
     "lib": "@healthalyst/ui/lib",
     "ui": "@healthalyst/ui/components"

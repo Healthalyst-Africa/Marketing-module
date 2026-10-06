@@ -1,13 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
-import { cn } from "~/lib/utils";
-import { scrollToTop } from "~/utils/scroll";
+import { cn } from "~/lib/utilities";
+import { scrollToTop } from "~/utilities/scroll";
 
-type MarkSize = "sm" | "md";
+type MarkSize = "small" | "medium";
 
 const BOX_SIZES: Record<MarkSize, string> = {
-  sm: "h-8 w-8 rounded-[5px]",
-  md: "h-[38px] w-[38px] rounded-md",
+  small: "h-8 w-8 rounded-[5px]",
+  medium: "h-[38px] w-[38px] rounded-md",
 };
 
 /**
@@ -16,14 +16,14 @@ const BOX_SIZES: Record<MarkSize, string> = {
  */
 export function LogoMark({
   className,
-  size = "md",
+  size = "medium",
   nameClassName,
-  subClassName,
+  subtitleClassName,
 }: {
   className?: string;
   size?: MarkSize;
   nameClassName?: string;
-  subClassName?: string;
+  subtitleClassName?: string;
 }) {
   return (
     <span className={cn("flex items-center gap-3", className)}>
@@ -54,7 +54,7 @@ export function LogoMark({
         <span
           className={cn(
             "font-mono text-[8.5px] leading-none tracking-[0.32em] text-gold",
-            subClassName
+            subtitleClassName
           )}
         >
           AFRICA

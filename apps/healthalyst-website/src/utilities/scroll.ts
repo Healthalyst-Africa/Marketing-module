@@ -9,13 +9,13 @@ function behavior(): ScrollBehavior {
 /**
  * Smooth-scroll to an in-page anchor.
  *
- * Safe to call from client event handlers; no-ops when the target does not
+ * Safe to call from client event handlers; does nothing when the target does not
  * exist (for example during a route transition).
  */
-export function scrollTo(id: string): void {
+export function scrollTo(sectionIdentifier: string): void {
   if (typeof document === "undefined") return;
-  const el = document.getElementById(id);
-  if (el) el.scrollIntoView({ behavior: behavior() });
+  const element = document.getElementById(sectionIdentifier);
+  if (element) element.scrollIntoView({ behavior: behavior() });
 }
 
 /** Smooth-scroll back to the top of the document. */

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { cn } from "~/lib/utils";
+import { cn } from "~/lib/utilities";
 
 /** Small uppercase eyebrow above a section heading. */
 export function SectionLabel({

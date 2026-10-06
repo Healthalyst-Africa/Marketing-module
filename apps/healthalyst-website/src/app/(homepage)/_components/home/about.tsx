@@ -3,16 +3,16 @@
 import { Button } from "~/components/ui/button";
 import { PILLARS } from "~/data/site";
 import { useReveal } from "~/hooks/use-reveal";
-import { scrollTo } from "~/utils/scroll";
+import { scrollTo } from "~/utilities/scroll";
 import { Reveal, SectionHeading, SectionLabel } from "./section-heading";
 
 export default function About() {
-  const [ref, visible] = useReveal<HTMLElement>();
+  const [elementReference, visible] = useReveal<HTMLElement>();
 
   return (
     <section
       id="about"
-      ref={ref}
+      ref={elementReference}
       className="bg-forest px-5 py-20 md:px-10 md:py-32"
     >
       <div className="mx-auto max-w-[1200px]">
@@ -78,7 +78,7 @@ export default function About() {
         </SectionLabel>
         <Reveal
           visible={visible}
-          className="grid grid-cols-1 gap-px bg-white/[0.07] xs:grid-cols-2 tablet:grid-cols-4"
+          className="grid grid-cols-1 gap-px bg-white/[0.07] smallScreen:grid-cols-2 tablet:grid-cols-4"
         >
           {PILLARS.map((pillar) => (
             <div key={pillar.title} className="bg-forest-mid px-9 py-11">

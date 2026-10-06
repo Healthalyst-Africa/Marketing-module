@@ -1,3 +1,3 @@
-import nextConfig from "@healthalyst/eslint-config/next";
+import nextConfiguration from "@healthalyst/eslint-config/next";
 
-export default nextConfig;
+export default nextConfiguration;

@@ -4,19 +4,19 @@ import { useState } from "react";
 import { Button } from "~/components/ui/button";
 import { STEPS } from "~/data/steps";
 import { useReveal } from "~/hooks/use-reveal";
-import { scrollTo } from "~/utils/scroll";
+import { scrollTo } from "~/utilities/scroll";
 import { Reveal, SectionHeading, SectionLabel } from "./section-heading";
 import StepButton from "./step-button";
 
 export default function HowWeWork() {
-  const [ref, visible] = useReveal<HTMLElement>();
+  const [elementReference, visible] = useReveal<HTMLElement>();
   const [activeStep, setActiveStep] = useState(0);
   const step = STEPS[activeStep];
 
   return (
     <section
       id="how-we-work"
-      ref={ref}
+      ref={elementReference}
       className="bg-cream px-5 py-20 md:px-10 md:py-32"
     >
       <div className="mx-auto max-w-[1200px]">
@@ -45,10 +45,10 @@ export default function HowWeWork() {
         >
           {/* Step selector */}
           <div>
-            {STEPS.map((s, index) => (
+            {STEPS.map((implementationStep, index) => (
               <StepButton
-                key={s.number}
-                step={s}
+                key={implementationStep.number}
+                step={implementationStep}
                 active={activeStep === index}
                 onClick={() => setActiveStep(index)}
               />

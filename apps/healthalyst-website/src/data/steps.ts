@@ -13,14 +13,14 @@ export const STEPS: Step[] = [
     title: "Design & Architecture",
     tag: "02 — DESIGN & ARCHITECTURE",
     headline: "Built for African operating conditions from the ground up",
-    body: "We architect platforms for African operating conditions from day one. Offline-first capability, low-bandwidth optimisation, USSD and SMS fallback, multilingual interfaces, and field-level mobile usability are not features added later — they are structural foundations.",
+    body: "We architect platforms for African operating conditions from day one. Offline-first capability, low-bandwidth optimisation, unstructured supplementary service data and short message service fallback, multilingual interfaces, and field-level mobile usability are not features added later — they are structural foundations.",
   },
   {
     number: "03",
     title: "Build & Integration",
     tag: "03 — BUILD & INTEGRATION",
     headline: "Platforms that talk to each other and to your existing systems",
-    body: "Our platforms are built to integrate into your existing systems and to communicate with each other. A lab result processed in LabConnect flows automatically into HealthSchedule. A prescription verified in PharmaDesk creates a traceable dispensing record.",
+    body: "Our platforms are built to integrate into your existing systems and to communicate with each other. A laboratory result processed in LabConnect flows automatically into HealthSchedule. A prescription verified in PharmaDesk creates a traceable dispensing record.",
   },
   {
     number: "04",
