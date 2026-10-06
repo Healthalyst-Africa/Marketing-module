@@ -410,15 +410,17 @@ pushes to `main`. It installs with a frozen lockfile and runs `pnpm test-all` us
 Node.js 24 and pnpm 10.27.0.
 
 The checked-in workflow verifies the repository; it does not define a deployment.
-This guide's review expectations do not imply configured branch protection,
-commit-message enforcement, secret scanners, or approval checks on the hosting
+Husky provides local staged-file formatting and commit-message checks, as described
+below. Local hooks do not enforce review or branch protection on the hosting
 service. Maintainers should confirm those controls separately.
 
 ## Pull requests and review
 
 Keep each pull request focused and reviewable. Use a descriptive title and concise
-commits explaining the change. A useful commit convention is
-`type(scope): description`, for example:
+commits explaining the change. Commit messages must use Conventional Commits:
+`type(scope): description`. The scope is optional; use a descriptive scope such as
+`marketing`, `website`, `components`, or `tooling` when it helps identify the change.
+For example:
 
 ```text
 fix(marketing): correct product enquiry destination
@@ -426,8 +428,41 @@ fix(marketing): correct product enquiry destination
 docs(contributing): document HealthAlyst landing page standards
 ```
 
-This convention is a contributor recommendation; no commit-message hook is
-currently configured in the repository.
+Allowed types are `build`, `chore`, `ci`, `docs`, `feat`, `fix`, `perf`, `refactor`,
+`revert`, `style`, and `test`. These are standard commit-format tokens. Use a
+lowercase type and scope, start the description with a lowercase action, and omit
+a trailing full stop. The full header must not exceed 100 characters. Separate
+optional body and footer sections with a blank line; their lines must not exceed
+100 characters. Use the conventional `!` marker or `BREAKING CHANGE:` footer when
+an incompatible change needs to be identified.
+
+### Local Git hooks
+
+`pnpm install` runs the root `prepare` script, which installs Husky hooks for this
+repository. Hooks are configured at the monorepo root:
+
+- [`.husky/pre-commit`](./.husky/pre-commit) runs `pnpm pre-commit`. lint-staged
+  checks supported staged source, configuration, stylesheet, and documentation
+  files with Prettier. It checks formatting without automatically rewriting files.
+  Fix the reported files and stage the intended changes again.
+- [`.husky/commit-msg`](./.husky/commit-msg) checks the proposed message with
+  commitlint and [the conventional configuration](./commitlint.config.cjs).
+  Generated merge messages and other standard exceptions use the preset's default
+  handling; custom file-edit messages are not exempted.
+
+Full lint, type checks, tests, and builds remain in the existing verification
+commands and continuous integration. Local hooks provide quick feedback; they do
+not replace those gates or validate pull request titles on the hosting service.
+
+To reinstall hooks after an installation that skipped lifecycle scripts, run
+`pnpm prepare`. To check a message file without creating a commit, use:
+
+```sh
+pnpm commitlint --edit /path/to/commit-message.txt
+```
+
+Do not routinely bypass hooks with `--no-verify`. In automated environments that
+should not install local hooks, set `HUSKY=0` for dependency installation.
 
 ### Contribution summary
 
