@@ -1,8 +1,12 @@
 import * as React from "react";
-import { cva, type VariantProps } from "class-variance-authority";
-import { cn } from "~/lib/utils";
+import { Button as SharedButton } from "@healthalyst/ui/components/button";
+import {
+  cva as createClassVariants,
+  type VariantProps as VariantProperties,
+} from "class-variance-authority";
+import { cn } from "~/lib/utilities";
 
-const buttonVariants = cva(
+const buttonVariants = createClassVariants(
   "inline-block whitespace-nowrap rounded-[2px] border-none text-center transition-all [transition-duration:250ms] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
@@ -34,18 +38,23 @@ const buttonVariants = cva(
   }
 );
 
-export interface ButtonProps
+export interface ButtonProperties
   extends
     React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {}
+    VariantProperties<typeof buttonVariants> {}
 
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, type = "button", ...props }, ref) => (
-    <button
-      ref={ref}
+const Button = React.forwardRef<HTMLButtonElement, ButtonProperties>(
+  (
+    { className, variant, size, type = "button", ...properties },
+    elementReference
+  ) => (
+    <SharedButton
+      variant="unstyled"
+      size="unstyled"
+      ref={elementReference}
       type={type}
       className={cn(buttonVariants({ variant, size }), className)}
-      {...props}
+      {...properties}
     />
   )
 );

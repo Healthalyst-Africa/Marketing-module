@@ -14,12 +14,12 @@ import { useReveal } from "~/hooks/use-reveal";
 import { Reveal, SectionHeading, SectionLabel } from "./section-heading";
 
 export default function Contact() {
-  const [ref, visible] = useReveal<HTMLElement>();
+  const [elementReference, visible] = useReveal<HTMLElement>();
 
   return (
     <section
       id="contact"
-      ref={ref}
+      ref={elementReference}
       className="bg-cream-dark px-5 py-20 md:px-10 md:py-32"
     >
       <div className="mx-auto max-w-[1200px]">
@@ -50,7 +50,7 @@ export default function Contact() {
                       {institution.name}
                     </div>
                     <div className="text-[13px] font-light text-muted">
-                      {institution.product} — {institution.desc}
+                      {institution.product} — {institution.description}
                     </div>
                   </div>
                 </div>
@@ -65,7 +65,7 @@ export default function Contact() {
               onSubmit={(event) => event.preventDefault()}
               className="flex flex-col gap-3.5"
             >
-              <div className="grid grid-cols-1 gap-3.5 xs:grid-cols-2">
+              <div className="grid grid-cols-1 gap-3.5 smallScreen:grid-cols-2">
                 <Input placeholder="First Name" autoComplete="given-name" />
                 <Input placeholder="Last Name" autoComplete="family-name" />
               </div>

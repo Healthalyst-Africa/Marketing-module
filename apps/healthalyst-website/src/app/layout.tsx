@@ -4,7 +4,7 @@ import { Cormorant_Garamond, DM_Mono, DM_Sans } from "next/font/google";
 import "@healthalyst/ui/styles.css";
 import "./globals.css";
 
-const serif = Cormorant_Garamond({
+const serifFont = Cormorant_Garamond({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600"],
   style: ["normal", "italic"],
@@ -12,23 +12,23 @@ const serif = Cormorant_Garamond({
   display: "swap",
 });
 
-const sans = DM_Sans({
+const sansSerifFont = DM_Sans({
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
 });
 
-const mono = DM_Mono({
+const monospacedFont = DM_Mono({
   subsets: ["latin"],
   weight: ["400", "500"],
   variable: "--font-mono",
   display: "swap",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+const siteAddress = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
+  metadataBase: new URL(siteAddress),
   title: {
     default: "Healthalyst Africa | Health Technology Company",
     template: "%s | Healthalyst Africa",
@@ -86,7 +86,7 @@ export default function RootLayout({
     <html
       lang="en"
       data-scroll-behavior="smooth"
-      className={`${serif.variable} ${sans.variable} ${mono.variable}`}
+      className={`${serifFont.variable} ${sansSerifFont.variable} ${monospacedFont.variable}`}
     >
       <body>{children}</body>
     </html>

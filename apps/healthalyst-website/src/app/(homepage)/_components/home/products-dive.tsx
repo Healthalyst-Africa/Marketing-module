@@ -3,20 +3,20 @@
 import { Button } from "~/components/ui/button";
 import { PRODUCTS } from "~/data/products";
 import { useReveal } from "~/hooks/use-reveal";
-import { cn } from "~/lib/utils";
+import { cn } from "~/lib/utilities";
 import { useProducts } from "~/store/ProductsContext";
-import { scrollTo } from "~/utils/scroll";
+import { scrollTo } from "~/utilities/scroll";
 import { Reveal, SectionHeading, SectionLabel } from "./section-heading";
 
 export default function ProductsDive() {
-  const [ref, visible] = useReveal<HTMLElement>();
+  const [elementReference, visible] = useReveal<HTMLElement>();
   const { state, selectProduct } = useProducts();
   const product = PRODUCTS[state.activeProduct];
 
   return (
     <section
       id="products"
-      ref={ref}
+      ref={elementReference}
       className="bg-cream-dark px-5 py-20 md:px-10 md:py-32"
     >
       <div className="mx-auto max-w-[1200px]">
@@ -42,9 +42,9 @@ export default function ProductsDive() {
           visible={visible}
           className="flex gap-8 overflow-x-auto border-b border-sand"
         >
-          {PRODUCTS.map((prod, index) => (
+          {PRODUCTS.map((availableProduct, index) => (
             <button
-              key={prod.name}
+              key={availableProduct.name}
               onClick={() => selectProduct(index)}
               aria-pressed={state.activeProduct === index}
               className={cn(
@@ -54,7 +54,7 @@ export default function ProductsDive() {
                   : "border-transparent text-muted hover:text-forest"
               )}
             >
-              {prod.name}
+              {availableProduct.name}
             </button>
           ))}
         </Reveal>
@@ -81,7 +81,7 @@ export default function ProductsDive() {
                 {product.headline}
               </h3>
               <p className="mb-7 font-serif text-[clamp(1rem,1.5vw,1.2rem)] italic leading-[1.4] text-gold-light">
-                {product.subHeadline}
+                {product.supportingHeadline}
               </p>
               <div className="mb-7 h-px w-10 bg-gold" />
               <p className="mb-7 text-[15px] font-light leading-[1.85] text-white/70">

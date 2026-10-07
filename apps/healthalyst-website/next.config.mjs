@@ -2,7 +2,7 @@ import { fileURLToPath } from "node:url";
 
 /** @type {import('next').NextConfig} */
 
-const nextConfig = {
+const nextConfiguration = {
   reactStrictMode: true,
   output: "standalone",
   outputFileTracingRoot: fileURLToPath(new URL("../..", import.meta.url)),
@@ -18,4 +18,4 @@ const nextConfig = {
   },
 };
 
-export default nextConfig;
+export default nextConfiguration;

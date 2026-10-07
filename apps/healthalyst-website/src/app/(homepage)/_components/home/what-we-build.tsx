@@ -3,18 +3,18 @@
 import { useReveal } from "~/hooks/use-reveal";
 import { PRODUCTS } from "~/data/products";
 import { useProducts } from "~/store/ProductsContext";
-import { scrollTo } from "~/utils/scroll";
+import { scrollTo } from "~/utilities/scroll";
 import ProductCard from "./product-card";
 import { Reveal, SectionHeading, SectionLabel } from "./section-heading";
 
 export default function WhatWeBuild() {
-  const [ref, visible] = useReveal<HTMLElement>();
+  const [elementReference, visible] = useReveal<HTMLElement>();
   const { selectProduct } = useProducts();
 
   return (
     <section
       id="what-we-build"
-      ref={ref}
+      ref={elementReference}
       className="bg-cream px-5 py-20 md:px-10 md:py-32"
     >
       <div className="mx-auto max-w-[1200px]">
@@ -46,7 +46,7 @@ export default function WhatWeBuild() {
         </Reveal>
 
         {/* 6-card grid */}
-        <div className="grid grid-cols-1 gap-px bg-sand xs:grid-cols-3">
+        <div className="grid grid-cols-1 gap-px bg-sand smallScreen:grid-cols-3">
           {PRODUCTS.map((product, index) => (
             <ProductCard
               key={product.name}

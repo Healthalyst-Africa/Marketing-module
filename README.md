@@ -8,13 +8,13 @@ This repository contains Healthalyst client applications. Other local repositori
 apps/
   healthalyst-website/       Official Healthalyst marketing website
 packages/
-  eslint-config/              Shared ESLint flat configs
-  test-utils/                 Shared Vitest setup
+  eslint-config/              Shared ESLint flat configurations
+  test-utilities/             Shared Vitest setup
   typescript-config/          Shared TypeScript presets
   ui/                         Brand-neutral shadcn components and styles
 ```
 
-Add each independently deployable client application under `apps/`. Put code in `packages/` only when more than one app intentionally shares it. Keep app branding, routes, and product-specific behavior inside the owning app.
+Add each independently deployable client application under `apps/`. Keep generic shared capabilities in `packages/`. All shadcn primitives belong in `packages/ui`, including those used by a single application. Keep app branding, routes, and product-specific behavior inside the owning app.
 
 ## Commands
 

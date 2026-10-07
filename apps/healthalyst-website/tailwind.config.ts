@@ -1,6 +1,6 @@
-import type { Config } from "tailwindcss";
+import type { Config as TailwindConfiguration } from "tailwindcss";
 
-const config = {
+const tailwindConfiguration = {
   darkMode: ["class"],
   content: ["./src/**/*.{ts,tsx}", "../../packages/ui/src/**/*.{ts,tsx}"],
   prefix: "",
@@ -99,11 +99,11 @@ const config = {
         /** Matches the source design's 900px collapse point */
         tablet: "900px",
         /** Matches the source design's 600px collapse point */
-        xs: "600px",
+        smallScreen: "600px",
       },
     },
   },
   plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
-} satisfies Config;
+} satisfies TailwindConfiguration;
 
-export default config;
+export default tailwindConfiguration;

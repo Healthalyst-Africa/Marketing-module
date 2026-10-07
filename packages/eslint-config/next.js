@@ -2,10 +2,10 @@ import { globalIgnores } from "eslint/config";
 import nextPlugin from "@next/eslint-plugin-next";
 import prettier from "eslint-config-prettier/flat";
 import reactHooks from "eslint-plugin-react-hooks";
-import baseConfig from "./base.js";
+import baseConfiguration from "./base.js";
 
-const nextConfig = [
-  ...baseConfig,
+const nextConfiguration = [
+  ...baseConfiguration,
   {
     plugins: { "@next/next": nextPlugin },
     rules: {
@@ -31,4 +31,4 @@ const nextConfig = [
   globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts"]),
 ];
 
-export default nextConfig;
+export default nextConfiguration;

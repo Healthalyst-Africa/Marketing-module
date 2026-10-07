@@ -16,11 +16,11 @@ pnpm build          # next build
 pnpm start          # next start
 pnpm lint           # eslint ./src
 pnpm lint:fix       # eslint --fix
-pnpm check-lint     # eslint ./src (gate used by test-all)
+pnpm check-lint     # eslint ./src (alternative lint command)
 pnpm check-types    # tsc --noEmit
 pnpm check-format   # prettier --check .
 pnpm format         # prettier --write .
-pnpm test-all       # format + lint + types + build
+pnpm test-all       # format + lint + types + tests + build
 pnpm test           # Vitest suite
 pnpm test:watch     # Vitest watch mode
 pnpm test:coverage  # Vitest coverage report
@@ -39,16 +39,16 @@ Run `pnpm test-all` before declaring a change done.
 | `src/components/ui/`              | Healthalyst-branded components (`button`, `input`, `select`, `textarea`, `accordion`) |
 | `src/components/layout/`          | Shared layout pieces (`logo.tsx`)                                                     |
 | `src/hooks/`                      | Custom hooks (`use-reveal.ts`)                                                        |
-| `src/lib/`                        | Shared helpers (`utils.ts` → the `cn()` class merger)                                 |
+| `src/lib/`                        | Shared helpers (`utilities.ts` → the `cn()` class merger)                             |
 | `src/store/`                      | Global state: Context + `useReducer` (`ProductsContext`, `Actions`, `Reducers`)       |
-| `src/utils/`                      | Utilities (`scroll.ts`)                                                               |
+| `src/utilities/`                  | Utilities (`scroll.ts`)                                                               |
 | `src/types/`, `src/data/`         | Shared types and static content (products, steps, FAQs, site copy)                    |
 | `public/`                         | Static assets served from the root                                                    |
 
 Route-local components stay next to their route under `_components/`; components reused
 across routes belong in `src/components/`.
 
-Brand-neutral components shared across client apps belong in `packages/ui`. New shadcn
+All brand-neutral shadcn primitives belong in `packages/ui`, including components currently used by only this application. New shadcn
 components are routed there through `components.json`; keep brand-specific variants in
 this app.
 
@@ -57,12 +57,12 @@ this app.
 - **Imports:** use the `~/` alias (maps to `src/`).
 - **State:** global state lives in `src/store` as Context + `useReducer`. Don't add Redux
   or Zustand.
-- **Styling:** Tailwind, merged with the `cn()` helper from `src/lib/utils.ts`. Prefer
+- **Styling:** Tailwind, merged with the `cn()` helper from `src/lib/utilities.ts`. Prefer
   classes over inline `style` objects.
 - **Design tokens:** brand colours are `forest`, `gold`, `cream`, `sand`, `ink` and
   `muted` in `tailwind.config.ts`; fonts are `font-serif` (Cormorant Garamond),
   `font-sans` (DM Sans) and `font-mono` (DM Mono), loaded through `next/font/google`.
-- **Custom breakpoints:** `xs` (600px) and `tablet` (900px) mirror the source design's
+- **Custom breakpoints:** `smallScreen` (600px) and `tablet` (900px) mirror the source design's
   collapse points.
 - **Components:** reuse `src/components/ui/*` for branded site components and
   `@healthalyst/ui` for shared neutral primitives.
@@ -73,8 +73,10 @@ this app.
 
 ## Checks
 
-There is no unit-test runner. The required gates are format, lint, types and a successful
-production build — `pnpm test-all` runs all four.
+Vitest and Testing Library are configured. `pnpm test-all` runs formatting, lint,
+type checks, tests, and the production build. The test command permits an empty
+suite; successful execution without test files does not establish coverage.
+Follow the root `AGENTS.md` for naming rules and completion evidence.
 
 ## Environment
 

@@ -1,10 +1,12 @@
 "use client";
 
+import { Button as SharedButton } from "@healthalyst/ui/components/button";
+
 import { LogoMark } from "~/components/layout/logo";
 import { FOOTER_COMPANY_LINKS, FOOTER_CONNECT_LINKS } from "~/data/site";
 import { PRODUCTS } from "~/data/products";
 import { useProducts } from "~/store/ProductsContext";
-import { scrollTo } from "~/utils/scroll";
+import { scrollTo } from "~/utilities/scroll";
 
 function FooterLinkColumn({
   heading,
@@ -32,10 +34,14 @@ export default function Footer() {
   return (
     <footer className="bg-forest-deep pb-10 pt-20">
       <div className="mx-auto max-w-[1200px] px-5 md:px-10">
-        <div className="mb-14 grid grid-cols-1 gap-10 xs:grid-cols-2 tablet:grid-cols-[1.2fr_1fr_1fr_1fr] tablet:gap-[60px]">
+        <div className="mb-14 grid grid-cols-1 gap-10 smallScreen:grid-cols-2 tablet:grid-cols-[1.2fr_1fr_1fr_1fr] tablet:gap-[60px]">
           {/* Brand column */}
           <div>
-            <LogoMark size="sm" subClassName="text-white/25" className="mb-5" />
+            <LogoMark
+              size="small"
+              subtitleClassName="text-white/25"
+              className="mb-5"
+            />
             <p className="mb-5 max-w-[260px] font-sans text-[13px] font-light leading-[1.7] text-white/35">
               Building the digital infrastructure of African healthcare — one
               institution at a time.
@@ -48,7 +54,10 @@ export default function Footer() {
           {/* Products */}
           <FooterLinkColumn heading="Products">
             {PRODUCTS.map((product, index) => (
-              <button
+              <SharedButton
+                type="button"
+                variant="unstyled"
+                size="unstyled"
                 key={product.name}
                 className={linkClass}
                 onClick={() => {
@@ -57,33 +66,39 @@ export default function Footer() {
                 }}
               >
                 {product.name}
-              </button>
+              </SharedButton>
             ))}
           </FooterLinkColumn>
 
           {/* Company */}
           <FooterLinkColumn heading="Company">
             {FOOTER_COMPANY_LINKS.map((link) => (
-              <button
+              <SharedButton
+                type="button"
+                variant="unstyled"
+                size="unstyled"
                 key={link}
                 className={linkClass}
                 onClick={() => scrollTo("about")}
               >
                 {link}
-              </button>
+              </SharedButton>
             ))}
           </FooterLinkColumn>
 
           {/* Connect */}
           <FooterLinkColumn heading="Connect">
             {FOOTER_CONNECT_LINKS.map((link) => (
-              <button
+              <SharedButton
+                type="button"
+                variant="unstyled"
+                size="unstyled"
                 key={link}
                 className={linkClass}
                 onClick={() => scrollTo("contact")}
               >
                 {link}
-              </button>
+              </SharedButton>
             ))}
           </FooterLinkColumn>
         </div>

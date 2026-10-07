@@ -1,13 +1,17 @@
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
-import { cva, type VariantProps } from "class-variance-authority";
-import { cn } from "@healthalyst/ui/lib/utils";
+import {
+  cva as createClassVariants,
+  type VariantProps as VariantProperties,
+} from "class-variance-authority";
+import { cn } from "@healthalyst/ui/lib/utilities";
 
-const buttonVariants = cva(
+const buttonVariants = createClassVariants(
   "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
+        unstyled: "",
         default: "bg-primary text-primary-foreground hover:opacity-90",
         destructive:
           "bg-destructive text-destructive-foreground hover:opacity-90",
@@ -18,9 +22,10 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
+        unstyled: "",
         default: "h-10 px-4 py-2",
-        sm: "h-9 rounded-md px-3",
-        lg: "h-11 rounded-md px-8",
+        small: "h-9 rounded-md px-3",
+        large: "h-11 rounded-md px-8",
         icon: "size-10",
       },
     },
@@ -31,22 +36,25 @@ const buttonVariants = cva(
   }
 );
 
-export interface ButtonProps
+export interface ButtonProperties
   extends
     React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+    VariantProperties<typeof buttonVariants> {
   asChild?: boolean;
 }
 
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ asChild = false, className, variant, size, ...props }, ref) => {
+const Button = React.forwardRef<HTMLButtonElement, ButtonProperties>(
+  (
+    { asChild = false, className, variant, size, ...properties },
+    elementReference
+  ) => {
     const Component = asChild ? Slot : "button";
 
     return (
       <Component
-        ref={ref}
+        ref={elementReference}
         className={cn(buttonVariants({ variant, size }), className)}
-        {...props}
+        {...properties}
       />
     );
   }
