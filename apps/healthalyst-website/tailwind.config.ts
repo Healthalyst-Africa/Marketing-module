@@ -74,9 +74,9 @@ const tailwindConfiguration = {
         },
       },
       fontFamily: {
-        sans: ["var(--font-sans)", "DM Sans", "system-ui", "sans-serif"],
-        serif: ["var(--font-serif)", "Cormorant Garamond", "Georgia", "serif"],
-        mono: ["var(--font-mono)", "DM Mono", "ui-monospace", "monospace"],
+        sans: ["var(--font-sans)"],
+        serif: ["var(--font-serif)"],
+        mono: ["var(--font-sans)"],
       },
       borderRadius: {
         lg: "var(--radius)",

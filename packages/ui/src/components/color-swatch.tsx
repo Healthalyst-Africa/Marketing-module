@@ -32,7 +32,7 @@ export function ColorSwatch({
       ) : (
         <span className="flex flex-col gap-1">
           <span className="text-sm font-medium text-foreground">{label}</span>
-          <span className="font-mono text-xs text-muted-foreground">
+          <span className="font-sans text-xs text-muted-foreground">
             {color.toLowerCase()}
           </span>
         </span>
