@@ -12,12 +12,12 @@ export default function Hero() {
       secondaryAction={<Link href="#contact">Speak to our team</Link>}
       image={
         <Image
-          src="/images/clinician-tablet.webp"
-          alt="A healthcare professional reviewing information on a tablet."
+          src="/images/doctor-at-clinic.webp"
+          alt="A Black female doctor in a white coat and stethoscope at her clinic desk."
           fill
           preload
-          sizes="(min-width: 1280px) 480px, (min-width: 1024px) 42vw, (min-width: 640px) 480px, calc(100vw - 40px)"
-          className="object-cover object-[center_42%]"
+          sizes="(min-width: 1280px) 640px, (min-width: 1024px) 42vw, (min-width: 640px) 480px, calc(100vw - 40px)"
+          className="object-cover object-center"
         />
       }
       productNavigation={<ProductNavigation />}

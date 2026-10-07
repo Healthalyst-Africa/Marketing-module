@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type React from "react";
-import { Cormorant_Garamond, DM_Mono, DM_Sans } from "next/font/google";
+import { Source_Sans_3, Source_Serif_4 } from "next/font/google";
 import { ThemePreferenceProvider } from "@healthalyst/ui/components/theme-preference-provider";
 import { createThemeInitializationScript } from "@healthalyst/ui/lib/theme-preference";
 import {
@@ -10,24 +10,17 @@ import {
 import "@healthalyst/ui/styles.css";
 import "./globals.css";
 
-const serifFont = Cormorant_Garamond({
+const serifFont = Source_Serif_4({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
+  weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
   variable: "--font-serif",
   display: "swap",
 });
 
-const sansSerifFont = DM_Sans({
+const sansSerifFont = Source_Sans_3({
   subsets: ["latin"],
   variable: "--font-sans",
-  display: "swap",
-});
-
-const monospacedFont = DM_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-mono",
   display: "swap",
 });
 
@@ -94,7 +87,7 @@ export default function RootLayout({
       data-palette={THEME_PREFERENCE_CONFIGURATION.defaultIdentifier}
       suppressHydrationWarning
       data-scroll-behavior="smooth"
-      className={`${serifFont.variable} ${sansSerifFont.variable} ${monospacedFont.variable}`}
+      className={`${serifFont.variable} ${sansSerifFont.variable}`}
     >
       <head>
         <style id="website-palette-tokens">{WEBSITE_THEME_STYLES}</style>
@@ -106,7 +99,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body>
+      <body className={sansSerifFont.className}>
         <ThemePreferenceProvider configuration={THEME_PREFERENCE_CONFIGURATION}>
           {children}
         </ThemePreferenceProvider>

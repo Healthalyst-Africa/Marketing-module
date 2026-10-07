@@ -3,7 +3,10 @@ import type { MarketingSectionContent } from "@healthalyst/ui/components/marketi
 export const HERO_CONTENT = {
   heading: (
     <>
-      We build the digital infrastructure of <em>African healthcare.</em>
+      We build the digital
+      <br className="hidden xl:block" /> infrastructure of
+      <br className="hidden xl:block" />{" "}
+      <span className="font-normal not-italic">African healthcare.</span>
     </>
   ),
   paragraphs: [
