@@ -35,6 +35,8 @@ Run `pnpm test-all` before declaring a change done.
 | Path                              | Holds                                                                                 |
 | --------------------------------- | ------------------------------------------------------------------------------------- |
 | `src/app/`                        | App Router routes (`page.tsx`, `layout.tsx`, `not-found.tsx`)                         |
+| `src/app/api/contact/`            | Route handler that validates and stores contact enquiries                             |
+| `db/`                             | SQL applied by hand to the enquiry database                                           |
 | `src/app/(homepage)/_components/` | Route-local components for the marketing page (header, footer, `home/`)               |
 | `src/components/ui/`              | Healthalyst-branded components (`button`, `input`, `select`, `textarea`, `accordion`) |
 | `src/components/layout/`          | Shared layout pieces (`logo.tsx`)                                                     |
@@ -80,4 +82,9 @@ Follow the root `AGENTS.md` for naming rules and completion evidence.
 
 ## Environment
 
-Copy `env.example` to `.env` and fill in values. Never commit `.env`.
+Copy `.env.example` to `.env.local` and fill in values. Never commit `.env.local`.
+
+`DATABASE_URL` is the Neon connection string read by `src/app/api/contact/route.ts`
+on the server. It must never be prefixed with `NEXT_PUBLIC_`. Apply
+`db/contact-enquiries.sql` to that database once, then submit the form to confirm
+the row was stored.

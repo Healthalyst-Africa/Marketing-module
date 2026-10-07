@@ -11,16 +11,16 @@ Recording a proposal does not establish design approval or release approval.
 
 ### Delivery sequence
 
-| Slice | Outcome                                                                                           | Current status                           |
-| ----- | ------------------------------------------------------------------------------------------------- | ---------------------------------------- |
-| 1     | Content baseline, route map, reusable component ownership, visual direction and palette proposals | Documented; Slice 2 authorised           |
-| 2     | Semantic design tokens and `/control-panel`                                                       | Implemented; ready for user review       |
-| 3     | Homepage revamp and appropriate imagery                                                           | Awaiting instruction                     |
-| 4     | Contact and partnership pages with accessible form journeys                                       | Awaiting instruction                     |
-| 5     | Terms, privacy and careers pages with approved company content                                    | Awaiting instruction and content         |
-| 6     | Contact submissions saved to Neon through the Next.js application                                 | Awaiting instruction and database access |
-| 7     | Partnership submissions saved through the same enquiry foundation                                 | Awaiting instruction                     |
-| 8     | Review of routes, palettes, responsive behaviour, accessibility and integrations                  | Awaiting instruction                     |
+| Slice | Outcome                                                                                           | Current status                                                  |
+| ----- | ------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| 1     | Content baseline, route map, reusable component ownership, visual direction and palette proposals | Documented; Slice 2 authorised                                  |
+| 2     | Semantic design tokens and `/control-panel`                                                       | Implemented; ready for user review                              |
+| 3     | Homepage revamp and appropriate imagery                                                           | Implemented; ready for user review                              |
+| 4     | Contact and partnership pages with accessible form journeys                                       | Awaiting instruction                                            |
+| 5     | Terms, privacy and careers pages with approved company content                                    | Awaiting instruction and content                                |
+| 6     | Contact submissions saved to Neon through the Next.js application                                 | Implemented; schema applied and live-verified on 7 October 2026 |
+| 7     | Partnership submissions saved through the same enquiry foundation                                 | Awaiting instruction                                            |
+| 8     | Review of routes, palettes, responsive behaviour, accessibility and integrations                  | Awaiting instruction                                            |
 
 Complete only the slice the user authorises. Update this record after each slice.
 
@@ -457,5 +457,281 @@ accessibility audit.
   suites were added or run in this slice. Full accessibility and integration
   review remains assigned to Slice 8.
 
-Ready for Slice 3: homepage revamp and appropriate imagery. Await the user's
-instruction before implementing it.
+Slice 3 was subsequently authorised by the user. The record below describes its
+implementation and review evidence.
+
+## Slice 3 implementation
+
+- Applied the editorial direction to the homepage: a split hero with healthcare
+  imagery, a six-product catalogue, a paired product detail and capabilities
+  surface, four process stages, an illustrated company narrative, readable
+  questions, contact presentation and footer.
+- Kept the approved marketing wording, six products, four statistics, all
+  capabilities, audiences, process descriptions, approach pillars, institution
+  mappings, questions, answers and footer text. Existing product, process,
+  question and site data files remain unchanged. Moved section introductions
+  into application-owned `src/data/homepage-content.tsx`.
+- All reusable visual structure lives in `packages/ui`, composed from shared
+  shadcn components. Website sections are thin content and state adapters. The
+  existing product context remains the selection owner; process state remains
+  in its application adapter.
+- Installed shared shadcn Tabs and Sheet from the official registry. Only the
+  required Radix tabs and dialog runtime dependencies were added. Generated
+  local names follow the repository naming rule.
+- Replaced the custom mobile menu with Sheet, including an accessible title,
+  focus handling, Escape dismissal and a 44-pixel close target. Navigation now
+  uses real links and preserves the existing section destinations. Added a skip
+  link and main-content focus target.
+- Product and process selection use shared tabs with keyboard navigation.
+  Nonselected panels are hidden; their complete content remains in the rendered
+  document. The next-stage action advances selection and moves focus to the new
+  selector. The final stage retains its conversation action.
+- Static hero, statistics, company narrative, questions and contact structure
+  stay server-rendered. Removed entrance opacity and reveal dependencies from
+  homepage content. Reduced-motion preferences disable Sheet and Accordion
+  animations.
+- Added an original editorial healthcare illustration as a 175,402-byte WebP,
+  plus a palette-aware vector diagram of the existing connected products.
+  Existing Lucide symbols support the product capability panels. Image origin,
+  generation prompt, alternative text and approval limits are recorded in
+  `website-assets.md`.
+- Enabled the standard Next.js image optimiser, supplied responsive image sizes
+  and preloaded the hero illustration. No image-processing package was added.
+- The original palette remains the default. All authored interface colours and
+  the vector diagram use semantic theme values, so the four existing panel
+  choices apply throughout the refreshed homepage. Raster imagery retains its
+  original colour treatment.
+- The contact presentation now has persistent labels and autocomplete metadata.
+  Its fields and send action are disabled with a visible availability notice;
+  the preceding form prevented submission without saving or sending anything.
+  The original marketing copy and choices are retained. No successful delivery
+  is simulated.
+
+### Slice 3 completion evidence
+
+- Passed `pnpm install --frozen-lockfile`, `pnpm check-format`, `pnpm lint`,
+  `pnpm check-types`, `pnpm build` and `git diff --check`. The production build
+  retains statically rendered `/` and `/control-panel` routes.
+- Reviewed the homepage in Chrome at 1440-pixel desktop, 390-pixel mobile and a
+  constrained 320-pixel mobile width. No document overflow was observed. The
+  product selector scrolls within its own container. Inspected hero, product
+  details, company narrative, questions and contact presentation.
+- Selected every product with keyboard arrow navigation and checked the matching
+  detail heading and single visible panel. Catalogue selection also opened the
+  chosen product. Advanced through all four process stages and checked focus and
+  the final conversation action.
+- Opened mobile navigation, used Tab and Shift+Tab within it, dismissed with
+  Escape and observed focus returning to the trigger. A mobile navigation link
+  closed the drawer and reached its section beneath the sticky header.
+- Expanded a question and inspected its complete answer. Confirmed one primary
+  heading, section heading order, no forced-uppercase text styling, no hidden
+  entrance reveals and persistent labels for every enquiry control.
+- Selected green/coral, cobalt/citrus and plum/peach in the control panel and
+  navigated to the homepage. Observed corresponding hero, button and diagram
+  colours. Reload retained plum/peach; reset restored the exact original forest
+  colour and removed the preference cookie.
+- Used the local production standalone server for the completed journeys.
+  Inspected console and network: no application console errors or failed
+  requests. The responsive illustration was served through `/_next/image` with
+  a successful response. Changing emulated viewport sizes during a load produced
+  a temporary unused-preload warning; a fresh mobile load had no warnings.
+- Reviewed the shared sources, application adapters, dependency additions and
+  changed-file diff. No automated test suites were added or run. This review is
+  not the complete accessibility, performance or integration audit in Slice 8.
+
+### Remaining work
+
+Slice 4 is contact and partnership routes with their complete form journeys.
+Legal and careers content, Neon submission handling and full cross-route review
+remain assigned to their later slices. Existing unsupported company claims still
+need company confirmation. Imagery and experimental palettes remain subject to
+final product designer approval. No changes were committed, pushed or deployed.
+
+Ready for Slice 4. Await the user's instruction before implementing it.
+
+## Homepage design revision — 7 October 2026
+
+The user requested a stronger homepage through the Sites skill, with review before
+any additional pages. This revision supersedes the earlier illustrative visual
+direction and the earlier invitation to begin Slice 4.
+
+### Direction and implementation
+
+- Revisited [Maven Clinic](https://www.mavenclinic.com/),
+  [Helium Health](https://heliumhealth.com/), [Cityblock](https://www.cityblock.com/)
+  and [Reliance Health](https://getreliancehealth.com/nigeria/). The resulting
+  direction uses human healthcare photography, clearer product pathways and an
+  editorial hierarchy. Their marketing claims, copy and visual identities were
+  not copied.
+- Replaced the dark illustrated hero with a light cream introduction, forest
+  typography, a photographic portrait and a restrained company-positioning band.
+  The original hero paragraphs remain intact in separate visual areas.
+- Changed the product catalogue to a two-column directory of six large linked
+  rows. Every row selects its matching existing product panel. Full capabilities,
+  audiences and descriptions remain available in the shared tab interface.
+- Used a clinic photograph, quotation and approach list for the company section.
+  Kept the process, frequently asked questions and enquiry presentation connected
+  to their existing application content and state.
+- Restored the supplied JPEG logo to navigation, footer and metadata. Kept the
+  original image unchanged and respected the deletion of the old SVG.
+- Retained all reusable layouts in the shared component package and used the
+  existing shadcn foundations. No dependencies were added for this revision.
+- Preserved the original forest, gold, cream and sand palette and `/control-panel`.
+  Ordinary labels use natural casing. Interface colours follow semantic tokens;
+  photography and the supplied logo retain their actual colours.
+- Careers and press text remain in the footer without misleading links to the
+  company section. Their routes remain outside this homepage slice. Partners
+  leads to the existing enquiry section.
+
+### Review evidence
+
+- TypeScript, lint, formatting, production build and whitespace checks passed
+  during this revision. The original Next.js standalone configuration remains
+  in the marketing repository.
+- Inspected desktop at 1440 pixels and mobile at 390 and 320 pixels. No document
+  overflow was observed; the product tab list scrolls within its own container.
+- Opened and dismissed the mobile Sheet with Escape; focus returned to its
+  trigger. Used catalogue navigation and keyboard arrows in the product tabs;
+  selection, heading and visible panel agreed. Expanded a question and inspected
+  its full answer.
+- Switched to cobalt/citrus in `/control-panel`, returned to the homepage and
+  observed the corresponding heading colour. Reset restored the original forest
+  palette. Original and experimental palettes remain a designer review decision.
+- Inspected browser console and image/document requests: no application console
+  errors or warnings; observed assets loaded successfully.
+- No automated test suites were added or run. This is a focused homepage review,
+  not the comprehensive accessibility, performance and integration audit in Slice 8.
+
+### Sites review copy
+
+A separate retained-template checkout at `../site-previews/healthalyst` prepares
+this same Next.js frontend as a static export for a private Sites review. It
+excludes GitHub metadata, credentials, environment files and generated runtime
+state. The review copy uses local compressed images and the Sites address for
+metadata. The marketing repository retains its normal Next.js standalone output.
+Sites publication does not push or merge the marketing repository's GitHub branch.
+
+The review copy was exported before Slice 6, so its contact form still carries
+the availability notice. Additional pages and approved policy content await
+their later slices. Neon persistence arrived with Slice 6 in this repository
+and is not present in that static export. The homepage is ready for the user's
+design review; approval is not recorded here.
+
+Private review: [Healthalyst Africa](https://healthalyst-africa.kinxly.chatgpt.site).
+Sites confirmed the first private publication succeeded. The control panel is
+available at `/control-panel` on the same site.
+
+## Contact enquiry storage — 7 October 2026
+
+Slice 6 was authorised by the user. The contact form now validates each
+enquiry and stores it in Neon from inside the Next.js application. There is no
+external service, webhook or separate server.
+
+### Decisions taken for this slice
+
+- The browser posts to a route handler at `POST /api/contact` rather than a
+  Server Action, so the request and response contract is explicit and can be
+  exercised from outside the application.
+- The schema is applied by hand from
+  `apps/healthalyst-website/db/contact-enquiries.sql`. The application never
+  creates or alters tables, and the statements are reviewed by a person.
+- Abuse handling is a hidden field that automated submissions fill, an
+  in-memory per-address throttle of five attempts in ten minutes, server-side
+  field limits and membership checks, and a ten-minute duplicate window.
+  Client addresses are held in memory only and are never written to storage or
+  logs.
+- A write that fails with a connection error is retried twice, 250 and 750
+  milliseconds apart, before the enquiry is reported as unavailable. Statement
+  errors are not retried, because the same statement would fail the same way.
+  The retry exists because live verification on this machine saw intermittent
+  connection timeouts to the Neon endpoint, including a real `503` on the
+  user's own submission.
+- Scope is the homepage `#contact` section. The `/contact` and
+  `/partner-with-us` routes remain with Slices 4 and 7, which reuse this
+  foundation and add their own enquiry type value.
+- Email notification of a company inbox remains out of scope, as agreed in the
+  form and server boundary section.
+
+### Where the work lives
+
+| Concern                                      | Location                                                         |
+| -------------------------------------------- | ---------------------------------------------------------------- |
+| Field names, labels, limits and requirements | `apps/healthalyst-website/src/data/contact-enquiry-fields.ts`    |
+| Validation and normalisation                 | `apps/healthalyst-website/src/lib/contact-enquiry-validation.ts` |
+| Neon write and duplicate detection           | `apps/healthalyst-website/src/lib/contact-enquiry-storage.ts`    |
+| Per-address throttle                         | `apps/healthalyst-website/src/lib/contact-enquiry-throttle.ts`   |
+| Route handler                                | `apps/healthalyst-website/src/app/api/contact/route.ts`          |
+| Schema                                       | `apps/healthalyst-website/db/contact-enquiries.sql`              |
+| Form states, submission and field errors     | `packages/ui/src/components/marketing-contact.tsx`               |
+| Request and response contract                | `packages/ui/src/lib/marketing-enquiry.ts`                       |
+
+The shared form stays product-neutral: the application supplies the endpoint,
+the field definitions and every visible message, while the shared package
+supplies structure, the submitting state, accessible field errors and the
+confirmation. `DATABASE_URL` is read from the environment when a request
+arrives, is never prefixed with `NEXT_PUBLIC_`, and is declared in
+`turbo.json` so builds depend on it. `@neondatabase/serverless` was added to
+the application manifest as the only new dependency.
+
+### Completion evidence
+
+- `pnpm install --frozen-lockfile`, `pnpm test-all` (format, lint, type check,
+  tests and production build) and `git diff --check` pass. The production
+  build lists `/api/contact` as a dynamic route beside the static routes.
+- 25 tests across five files cover field validation and normalisation, the
+  throttle window, storage retries (a connection failure recovered by a retry,
+  exhausted attempts reported as unavailable, and statement errors not
+  retried), every route response (stored, duplicate, rejected, hidden field,
+  unreadable body, throttled, storage failure and plain form post), and the
+  form journey (confirmed receipt, rejected field with retained input, and a
+  retryable failure that keeps the enquiry). The journey tests also assert
+  focus: a confirmed enquiry focuses its `role="status"` confirmation, and a
+  rejected submission focuses the first rejected field.
+- Schema: `db/contact-enquiries.sql` was applied by hand to the Neon database
+  named in the untracked local environment (PostgreSQL 18.6). The
+  `contact_enquiries` table, both indexes and every column were read back and
+  matched the file. The application still only reads and inserts.
+- Browser journey, desktop at 1440 by 900: submitting an email the browser
+  accepts but the server rejects produced a live `POST /api/contact` `400`
+  with `fieldErrors.email`. The email input rendered `aria-invalid="true"`,
+  `aria-describedby="enquiry-email-error"` and its visible message, both the
+  form-level and field-level `role="alert"` regions announced the failure, and
+  every entered value was retained. Correcting the address and resubmitting
+  returned `201`; the `role="status"` confirmation received focus and the form
+  reset.
+- Browser journey, mobile at 390 by 844 with touch and mobile emulation: the
+  submission returned `201` with the `role="status"` confirmation and no
+  console messages. At 320 by 568 the page was re-checked without another
+  submission: no document-level horizontal overflow and every form control
+  inside the viewport. The product tab strip stays an internal horizontal
+  scroller.
+- Abuse handling: a direct request with the hidden field filled received the
+  indistinguishable `201` acknowledgement and wrote no row. The `429` throttle
+  response was not driven against the running server (it is unit-tested, and
+  exhausting the shared development server's allowance on purpose would block
+  the user from testing the form for ten minutes).
+- Storage: rows written by the desktop and mobile submissions were read back
+  from Neon with exactly the submitted values. The rejected submission and the
+  hidden-field request stored nothing. Both test rows were deleted afterwards
+  and the table was re-checked at zero rows.
+- Found and fixed during the browser pass: a rejected submission left keyboard
+  focus on the document body, because the submitting fieldset disables the
+  button while the request is in flight. The shared form now returns focus to
+  the first rejected field; the success and non-field failure paths already
+  focus their live region. After the change, a live `400` in the browser put
+  focus on the rejected email input with its `aria-describedby` error.
+- Live limitation observed: connections from this machine to the Neon endpoint
+  time out intermittently. The database itself was re-verified healthy after
+  the user's failed submission (`neondb`, PostgreSQL 18.6, `contact_enquiries`
+  with all three indexes, zero rows), and a controlled probe showed raw TCP and
+  `https.request` succeeding against the same addresses where Node's `fetch`
+  alternated between timing out and succeeding. One real submission therefore
+  received the `503` retryable failure with its input retained. The bounded
+  storage retry above now absorbs this class of failure; a `503` still
+  returns when every attempt fails. The journey ran against the development
+  server the user had running; the production build compiles the same route
+  and passes its tests, but production-mode console output is stripped by
+  configuration, so a server operator needs application monitoring to see
+  storage failure reasons.
+- Not done: no commit, push or deployment. Slices 4, 5, 7 and 8 are unchanged
+  and still await instruction.

@@ -25,6 +25,18 @@ application content and semantic theme values.
 - `@healthalyst/ui/components/design-control-panel`
 - `@healthalyst/ui/components/section-heading`
 - `@healthalyst/ui/components/theme-preference-provider`
+- `@healthalyst/ui/components/tabs`
+- `@healthalyst/ui/components/sheet`
+- `@healthalyst/ui/components/marketing-section`
+- `@healthalyst/ui/components/marketing-hero`
+- `@healthalyst/ui/components/marketing-navigation`
+- `@healthalyst/ui/components/product-catalogue`
+- `@healthalyst/ui/components/product-details`
+- `@healthalyst/ui/components/marketing-process`
+- `@healthalyst/ui/components/marketing-about`
+- `@healthalyst/ui/components/marketing-faq`
+- `@healthalyst/ui/components/marketing-contact`
+- `@healthalyst/ui/components/marketing-footer`
 - `@healthalyst/ui/lib/theme-preference`
 - `@healthalyst/ui/lib/utilities` exports the approved `cn` helper.
 - `@healthalyst/ui/styles.css` provides neutral theme variables.
@@ -89,3 +101,27 @@ from the official shadcn registry. The field's responsive and selected-state
 utilities were adapted for Tailwind 3. Only the radio group, label and separator
 needed additional Radix dependencies. Shared reveal styles include a reduced
 motion override; visibility remains controlled by the application.
+
+## Marketing compositions
+
+Marketing layouts consume application-authored content, products, illustrations
+and link elements. They use semantic theme variables rather than brand colour
+values. The website supplies Next.js image and routing elements; this package
+has no Next.js dependency. The shared brand lockup receives its mark and wording.
+
+Tabs and Sheet were installed from the official `new-york` registry for
+Tailwind 3. They require the Radix tabs and dialog packages respectively. Local
+names follow the repository rules. Sheet keeps dialog semantics, a labelled
+close control, focus handling and reduced-motion support. Product and process
+tabs provide keyboard selection; their panels render on the server with only the
+selected panel visible. Advancing a process stage moves focus to its selector.
+
+Static introductions, hero structure, statistics, narrative, FAQ and contact
+presentation remain Server Components. Interactive catalogue, tabs and navigation
+are client boundaries. Existing primitives that call React.forwardRef explicitly
+mark their client boundary so server compositions can import them safely.
+
+The current enquiry presentation has persistent labels and native autocomplete
+metadata, but its fieldset and send control are disabled with a visible availability
+notice. Enquiry submission, validation and result states belong to the authorised
+integration slice; this presentation does not simulate delivery.

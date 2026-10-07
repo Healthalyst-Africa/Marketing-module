@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     template: "%s | Healthalyst Africa",
   },
   description:
-    "Healthalyst Africa builds purpose-built digital products for healthcare institutions across the African continent — from hospital scheduling to laboratory diagnostics, pharmacy management, and medical equipment supply.",
+    "Healthalyst Africa builds purpose-built digital products for healthcare institutions across the African continent, from hospital scheduling to laboratory diagnostics, pharmacy management, and medical equipment supply.",
   keywords: [
     "Healthalyst Africa",
     "health technology Africa",
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     "medical supply procurement",
   ],
   icons: {
-    icon: "/logo.svg",
+    icon: "/logo.jpg",
   },
   openGraph: {
     title: "Healthalyst Africa",
@@ -61,9 +61,9 @@ export const metadata: Metadata = {
     siteName: "Healthalyst Africa",
     images: [
       {
-        url: "/logo.svg",
-        width: 64,
-        height: 64,
+        url: "/logo.jpg",
+        width: 1024,
+        height: 1023,
         alt: "Healthalyst Africa",
       },
     ],
@@ -74,7 +74,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Healthalyst Africa",
     description: "Building the digital infrastructure of African healthcare.",
-    images: ["/logo.svg"],
+    images: ["/logo.jpg"],
   },
   alternates: {
     canonical: "/",
