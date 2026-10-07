@@ -49,7 +49,7 @@ export const PILLARS: Pillar[] = [
   {
     icon: "◎",
     title: "Long-Term Partnership",
-    body: "We measure success by the health outcomes your institution delivers — not by licences sold. Implementation, training, and evolution are built into how we work.",
+    body: "We measure success by the health outcomes your institution delivers, alongside the implementation, training, and evolution built into how we work.",
   },
 ];
 

@@ -13,9 +13,9 @@ const buttonVariants = createClassVariants(
       variant: {
         /** Solid forest-green call to action. */
         primary:
-          "bg-forest text-white text-[13px] font-semibold tracking-[0.08em] hover:-translate-y-px hover:bg-forest-mid hover:shadow-[0_8px_28px_rgba(24,48,32,0.22)]",
+          "bg-forest text-white text-[13px] font-semibold tracking-[0.08em] hover:-translate-y-px hover:bg-forest-mid hover:shadow-[0_8px_28px_rgb(var(--brand-forest)/0.22)]",
         /** Solid gold call to action. */
-        gold: "bg-gold text-ink text-[13px] font-semibold tracking-[0.08em] hover:-translate-y-px hover:bg-gold-light hover:shadow-[0_8px_28px_rgba(184,147,90,0.28)]",
+        gold: "bg-gold text-ink text-[13px] font-semibold tracking-[0.08em] hover:-translate-y-px hover:bg-gold-light hover:shadow-[0_8px_28px_rgb(var(--brand-gold)/0.28)]",
         /** Outlined button for light surfaces. */
         secondary:
           "border-[1.5px] border-solid border-sand-dark bg-transparent text-forest text-[13px] font-medium tracking-[0.04em] hover:border-forest hover:bg-cream-dark",

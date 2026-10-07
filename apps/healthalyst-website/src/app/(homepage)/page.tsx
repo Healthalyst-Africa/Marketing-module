@@ -10,7 +10,7 @@ import Contact from "./_components/home/contact";
 
 export const metadata: Metadata = {
   description:
-    "Healthalyst Africa builds purpose-built digital products for healthcare institutions across the African continent — hospital scheduling, laboratory diagnostics, pharmacy management, dental practice software, diagnostic imaging and medical equipment supply.",
+    "Healthalyst Africa builds purpose-built digital products for healthcare institutions across the African continent: hospital scheduling, laboratory diagnostics, pharmacy management, dental practice software, diagnostic imaging and medical equipment supply.",
   alternates: {
     canonical: "/",
   },

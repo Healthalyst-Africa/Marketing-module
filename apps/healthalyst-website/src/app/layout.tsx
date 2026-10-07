@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
 import type React from "react";
 import { Cormorant_Garamond, DM_Mono, DM_Sans } from "next/font/google";
+import { ThemePreferenceProvider } from "@healthalyst/ui/components/theme-preference-provider";
+import { createThemeInitializationScript } from "@healthalyst/ui/lib/theme-preference";
+import {
+  THEME_PREFERENCE_CONFIGURATION,
+  WEBSITE_THEME_STYLES,
+} from "~/data/design-palettes";
 import "@healthalyst/ui/styles.css";
 import "./globals.css";
 
@@ -34,7 +40,7 @@ export const metadata: Metadata = {
     template: "%s | Healthalyst Africa",
   },
   description:
-    "Healthalyst Africa builds purpose-built digital products for healthcare institutions across the African continent — from hospital scheduling to laboratory diagnostics, pharmacy management, and medical equipment supply.",
+    "Healthalyst Africa builds purpose-built digital products for healthcare institutions across the African continent, from hospital scheduling to laboratory diagnostics, pharmacy management, and medical equipment supply.",
   keywords: [
     "Healthalyst Africa",
     "health technology Africa",
@@ -46,7 +52,7 @@ export const metadata: Metadata = {
     "medical supply procurement",
   ],
   icons: {
-    icon: "/logo.svg",
+    icon: "/logo.jpg",
   },
   openGraph: {
     title: "Healthalyst Africa",
@@ -55,9 +61,9 @@ export const metadata: Metadata = {
     siteName: "Healthalyst Africa",
     images: [
       {
-        url: "/logo.svg",
-        width: 64,
-        height: 64,
+        url: "/logo.jpg",
+        width: 1024,
+        height: 1023,
         alt: "Healthalyst Africa",
       },
     ],
@@ -68,7 +74,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Healthalyst Africa",
     description: "Building the digital infrastructure of African healthcare.",
-    images: ["/logo.svg"],
+    images: ["/logo.jpg"],
   },
   alternates: {
     canonical: "/",
@@ -85,10 +91,26 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      data-palette={THEME_PREFERENCE_CONFIGURATION.defaultIdentifier}
+      suppressHydrationWarning
       data-scroll-behavior="smooth"
       className={`${serifFont.variable} ${sansSerifFont.variable} ${monospacedFont.variable}`}
     >
-      <body>{children}</body>
+      <head>
+        <style id="website-palette-tokens">{WEBSITE_THEME_STYLES}</style>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: createThemeInitializationScript(
+              THEME_PREFERENCE_CONFIGURATION
+            ),
+          }}
+        />
+      </head>
+      <body>
+        <ThemePreferenceProvider configuration={THEME_PREFERENCE_CONFIGURATION}>
+          {children}
+        </ThemePreferenceProvider>
+      </body>
     </html>
   );
 }
