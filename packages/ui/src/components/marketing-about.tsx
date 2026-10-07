@@ -83,14 +83,14 @@ export function MarketingAbout({
   quotation,
   partnershipAction,
   pillars,
-  illustration,
+  image,
   approachLabel,
 }: {
   content: MarketingSectionContent;
   quotation: string;
   partnershipAction: ReactElement;
   pillars: readonly { title: string; body: string }[];
-  illustration: ReactNode;
+  image: ReactNode;
   approachLabel: string;
 }) {
   return (
@@ -103,7 +103,7 @@ export function MarketingAbout({
               className="mb-8 block"
             />
             <div className="relative mb-8 aspect-[5/3] overflow-hidden rounded-[2rem] bg-background">
-              {illustration}
+              {image}
             </div>
             <blockquote className="border-l-2 border-accent pl-6 font-serif text-3xl leading-[1.2] text-primary">
               {quotation}

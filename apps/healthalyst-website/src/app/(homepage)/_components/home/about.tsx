@@ -12,12 +12,12 @@ export default function About() {
       partnershipAction={<Link href="#contact">Partner with us →</Link>}
       pillars={PILLARS}
       approachLabel="Our approach"
-      illustration={
+      image={
         <Image
           src="/images/clinical-team.webp"
-          alt="Two African doctors reviewing a patient chart in a hospital."
+          alt="Two African doctors in white coats reviewing a tablet at a patient's bedside."
           fill
-          sizes="(min-width: 1024px) 510px, (min-width: 768px) calc(100vw - 80px), calc(100vw - 40px)"
+          sizes="(min-width: 1024px) 640px, (min-width: 768px) calc(100vw - 80px), calc(100vw - 40px)"
           className="object-cover"
         />
       }

@@ -62,8 +62,9 @@ this app.
 - **Styling:** Tailwind, merged with the `cn()` helper from `src/lib/utilities.ts`. Prefer
   classes over inline `style` objects.
 - **Design tokens:** brand colours are `forest`, `gold`, `cream`, `sand`, `ink` and
-  `muted` in `tailwind.config.ts`; fonts are `font-serif` (Cormorant Garamond),
-  `font-sans` (DM Sans) and `font-mono` (DM Mono), loaded through `next/font/google`.
+  `muted` in `tailwind.config.ts`; fonts are `font-serif` (Source Serif 4) for
+  headings and `font-sans` (Source Sans 3) for interface and body text, loaded
+  through `next/font/google`.
 - **Custom breakpoints:** `smallScreen` (600px) and `tablet` (900px) mirror the source design's
   collapse points.
 - **Components:** reuse `src/components/ui/*` for branded site components and

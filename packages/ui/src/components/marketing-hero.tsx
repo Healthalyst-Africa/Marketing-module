@@ -21,14 +21,14 @@ export function MarketingHero({
     <section id="hero" className="overflow-hidden bg-background text-primary">
       <MarketingContainer className="py-10 md:py-16 lg:py-20">
         <div className="grid items-center gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
-          <div>
-            <h1 className="max-w-[17ch] text-balance font-serif text-[clamp(3rem,5.3vw,4.75rem)] font-medium leading-[1.02] tracking-[-0.035em] [&_em]:font-normal">
+          <div className="text-center lg:text-left">
+            <h1 className="mx-auto max-w-[18ch] text-balance font-serif text-[clamp(2rem,5vw,2.5rem)] font-medium leading-[1.06] tracking-[-0.035em] lg:mx-0 lg:max-w-[20ch] lg:text-[clamp(2.75rem,3.75vw,3.75rem)] [&_em]:font-normal">
               {heading}
             </h1>
-            <p className="mt-7 max-w-[55ch] text-base leading-[1.8] text-muted-foreground">
+            <p className="mx-auto mt-7 max-w-[55ch] text-base leading-[1.8] text-muted-foreground lg:mx-0">
               {paragraphs[0]}
             </p>
-            <div className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-3">
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-x-7 gap-y-3 lg:justify-start">
               <Button
                 asChild
                 size="large"
@@ -45,7 +45,7 @@ export function MarketingHero({
               </Button>
             </div>
           </div>
-          <figure className="relative aspect-[4/5] w-full overflow-hidden rounded-[2rem] bg-secondary sm:aspect-[5/4] lg:aspect-[4/5]">
+          <figure className="relative aspect-[4/5] w-full overflow-hidden rounded-[2rem] bg-secondary">
             {image}
           </figure>
         </div>

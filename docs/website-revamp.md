@@ -254,9 +254,9 @@ alternative; Slice 2 implements colour switching, not an arbitrary layout editor
 - Page gutters: 20 pixels on narrow screens, increasing to 40 pixels on desktop.
 - Spacing scale: 4, 8, 12, 16, 24, 32, 48, 64 and 96 pixels. Major sections use
   approximately 64–96 pixels of vertical spacing, reducing on mobile.
-- Keep the existing Cormorant Garamond display and DM Sans reading fonts for the
-  default direction. Keep DM Mono for purposeful numerical detail, not decorative
-  uppercase labels. Typography experiments require a later explicit decision.
+- Use Source Serif 4 for headings and editorial quotations, paired with Source
+  Sans 3 for interface and body text. Adobe designed these open-source typefaces
+  as companion families. Keep the typography system to these two font families.
 - Body text: generally 16–18 pixels with a 1.6–1.8 line height. Avoid shrinking
   existing paragraphs to fit a hero. Page headings scale approximately 40–72
   pixels; section headings 28–48 pixels. Allow natural wrapping.
