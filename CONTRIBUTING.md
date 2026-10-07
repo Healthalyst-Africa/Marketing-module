@@ -67,7 +67,7 @@ another working directory is explicitly stated.
 
 ```sh
 pnpm install --frozen-lockfile
-cp -n apps/healthalyst-website/env.example apps/healthalyst-website/.env
+cp -n apps/healthalyst-website/.env.example apps/healthalyst-website/.env.local
 pnpm dev --filter @healthalyst/website
 ```
 

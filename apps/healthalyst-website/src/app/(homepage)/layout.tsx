@@ -16,7 +16,9 @@ export default function HomeLayout({
   return (
     <ProductsProvider>
       <Header />
-      <main className="overflow-x-hidden">{children}</main>
+      <main id="main-content" tabIndex={-1}>
+        {children}
+      </main>
       <Footer />
     </ProductsProvider>
   );

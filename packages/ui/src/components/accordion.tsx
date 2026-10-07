@@ -43,7 +43,7 @@ const AccordionTrigger = React.forwardRef<
         {showIndicator && (
           <ChevronDown
             aria-hidden="true"
-            className="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200"
+            className="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 motion-reduce:transition-none"
           />
         )}
       </AccordionPrimitive.Trigger>
@@ -58,7 +58,7 @@ const AccordionContent = React.forwardRef<
 >(({ className, children, ...properties }, elementReference) => (
   <AccordionPrimitive.Content
     ref={elementReference}
-    className="overflow-hidden text-sm data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
+    className="overflow-hidden text-sm motion-reduce:animate-none data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
     {...properties}
   >
     <div className={cn("pb-4 pt-0", className)}>{children}</div>

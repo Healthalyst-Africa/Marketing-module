@@ -2,8 +2,9 @@
 
 `@healthalyst/ui` owns all shadcn primitives in the client monorepo, including
 components currently consumed by only one application. Keep tokens and primitive
-behavior product-neutral. Website branding belongs in application compositions
-that import and wrap these primitives.
+behavior product-neutral. Website branding and content belong in the application. Reusable visual
+structure belongs here, composed from these primitives and supplied with
+application content and semantic theme values.
 
 ## Public imports
 
@@ -12,6 +13,31 @@ that import and wrap these primitives.
 - `@healthalyst/ui/components/textarea`
 - `@healthalyst/ui/components/accordion`
 - `@healthalyst/ui/components/native-select`
+- `@healthalyst/ui/components/card`
+- `@healthalyst/ui/components/radio-group`
+- `@healthalyst/ui/components/field`
+- `@healthalyst/ui/components/label`
+- `@healthalyst/ui/components/separator`
+- `@healthalyst/ui/components/alert`
+- `@healthalyst/ui/components/color-swatch`
+- `@healthalyst/ui/components/palette-selector`
+- `@healthalyst/ui/components/design-preview`
+- `@healthalyst/ui/components/design-control-panel`
+- `@healthalyst/ui/components/section-heading`
+- `@healthalyst/ui/components/theme-preference-provider`
+- `@healthalyst/ui/components/tabs`
+- `@healthalyst/ui/components/sheet`
+- `@healthalyst/ui/components/marketing-section`
+- `@healthalyst/ui/components/marketing-hero`
+- `@healthalyst/ui/components/marketing-navigation`
+- `@healthalyst/ui/components/product-catalogue`
+- `@healthalyst/ui/components/product-details`
+- `@healthalyst/ui/components/marketing-process`
+- `@healthalyst/ui/components/marketing-about`
+- `@healthalyst/ui/components/marketing-faq`
+- `@healthalyst/ui/components/marketing-contact`
+- `@healthalyst/ui/components/marketing-footer`
+- `@healthalyst/ui/lib/theme-preference`
 - `@healthalyst/ui/lib/utilities` exports the approved `cn` helper.
 - `@healthalyst/ui/styles.css` provides neutral theme variables.
 
@@ -47,3 +73,55 @@ attributes, including the element reference.
 Applications must load the shared stylesheet, transpile this package through
 Next.js, and include its source in Tailwind scanning. Import through package
 exports rather than relative paths into another workspace.
+
+## Presentation preferences
+
+The design control panel composes shared shadcn primitives. Applications supply
+palette options, approved preview content and navigation elements. Supplying
+React elements for links supports framework routing without coupling this
+package to Next.js. The website owns the colour definitions and generates
+semantic variables; shared components contain no HealthAlyst colour values.
+
+`ThemePreferenceProvider` consumes a cookie name, a default identifier and an
+allowlist of palette identifiers. `useThemePreference` exposes the current choice,
+selection, reset and persistence availability. The provider applies the choice to
+`data-palette` on the root element, saves only its identifier in a preference
+cookie and synchronises open tabs through BroadcastChannel. Focus, visibility
+and page restoration also reconcile the saved preference. Cookie or channel
+restrictions do not prevent a local selection.
+
+Place the script returned by `createThemeInitializationScript` in the root layout
+head, alongside palette styles, to apply a valid saved preference before the page
+paints. It falls back to the default for malformed, unknown or inaccessible
+cookies. The script configuration must be application-authored, with the same
+allowlist as the provider. The website remains statically rendered.
+
+The card, radio group, field, label, separator and alert sources were installed
+from the official shadcn registry. The field's responsive and selected-state
+utilities were adapted for Tailwind 3. Only the radio group, label and separator
+needed additional Radix dependencies. Shared reveal styles include a reduced
+motion override; visibility remains controlled by the application.
+
+## Marketing compositions
+
+Marketing layouts consume application-authored content, products, illustrations
+and link elements. They use semantic theme variables rather than brand colour
+values. The website supplies Next.js image and routing elements; this package
+has no Next.js dependency. The shared brand lockup receives its mark and wording.
+
+Tabs and Sheet were installed from the official `new-york` registry for
+Tailwind 3. They require the Radix tabs and dialog packages respectively. Local
+names follow the repository rules. Sheet keeps dialog semantics, a labelled
+close control, focus handling and reduced-motion support. Product and process
+tabs provide keyboard selection; their panels render on the server with only the
+selected panel visible. Advancing a process stage moves focus to its selector.
+
+Static introductions, hero structure, statistics, narrative, FAQ and contact
+presentation remain Server Components. Interactive catalogue, tabs and navigation
+are client boundaries. Existing primitives that call React.forwardRef explicitly
+mark their client boundary so server compositions can import them safely.
+
+The current enquiry presentation has persistent labels and native autocomplete
+metadata, but its fieldset and send control are disabled with a visible availability
+notice. Enquiry submission, validation and result states belong to the authorised
+integration slice; this presentation does not simulate delivery.
