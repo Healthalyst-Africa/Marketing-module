@@ -102,7 +102,7 @@ export function MarketingAbout({
               content={{ ...content, paragraphs: [] }}
               className="mb-8 block"
             />
-            <div className="relative mb-8 aspect-[5/3] overflow-hidden rounded-sm bg-background">
+            <div className="relative mb-8 aspect-[5/3] overflow-hidden rounded-[2rem] bg-background">
               {illustration}
             </div>
             <blockquote className="border-l-2 border-accent pl-6 font-serif text-3xl leading-[1.2] text-primary">

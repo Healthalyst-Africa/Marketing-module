@@ -15,7 +15,7 @@ export default function About() {
       illustration={
         <Image
           src="/images/clinical-team.webp"
-          alt="Healthcare professionals at a clinic reception."
+          alt="Two African doctors reviewing a patient chart in a hospital."
           fill
           sizes="(min-width: 1024px) 510px, (min-width: 768px) calc(100vw - 80px), calc(100vw - 40px)"
           className="object-cover"
