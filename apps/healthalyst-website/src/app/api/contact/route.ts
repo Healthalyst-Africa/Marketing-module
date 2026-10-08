@@ -3,7 +3,11 @@ import {
   type MarketingEnquirySubmissionResponse,
 } from "@healthalyst/ui/lib/marketing-enquiry";
 
-import { storeContactEnquiry } from "~/lib/contact-enquiry-storage";
+import { sendContactEnquiryAcknowledgement } from "~/lib/contact-enquiry-acknowledgement";
+import {
+  storeContactEnquiry,
+  type ContactEnquiryStorageOutcome,
+} from "~/lib/contact-enquiry-storage";
 import {
   hasExceededContactEnquiryLimit,
   recordContactEnquiryAttempt,
@@ -11,9 +15,8 @@ import {
 import { validateContactEnquirySubmission } from "~/lib/contact-enquiry-validation";
 
 /**
- * Stores contact enquiries from the marketing form in Neon. The database
- * connection stays on the server: only this route reads `DATABASE_URL`, and
- * only validated values leave it.
+ * Stores contact enquiries from the marketing form in Neon, then sends a
+ * receipt through Resend. Database and email credentials stay on the server.
  */
 
 export const runtime = "nodejs";
@@ -25,6 +28,9 @@ const THROTTLE_MESSAGE =
 
 const STORAGE_FAILURE_MESSAGE =
   "Your enquiry could not be stored right now. Please try again in a few minutes.";
+
+const ACKNOWLEDGEMENT_FAILURE_MESSAGE =
+  "Your enquiry was received, but we could not send a confirmation email. Our team aims to respond within two business days.";
 
 const MALFORMED_REQUEST_MESSAGE =
   "The submitted enquiry could not be read. Please reload the page and try again.";
@@ -154,14 +160,10 @@ export async function POST(request: Request): Promise<Response> {
     );
   }
 
-  try {
-    const storageOutcome = await storeContactEnquiry(
-      validationResult.submission
-    );
+  let storageOutcome: ContactEnquiryStorageOutcome;
 
-    return storageOutcome.outcome === "duplicate"
-      ? createSubmissionResponse({ status: "alreadyReceived" }, 200)
-      : createSubmissionResponse({ status: "saved" }, 201);
+  try {
+    storageOutcome = await storeContactEnquiry(validationResult.submission);
   } catch (error) {
     console.error(
       "Contact enquiry storage failed:",
@@ -173,4 +175,19 @@ export async function POST(request: Request): Promise<Response> {
       503
     );
   }
+
+  if (storageOutcome.outcome === "duplicate") {
+    return createSubmissionResponse({ status: "alreadyReceived" }, 200);
+  }
+
+  const acknowledgementOutcome = await sendContactEnquiryAcknowledgement(
+    validationResult.submission
+  );
+
+  return acknowledgementOutcome.outcome === "unavailable"
+    ? createSubmissionResponse(
+        { status: "saved", message: ACKNOWLEDGEMENT_FAILURE_MESSAGE },
+        201
+      )
+    : createSubmissionResponse({ status: "saved" }, 201);
 }
