@@ -89,3 +89,10 @@ Copy `.env.example` to `.env.local` and fill in values. Never commit `.env.local
 on the server. It must never be prefixed with `NEXT_PUBLIC_`. Apply
 `db/contact-enquiries.sql` to that database once, then submit the form to confirm
 the row was stored.
+
+`RESEND_API_KEY` and `RESEND_FROM_EMAIL` are also server-only. Set the API key
+from Resend and use a sender address on a domain verified in Resend. After a new
+enquiry is stored, the website sends the visitor a short acknowledgement. A
+duplicate enquiry does not send another email. If email delivery is unavailable,
+the enquiry remains saved and the form tells the visitor that the confirmation
+email could not be sent.
