@@ -176,6 +176,13 @@ export function MarketingEnquiryForm({
   ) {
     switch (submissionResponse.status) {
       case "saved":
+        setFieldErrors({});
+        setFeedback({
+          outcome: "success",
+          message: submissionResponse.message ?? successMessage,
+        });
+        formElement.reset();
+        return;
       case "alreadyReceived":
         setFieldErrors({});
         setFeedback({ outcome: "success", message: successMessage });
