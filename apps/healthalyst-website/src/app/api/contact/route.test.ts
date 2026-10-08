@@ -2,6 +2,7 @@ import type { MarketingEnquirySubmissionResponse } from "@healthalyst/ui/lib/mar
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { POST } from "~/app/api/contact/route";
+import { sendContactEnquiryAcknowledgement } from "~/lib/contact-enquiry-acknowledgement";
 import { storeContactEnquiry } from "~/lib/contact-enquiry-storage";
 import {
   clearContactEnquiryAttempts,
@@ -10,6 +11,10 @@ import {
 
 vi.mock("~/lib/contact-enquiry-storage", () => ({
   storeContactEnquiry: vi.fn(),
+}));
+
+vi.mock("~/lib/contact-enquiry-acknowledgement", () => ({
+  sendContactEnquiryAcknowledgement: vi.fn(),
 }));
 
 const REQUEST_ADDRESS = "198.51.100.42";
@@ -52,6 +57,10 @@ describe("POST /api/contact", () => {
     clearContactEnquiryAttempts();
     vi.mocked(storeContactEnquiry).mockReset();
     vi.mocked(storeContactEnquiry).mockResolvedValue({ outcome: "stored" });
+    vi.mocked(sendContactEnquiryAcknowledgement).mockReset();
+    vi.mocked(sendContactEnquiryAcknowledgement).mockResolvedValue({
+      outcome: "sent",
+    });
   });
 
   it("stores a valid enquiry and reports it as saved", async () => {
@@ -74,6 +83,28 @@ describe("POST /api/contact", () => {
       productInterest: "HealthSchedule: Scheduling & Patient Flow",
       message: "We would like to discuss scheduling for our facilities.",
     });
+    expect(sendContactEnquiryAcknowledgement).toHaveBeenCalledWith(
+      createSubmittedValues()
+    );
+  });
+
+  it("keeps a stored enquiry when its acknowledgement cannot be sent", async () => {
+    vi.mocked(sendContactEnquiryAcknowledgement).mockResolvedValue({
+      outcome: "unavailable",
+    });
+
+    const response = await POST(
+      createSubmissionRequest(JSON.stringify(createSubmittedValues()))
+    );
+
+    expect(response.status).toBe(201);
+    expect(await readSubmissionResponse(response)).toEqual({
+      status: "saved",
+      message:
+        "Your enquiry was received, but we could not send a confirmation email. Our team aims to respond within two business days.",
+    });
+    expect(storeContactEnquiry).toHaveBeenCalledTimes(1);
+    expect(sendContactEnquiryAcknowledgement).toHaveBeenCalledTimes(1);
   });
 
   it("reports an enquiry that is already stored as received", async () => {
@@ -87,6 +118,7 @@ describe("POST /api/contact", () => {
     expect(await readSubmissionResponse(response)).toEqual({
       status: "alreadyReceived",
     });
+    expect(sendContactEnquiryAcknowledgement).not.toHaveBeenCalled();
   });
 
   it("explains every rejected field without storing anything", async () => {
@@ -193,5 +225,6 @@ describe("POST /api/contact", () => {
       status: "saved",
     });
     expect(storeContactEnquiry).toHaveBeenCalledTimes(1);
+    expect(sendContactEnquiryAcknowledgement).toHaveBeenCalledTimes(1);
   });
 });
