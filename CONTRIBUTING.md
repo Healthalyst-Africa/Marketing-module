@@ -97,11 +97,8 @@ environment declarations when introducing a variable that affects a build.
 | `pnpm check-format`                        | Check repository formatting                           |
 | `pnpm lint`                                | Run workspace lint tasks                              |
 | `pnpm check-types`                         | Check workspace TypeScript types                      |
-| `pnpm test`                                | Run configured workspace tests                        |
-| `pnpm test:watch`                          | Watch configured tests during development             |
-| `pnpm test:coverage`                       | Run configured tests with coverage reporting          |
 | `pnpm build`                               | Produce production builds                             |
-| `pnpm test-all`                            | Run formatting, lint, type checks, tests, and builds  |
+| `pnpm test-all`                            | Run formatting, lint, type checks, and builds         |
 | `pnpm --filter @healthalyst/website start` | Start the website after a successful production build |
 
 To format a contribution, pass only the files you changed to
@@ -374,17 +371,16 @@ The complete configured verification command is:
 pnpm test-all
 ```
 
-It runs formatting, lint, type checks, tests, and production builds. Individual
+It runs formatting, lint, type checks, and production builds. Individual
 commands are listed in [Local setup](#useful-commands). Run narrow checks first,
 then the applicable completion gates. Never hide a failure by disabling checks or
 claiming a command that was not run.
 
-Vitest and Testing Library are configured. The current checkout has no application
-test files, and the test script uses `--passWithNoTests`; a successful empty run
-is not coverage. When test work is authorized, place website tests beside the
-changed feature using the configured `*.test.ts`, `*.test.tsx`, `*.spec.ts`, or
-`*.spec.tsx` patterns. Keep reusable setup in `packages/test-utilities` and
-feature-specific fixtures and mocks in the website.
+There are no automated tests for now. The maintainer tests the website
+manually, so do not add test files, run test suites, or add test steps to
+`pnpm test-all`, continuous integration or Git hooks unless asked. Vitest,
+Testing Library and `packages/test-utilities` remain installed, unused, so tests
+can be introduced later.
 
 ### Browser evidence
 
@@ -452,8 +448,8 @@ repository. Hooks are configured at the monorepo root:
 - [`.husky/pre-push`](./.husky/pre-push) runs `pnpm build` for the monorepo before
   each push. A failed build blocks the push; resolve the failure before retrying.
 
-Full lint, type checks, tests, and builds remain in the existing verification
-commands and continuous integration. Local hooks enforce staged formatting,
+Full lint, type checks, and builds remain in the existing verification commands
+and continuous integration. Local hooks enforce staged formatting,
 commit-message checks, and the build before pushing. They do not replace the full
 verification gates or validate pull request titles on the hosting service.
 

@@ -43,16 +43,17 @@ export function validateContactEnquirySubmission(
     }
 
     if (
-      field.type === "email" &&
+      field.kind === "email" &&
       submittedValue !== "" &&
       !EMAIL_ADDRESS_PATTERN.test(submittedValue)
     ) {
-      fieldErrors[field.name] = "Enter a valid email address.";
+      fieldErrors[field.name] =
+        field.formatMessage ?? "Enter a valid email address.";
       continue;
     }
 
     if (
-      field.options &&
+      field.kind === "select" &&
       submittedValue !== "" &&
       !field.options.includes(submittedValue)
     ) {

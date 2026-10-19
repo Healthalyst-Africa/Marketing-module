@@ -1,65 +1,63 @@
 "use client";
 
-import type { FormEvent, ReactNode } from "react";
+import type { FormEvent } from "react";
 import { useEffect, useRef, useState } from "react";
 
+import { SuccessIcon } from "@healthalyst/icons";
+import { ActionButton } from "@healthalyst/ui/components/action-button";
 import { Alert, AlertDescription } from "@healthalyst/ui/components/alert";
-import { Button } from "@healthalyst/ui/components/button";
+import { Card } from "@healthalyst/ui/components/card";
 import {
-  Field,
-  FieldError,
-  FieldLabel,
-} from "@healthalyst/ui/components/field";
-import { Input } from "@healthalyst/ui/components/input";
-import { NativeSelect } from "@healthalyst/ui/components/native-select";
-import { Textarea } from "@healthalyst/ui/components/textarea";
-import {
-  MarketingContainer,
-  MarketingIntroduction,
-  MarketingSection,
-  type MarketingSectionContent,
-} from "@healthalyst/ui/components/marketing-section";
+  createFormFieldIdentifier,
+  DynamicFormFields,
+} from "@healthalyst/ui/components/dynamic-form-fields";
+import type { FormFieldGroup } from "@healthalyst/ui/lib/form-definition";
+import { findFormFieldErrors } from "@healthalyst/ui/lib/form-field-validation";
 import {
   MARKETING_ENQUIRY_WEBSITE_FIELD_NAME,
   type MarketingEnquirySubmissionStatus,
   type MarketingEnquirySubmissionResponse,
 } from "@healthalyst/ui/lib/marketing-enquiry";
 
-interface EnquiryField {
-  name: string;
-  label: string;
-  placeholder: string;
-  type?: "text" | "email" | "tel";
-  autoComplete?: string;
-  options?: readonly string[];
-  multiline?: boolean;
-  /** Whether the visitor must supply a value before the enquiry can be sent. */
-  required?: boolean;
-  /** Longest accepted value, applied to the control and reported by the endpoint. */
-  maxLength?: number;
-}
-
 interface MarketingEnquiryFormProperties {
+  /** Identifier of the panel, so links can scroll straight to the form. */
+  identifier?: string;
+  /** Visible heading of the form panel. */
   heading: string;
-  fields: readonly EnquiryField[];
+  /** Short line under the heading. */
+  description?: string;
+  fieldGroups: readonly FormFieldGroup[];
+  /** Values to place in fields before the visitor starts, keyed by field name. */
+  defaultValues?: Readonly<Record<string, string>>;
   /** Application endpoint that validates and stores the enquiry. */
   endpoint: string;
   submitLabel: string;
   submittingLabel: string;
   helperText: string;
+  /** Heading of the confirmation that replaces the form once it is sent. */
+  successHeading: string;
   successMessage: string;
+  /** Label of the action that shows an empty form again after sending. */
+  resetLabel: string;
   /** Fallback shown when the endpoint cannot be reached or reports no reason. */
   failureMessage: string;
+  /** Text shown beside the label of a field that may be left empty. */
+  optionalFieldLabel?: string;
 }
 
 /** Presentational state of the submit control between clicks. */
 type SubmissionState = "idle" | "submitting";
 
-/** Message announced to the visitor after a submission attempt. */
-interface EnquiryFeedback {
-  outcome: "success" | "failure";
+/** Message announced to the visitor after a failed submission attempt. */
+interface EnquiryFailure {
   message: string;
 }
+
+/** Where focus goes once the form shows why an enquiry was not sent. */
+type FocusTarget = { kind: "field"; fieldName: string } | { kind: "failure" };
+
+/** Prefix of the field control identifiers inside the form. */
+const FIELD_IDENTIFIER_PREFIX = "enquiry";
 
 const SUBMISSION_STATUSES: readonly string[] = [
   "saved",
@@ -125,83 +123,123 @@ async function sendEnquirySubmission(
   }
 }
 
+/**
+ * Layout of the card that holds the form: generous padding, room for the
+ * sticky header when a link scrolls to it, and the raised shadow used where
+ * the card overlaps a brand-coloured page header.
+ */
+const PANEL_LAYOUT_CLASS_NAME =
+  "scroll-mt-28 p-6 shadow-[0_1px_2px_rgba(15,23,20,0.04),0_12px_32px_rgba(15,23,20,0.08)] sm:p-10";
+
 export function MarketingEnquiryForm({
+  identifier,
   heading,
-  fields,
+  description,
+  fieldGroups,
+  defaultValues = {},
   endpoint,
   submitLabel,
   submittingLabel,
   helperText,
+  successHeading,
   successMessage,
+  resetLabel,
   failureMessage,
+  optionalFieldLabel = "Optional",
 }: MarketingEnquiryFormProperties) {
   const [submissionState, setSubmissionState] =
     useState<SubmissionState>("idle");
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
-  const [feedback, setFeedback] = useState<EnquiryFeedback | null>(null);
-  const formReference = useRef<HTMLFormElement>(null);
-  const feedbackReference = useRef<HTMLDivElement>(null);
-
+  const [failure, setFailure] = useState<EnquiryFailure | null>(null);
+  const [sentMessage, setSentMessage] = useState<string | null>(null);
+  const failureReference = useRef<HTMLDivElement>(null);
+  const confirmationReference = useRef<HTMLHeadingElement>(null);
+  const pendingFocusReference = useRef<FocusTarget | null>(null);
   const isSubmitting = submissionState === "submitting";
 
   useEffect(() => {
-    if (!feedback) {
+    if (sentMessage) {
+      confirmationReference.current?.focus();
+    }
+  }, [sentMessage]);
+
+  // Runs after every render, and acts only when a submission asked for focus.
+  // Submitting disables the fieldsets, which drops focus to the document body,
+  // so focus returns to the first rejected field, or to the failure notice, and
+  // keyboard and screen reader users land next to the explanation.
+  useEffect(() => {
+    const focusTarget = pendingFocusReference.current;
+
+    if (!focusTarget) {
       return;
     }
 
-    const rejectedFieldNames = Object.keys(fieldErrors);
+    pendingFocusReference.current = null;
 
-    if (rejectedFieldNames.length > 0) {
-      // Submitting disables the fieldset, which drops focus to the document
-      // body. Return it to the first rejected field so keyboard and screen
-      // reader users land next to the message that explains the failure.
-      const firstRejectedFieldName = rejectedFieldNames[0];
-      const rejectedField = formReference.current?.elements.namedItem(
-        firstRejectedFieldName
-      );
+    const rejectedControl =
+      focusTarget.kind === "field"
+        ? document.getElementById(
+            createFormFieldIdentifier(
+              FIELD_IDENTIFIER_PREFIX,
+              focusTarget.fieldName
+            )
+          )
+        : null;
 
-      if (rejectedField instanceof HTMLElement) {
-        rejectedField.focus();
-      }
-
+    if (rejectedControl) {
+      rejectedControl.focus();
       return;
     }
 
-    feedbackReference.current?.focus();
-  }, [feedback, fieldErrors]);
+    failureReference.current?.focus();
+  });
+
+  function showFieldErrors(rejectedFields: Record<string, string>) {
+    const [firstRejectedFieldName] = Object.keys(rejectedFields);
+
+    pendingFocusReference.current = firstRejectedFieldName
+      ? { kind: "field", fieldName: firstRejectedFieldName }
+      : { kind: "failure" };
+    setFieldErrors(rejectedFields);
+  }
+
+  function showFailure(message: string) {
+    pendingFocusReference.current = { kind: "failure" };
+    setFailure({ message });
+  }
+
+  function clearFieldError(fieldName: string) {
+    setFieldErrors((currentErrors) =>
+      fieldName in currentErrors
+        ? Object.fromEntries(
+            Object.entries(currentErrors).filter(
+              ([rejectedFieldName]) => rejectedFieldName !== fieldName
+            )
+          )
+        : currentErrors
+    );
+  }
 
   function applySubmissionResponse(
-    submissionResponse: MarketingEnquirySubmissionResponse,
-    formElement: HTMLFormElement
+    submissionResponse: MarketingEnquirySubmissionResponse
   ) {
     switch (submissionResponse.status) {
       case "saved":
         setFieldErrors({});
-        setFeedback({
-          outcome: "success",
-          message: submissionResponse.message ?? successMessage,
-        });
-        formElement.reset();
+        setSentMessage(submissionResponse.message ?? successMessage);
         return;
       case "alreadyReceived":
         setFieldErrors({});
-        setFeedback({ outcome: "success", message: successMessage });
-        formElement.reset();
+        setSentMessage(successMessage);
         return;
       case "invalid":
-        setFieldErrors(submissionResponse.fieldErrors ?? {});
-        setFeedback({
-          outcome: "failure",
-          message: submissionResponse.message ?? failureMessage,
-        });
+        setFailure({ message: submissionResponse.message ?? failureMessage });
+        showFieldErrors(submissionResponse.fieldErrors ?? {});
         return;
       case "throttled":
       case "unavailable":
       case "malformedRequest":
-        setFeedback({
-          outcome: "failure",
-          message: submissionResponse.message ?? failureMessage,
-        });
+        showFailure(submissionResponse.message ?? failureMessage);
     }
   }
 
@@ -212,11 +250,21 @@ export function MarketingEnquiryForm({
       return;
     }
 
-    const formElement = event.currentTarget;
+    const rejectedFields = findFormFieldErrors(
+      event.currentTarget,
+      fieldGroups
+    );
+
+    if (Object.keys(rejectedFields).length > 0) {
+      setFailure(null);
+      showFieldErrors(rejectedFields);
+      return;
+    }
+
     const fieldValues: Record<string, string> = {};
 
     for (const [fieldName, submittedValue] of new FormData(
-      formElement
+      event.currentTarget
     ).entries()) {
       if (typeof submittedValue === "string") {
         fieldValues[fieldName] = submittedValue;
@@ -224,7 +272,7 @@ export function MarketingEnquiryForm({
     }
 
     setFieldErrors({});
-    setFeedback(null);
+    setFailure(null);
     setSubmissionState("submitting");
 
     try {
@@ -234,36 +282,88 @@ export function MarketingEnquiryForm({
       );
 
       if (!submissionResponse) {
-        setFeedback({ outcome: "failure", message: failureMessage });
+        showFailure(failureMessage);
         return;
       }
 
-      applySubmissionResponse(submissionResponse, formElement);
+      applySubmissionResponse(submissionResponse);
     } catch {
-      setFeedback({ outcome: "failure", message: failureMessage });
+      showFailure(failureMessage);
     } finally {
       setSubmissionState("idle");
     }
   }
 
+  if (sentMessage) {
+    return (
+      <Card id={identifier} className={PANEL_LAYOUT_CLASS_NAME}>
+        <div role="status" className="flex flex-col items-start gap-5 py-6">
+          <SuccessIcon
+            aria-hidden="true"
+            className="size-10 text-accent"
+            strokeWidth={1.5}
+          />
+          <h2
+            ref={confirmationReference}
+            tabIndex={-1}
+            className="text-2xl font-semibold tracking-[-0.02em] text-foreground focus:outline-none"
+          >
+            {successHeading}
+          </h2>
+          <p className="max-w-[48ch] text-base leading-relaxed text-muted-foreground">
+            {sentMessage}
+          </p>
+          <ActionButton
+            type="button"
+            variant="outline"
+            size="large"
+            shape="pill"
+            onClick={() => setSentMessage(null)}
+          >
+            {resetLabel}
+          </ActionButton>
+        </div>
+      </Card>
+    );
+  }
+
   return (
-    <div className="rounded-sm border bg-card p-8 md:p-12">
-      <h3 className="mb-7 text-xs font-medium tracking-[0.28em] text-muted-foreground">
+    <Card id={identifier} className={PANEL_LAYOUT_CLASS_NAME}>
+      <h2
+        id="enquiry-form-heading"
+        className="text-2xl font-semibold tracking-[-0.02em] text-foreground md:text-[28px]"
+      >
         {heading}
-      </h3>
+      </h2>
+      {description && (
+        <p className="mt-2 text-base leading-relaxed text-muted-foreground">
+          {description}
+        </p>
+      )}
       <form
-        ref={formReference}
         action={endpoint}
         method="post"
+        noValidate
         onSubmit={handleSubmission}
+        aria-labelledby="enquiry-form-heading"
+        aria-describedby="enquiry-helper-text"
         aria-busy={isSubmitting}
+        className="mt-8 flex flex-col gap-10"
       >
         <div className="sr-only" aria-hidden="true">
-          <label htmlFor={`enquiry-${MARKETING_ENQUIRY_WEBSITE_FIELD_NAME}`}>
+          <label
+            htmlFor={createFormFieldIdentifier(
+              FIELD_IDENTIFIER_PREFIX,
+              MARKETING_ENQUIRY_WEBSITE_FIELD_NAME
+            )}
+          >
             Website
           </label>
           <input
-            id={`enquiry-${MARKETING_ENQUIRY_WEBSITE_FIELD_NAME}`}
+            id={createFormFieldIdentifier(
+              FIELD_IDENTIFIER_PREFIX,
+              MARKETING_ENQUIRY_WEBSITE_FIELD_NAME
+            )}
             name={MARKETING_ENQUIRY_WEBSITE_FIELD_NAME}
             type="text"
             tabIndex={-1}
@@ -271,144 +371,44 @@ export function MarketingEnquiryForm({
             defaultValue=""
           />
         </div>
-        {feedback && (
+        {failure && (
           <Alert
-            ref={feedbackReference}
+            ref={failureReference}
             tabIndex={-1}
-            role={feedback.outcome === "success" ? "status" : "alert"}
-            variant={feedback.outcome === "success" ? "default" : "destructive"}
-            className="mb-7"
+            role="alert"
+            variant="destructive"
           >
-            <AlertDescription>{feedback.message}</AlertDescription>
+            <AlertDescription>{failure.message}</AlertDescription>
           </Alert>
         )}
-        <fieldset
+        <DynamicFormFields
+          identifierPrefix={FIELD_IDENTIFIER_PREFIX}
+          fieldGroups={fieldGroups}
+          defaultValues={defaultValues}
+          fieldErrors={fieldErrors}
           disabled={isSubmitting}
-          aria-describedby="enquiry-helper-text"
-          className="grid grid-cols-1 gap-4 md:grid-cols-2"
-        >
-          <legend className="sr-only">{heading}</legend>
-          {fields.map((field, fieldIndex) => {
-            const controlIdentifier = `enquiry-${field.name}`;
-            const errorIdentifier = `${controlIdentifier}-error`;
-            const errorMessage = fieldErrors[field.name];
-
-            return (
-              <Field
-                key={field.name}
-                className={fieldIndex < 2 ? "md:col-span-1" : "md:col-span-2"}
-              >
-                <FieldLabel htmlFor={controlIdentifier} className="sr-only">
-                  {field.label}
-                </FieldLabel>
-                {field.options ? (
-                  <NativeSelect
-                    id={controlIdentifier}
-                    name={field.name}
-                    defaultValue=""
-                    required={field.required}
-                    aria-invalid={errorMessage ? true : undefined}
-                    aria-describedby={
-                      errorMessage ? errorIdentifier : undefined
-                    }
-                    className="h-12"
-                  >
-                    <option value="" disabled>
-                      {field.placeholder}
-                    </option>
-                    {field.options.map((option) => (
-                      <option key={option}>{option}</option>
-                    ))}
-                  </NativeSelect>
-                ) : field.multiline ? (
-                  <Textarea
-                    id={controlIdentifier}
-                    name={field.name}
-                    placeholder={field.placeholder}
-                    required={field.required}
-                    maxLength={field.maxLength}
-                    aria-invalid={errorMessage ? true : undefined}
-                    aria-describedby={
-                      errorMessage ? errorIdentifier : undefined
-                    }
-                    rows={4}
-                    className="min-h-32 aria-invalid:border-destructive"
-                  />
-                ) : (
-                  <Input
-                    id={controlIdentifier}
-                    name={field.name}
-                    type={field.type ?? "text"}
-                    autoComplete={field.autoComplete}
-                    placeholder={field.placeholder}
-                    required={field.required}
-                    maxLength={field.maxLength}
-                    aria-invalid={errorMessage ? true : undefined}
-                    aria-describedby={
-                      errorMessage ? errorIdentifier : undefined
-                    }
-                    className="h-12 aria-invalid:border-destructive"
-                  />
-                )}
-                {errorMessage && (
-                  <FieldError id={errorIdentifier}>{errorMessage}</FieldError>
-                )}
-              </Field>
-            );
-          })}
-          <Button
-            disabled={isSubmitting}
-            type="submit"
-            size="large"
-            className="min-h-12 w-full md:col-span-2"
-          >
-            {isSubmitting ? submittingLabel : submitLabel}
-          </Button>
+          optionalFieldLabel={optionalFieldLabel}
+          onFieldChange={clearFieldError}
+        />
+        <div className="flex flex-col-reverse gap-4 sm:flex-row sm:items-center sm:justify-between">
           <p
             id="enquiry-helper-text"
-            className="text-center text-sm leading-relaxed text-muted-foreground md:col-span-2"
+            className="text-sm leading-relaxed text-muted-foreground"
           >
             {helperText}
           </p>
-        </fieldset>
-      </form>
-    </div>
-  );
-}
-
-export function MarketingContact({
-  content,
-  institutions,
-  form,
-}: {
-  content: MarketingSectionContent;
-  institutions: readonly {
-    name: string;
-    product: string;
-    description: string;
-  }[];
-  form: ReactNode;
-}) {
-  return (
-    <MarketingSection id="contact" className="bg-secondary">
-      <MarketingContainer className="grid items-start gap-12 lg:grid-cols-[1fr_1fr] lg:gap-16">
-        <div>
-          <MarketingIntroduction content={content} className="lg:grid-cols-1" />
-          <dl className="mt-10 divide-y divide-border border-t">
-            {institutions.map((institution) => (
-              <div key={institution.name} className="py-4">
-                <dt className="mb-1 text-sm font-semibold text-primary">
-                  {institution.name}
-                </dt>
-                <dd className="text-sm leading-relaxed text-muted-foreground">
-                  {institution.product}: {institution.description}
-                </dd>
-              </div>
-            ))}
-          </dl>
+          <ActionButton
+            type="submit"
+            size="extraLarge"
+            shape="pill"
+            isLoading={isSubmitting}
+            loadingText={submittingLabel}
+            className="w-full shrink-0 sm:w-auto"
+          >
+            {submitLabel}
+          </ActionButton>
         </div>
-        {form}
-      </MarketingContainer>
-    </MarketingSection>
+      </form>
+    </Card>
   );
 }

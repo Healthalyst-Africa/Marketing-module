@@ -1,12 +1,47 @@
-import type { Institution, NavigationLink, Pillar, Statistic } from "~/types";
+import type {
+  Institution,
+  NavigationLink,
+  Pillar,
+  SiteLink,
+  Statistic,
+} from "~/types";
 
+/** Published routes. Add a page here when it is released. */
+export const SITE_ROUTES = {
+  home: "/",
+  contact: "/contact",
+} as const;
+
+/** Element on the contact page that enquiry links scroll to. */
+export const ENQUIRY_FORM_IDENTIFIER = "enquiry-form";
+
+/** Query parameter that starts an enquiry on a particular topic. */
+export const CONTACT_TOPIC_PARAMETER = "enquiry";
+
+/** Contact page addresses that open the form with a topic already chosen. */
+export const CONTACT_TOPIC_DESTINATIONS = {
+  partnership: `${SITE_ROUTES.contact}?${CONTACT_TOPIC_PARAMETER}=partnership#${ENQUIRY_FORM_IDENTIFIER}`,
+  investment: `${SITE_ROUTES.contact}?${CONTACT_TOPIC_PARAMETER}=investment#${ENQUIRY_FORM_IDENTIFIER}`,
+} as const;
+
+/**
+ * Routes whose site header starts in the brand colour. None at present: the
+ * contact page's green opening is a card below the white site header.
+ */
+export const BRAND_HEADER_ROUTES: readonly string[] = [];
+
+/** Header links shown after the Solutions menu. */
 export const NAVIGATION_LINKS: NavigationLink[] = [
-  { label: "Products", identifier: "products" },
-  { label: "What We Build", identifier: "what-we-build" },
-  { label: "How We Work", identifier: "how-we-work" },
+  { label: "How we work", identifier: "how-we-work" },
   { label: "About", identifier: "about" },
 ];
 
+/** The header's Solutions menu, listing products by the institution they serve. */
+export const SOLUTIONS_MENU_CONTENT = {
+  label: "Solutions",
+  footerPrompt: "Not sure which product fits your institution?",
+  footerAction: "Talk to our team",
+} as const;
 export const STATISTICS: Statistic[] = [
   {
     number: "6",
@@ -55,7 +90,7 @@ export const PILLARS: Pillar[] = [
 
 export const INSTITUTIONS: Institution[] = [
   {
-    name: "Hospitals & Clinics",
+    name: "Hospitals and clinics",
     product: "HealthSchedule",
     description: "patient scheduling and clinical operations",
   },
@@ -70,36 +105,47 @@ export const INSTITUTIONS: Institution[] = [
     description: "prescription and inventory management",
   },
   {
-    name: "Dental Practices",
+    name: "Dental practices",
     product: "DentaFlow",
     description: "scheduling, charting and patient management",
   },
   {
-    name: "Imaging Centres",
+    name: "Imaging centres",
     product: "ImagingHub",
     description: "referral management and radiology reporting",
   },
   {
-    name: "Equipment Suppliers & Institutions",
+    name: "Equipment suppliers and institutions",
     product: "MedSupply",
     description: "digital procurement and supply chain",
   },
 ];
 
-export const FOOTER_COMPANY_LINKS = [
-  "About Us",
-  "Our Approach",
-  "Careers",
-  "Press & Media",
-  "Partners",
-] as const;
+/**
+ * Footer destinations. A link without a destination has no published page yet
+ * and is shown as plain text. Links that point at the homepage or the contact
+ * page are interim destinations until their own page is released.
+ */
+export const FOOTER_COMPANY_LINKS: readonly SiteLink[] = [
+  { label: "About us", destination: "/#about" },
+  { label: "Our approach", destination: "/#about" },
+  { label: "Careers" },
+  { label: "Press and media" },
+  { label: "Partners", destination: CONTACT_TOPIC_DESTINATIONS.partnership },
+];
 
-export const FOOTER_CONNECT_LINKS = [
-  "Contact Us",
-  "Partnership Enquiries",
-  "Investor Relations",
-  "Support",
-] as const;
+export const FOOTER_CONNECT_LINKS: readonly SiteLink[] = [
+  { label: "Contact us", destination: SITE_ROUTES.contact },
+  {
+    label: "Partnership enquiries",
+    destination: CONTACT_TOPIC_DESTINATIONS.partnership,
+  },
+  {
+    label: "Investor relations",
+    destination: CONTACT_TOPIC_DESTINATIONS.investment,
+  },
+  { label: "Support", destination: SITE_ROUTES.contact },
+];
 
 export const CONTACT_REPRESENTATION_OPTIONS = [
   "Hospital or Clinic",

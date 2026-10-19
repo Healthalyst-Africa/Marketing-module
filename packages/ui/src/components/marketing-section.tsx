@@ -74,7 +74,7 @@ export function BrandLockup({
       <span className="flex flex-col gap-1">
         <span className="font-sans text-xl font-semibold leading-none tracking-[-0.04em]">
           {name}
-        </span>
+        </span>{" "}
         <span className="text-xs leading-none tracking-[0.05em]">
           {subtitle}
         </span>

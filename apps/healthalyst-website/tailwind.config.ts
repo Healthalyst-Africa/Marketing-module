@@ -30,6 +30,7 @@ const tailwindConfiguration = {
         accent: {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
+          subtle: "hsl(var(--accent-subtle))",
         },
         muted: {
           DEFAULT: "hsl(var(--muted))",
@@ -75,7 +76,9 @@ const tailwindConfiguration = {
       },
       fontFamily: {
         sans: ["var(--font-sans)"],
-        serif: ["var(--font-serif)"],
+        // Inter is used throughout for now, so heading utilities that still say
+        // `font-serif` resolve to it until they are renamed in the redesign.
+        serif: ["var(--font-sans)"],
         mono: ["var(--font-sans)"],
       },
       borderRadius: {

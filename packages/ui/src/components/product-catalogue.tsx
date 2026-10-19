@@ -1,8 +1,8 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { ArrowUpRight } from "lucide-react";
-import { Button } from "@healthalyst/ui/components/button";
+import { ArrowUpRightIcon } from "@healthalyst/icons";
+import { ActionLink } from "@healthalyst/ui/components/action-link";
 import { Card, CardContent, CardHeader } from "@healthalyst/ui/components/card";
 import {
   MarketingContainer,
@@ -33,16 +33,15 @@ export function ProductNavigation({
   return (
     <nav aria-label="Product lines" className="flex flex-wrap gap-x-6 gap-y-1">
       {products.map((product, index) => (
-        <Button
+        <ActionLink
           key={product.name}
-          asChild
           variant="link"
           className="min-h-11 px-0 text-sm font-normal text-primary-foreground/90 focus-visible:ring-accent focus-visible:ring-offset-primary"
         >
           <a href="#products" onClick={() => onSelect(index)}>
             {product.name}
           </a>
-        </Button>
+        </ActionLink>
       ))}
     </nav>
   );
@@ -82,7 +81,7 @@ export function ProductCatalogue({
                       aria-hidden="true"
                       className="text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-focus-within:-translate-y-0.5 group-focus-within:translate-x-0.5 motion-reduce:transition-none"
                     >
-                      <ArrowUpRight className="size-5 stroke-[1.5]" />
+                      <ArrowUpRightIcon className="size-5 stroke-[1.5]" />
                     </span>
                   </div>
                   <h3 className="font-serif text-2xl font-medium tracking-tight text-primary md:text-3xl">

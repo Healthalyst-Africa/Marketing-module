@@ -17,7 +17,7 @@ export function MarketingFooter({
   closingText: string;
 }) {
   return (
-    <footer className="border-t bg-card py-12 text-primary md:py-16">
+    <footer className="bg-accent-subtle py-12 text-primary md:py-16">
       <MarketingContainer>
         <div className="mb-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div>
@@ -32,13 +32,13 @@ export function MarketingFooter({
               <h2 className="mb-4 text-sm font-medium text-primary">
                 {group.heading}
               </h2>
-              <div className="flex flex-col items-start gap-1 [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center [&_a]:rounded-sm [&_a]:text-sm [&_a]:text-muted-foreground hover:[&_a]:underline focus-visible:[&_a]:outline focus-visible:[&_a]:outline-2 focus-visible:[&_a]:outline-accent">
+              <div className="flex flex-col items-start gap-1 [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center [&_a]:rounded-sm [&_a]:text-sm [&_a]:text-muted-foreground hover:[&_a]:underline focus-visible:[&_a]:outline focus-visible:[&_a]:outline-2 focus-visible:[&_a]:outline-ring">
                 {group.links}
               </div>
             </nav>
           ))}
         </div>
-        <div className="flex flex-wrap justify-between gap-5 border-t border-border pt-6 text-sm text-muted-foreground">
+        <div className="flex flex-wrap justify-between gap-5 pt-6 text-sm text-muted-foreground">
           <p>{copyright}</p>
           <p>{closingText}</p>
         </div>

@@ -1,16 +1,24 @@
 "use client";
 
 import * as React from "react";
+import type { VariantProps as VariantProperties } from "class-variance-authority";
 
+import { formControlVariants } from "@healthalyst/ui/lib/form-control-variants";
 import { cn } from "@healthalyst/ui/lib/utilities";
 
-const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
-  ({ className, type, ...properties }, elementReference) => {
+type InputProperties = React.ComponentProps<"input"> &
+  VariantProperties<typeof formControlVariants>;
+
+const Input = React.forwardRef<HTMLInputElement, InputProperties>(
+  ({ className, type, controlSize, ...properties }, elementReference) => {
     return (
       <input
         type={type}
+        data-slot="input"
+        data-size={controlSize ?? "default"}
         className={cn(
-          "flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+          formControlVariants({ controlSize }),
+          "flex py-2 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground",
           className
         )}
         ref={elementReference}
@@ -22,3 +30,4 @@ const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
 Input.displayName = "Input";
 
 export { Input };
+export type { InputProperties };

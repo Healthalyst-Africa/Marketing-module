@@ -3,6 +3,7 @@
 import { ProductDetails } from "@healthalyst/ui/components/product-details";
 import { PRODUCT_DETAILS_CONTENT } from "~/data/homepage-content";
 import { PRODUCTS } from "~/data/products";
+import { createContactDestination } from "~/lib/contact-destination";
 import { useProducts } from "~/store/ProductsContext";
 import { PRODUCT_ICONS } from "./product-icons";
 
@@ -15,6 +16,9 @@ export default function ProductsDive() {
       selectedIndex={state.activeProduct}
       onSelect={selectProduct}
       illustrations={PRODUCT_ICONS}
+      createEnquiryDestination={(product) =>
+        createContactDestination(product.name)
+      }
     />
   );
 }

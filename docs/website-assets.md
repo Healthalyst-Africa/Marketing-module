@@ -67,10 +67,10 @@ These photographs illustrate healthcare settings. They do not depict Healthalyst
 staff, offices, customers, endorsed services or real product screens. The images
 keep their natural colours when the website palette changes.
 
-| Asset                                 | Placement                                        | Source and photographer                                                                                               |
-| ------------------------------------- | ------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------- |
-| `public/images/clinician-tablet.webp` | Hero; responsive cropped portrait, preloaded     | [Tima Miroshnichenko, Pexels](https://www.pexels.com/photo/a-braided-hair-woman-using-a-tablet-computer-5452188/)     |
-| `public/images/clinical-team.webp`    | About section; responsive landscape, lazy loaded | [Cedric Fauntleroy, Pexels](https://www.pexels.com/photo/a-receptionist-and-a-practitioner-at-the-reception-4269274/) |
+| Asset                                 | Placement                                                                                            | Source and photographer                                                                                               |
+| ------------------------------------- | ---------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `public/images/clinician-tablet.webp` | Contact page, beside "What happens next"; wide screens only, 5:4 crop (previously the homepage hero) | [Tima Miroshnichenko, Pexels](https://www.pexels.com/photo/a-braided-hair-woman-using-a-tablet-computer-5452188/)     |
+| `public/images/clinical-team.webp`    | About section; responsive landscape, lazy loaded                                                     | [Cedric Fauntleroy, Pexels](https://www.pexels.com/photo/a-receptionist-and-a-practitioner-at-the-reception-4269274/) |
 
 The [Pexels licence](https://www.pexels.com/license/) permits commercial website
 use. No endorsement is implied. Both source photographs were downloaded from
@@ -89,3 +89,11 @@ footer present its original gold mark through a constrained image viewport,
 alongside a readable wordmark. The source image is unchanged. The deleted
 replacement `logo.svg` has not been restored. Metadata now points to the supplied
 JPEG rather than the missing SVG.
+
+## Images without a recorded source — 19 October 2026
+
+`public/images/doctor-at-clinic.webp` (homepage hero) and
+`public/images/clinical-team.webp` (homepage about section) are in use but are
+not recorded above. The about-section alternative text and the Pexels entry
+for `clinical-team.webp` describe different scenes. Record the source, licence
+and photographer for both, or replace them, before release.

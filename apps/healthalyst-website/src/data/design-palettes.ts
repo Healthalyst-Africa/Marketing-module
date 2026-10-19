@@ -7,6 +7,8 @@ interface PaletteColors {
   deep: string;
   accent: string;
   accentLight: string;
+  /** A near-white surface tinted with the accent, such as the footer. */
+  accentSubtle: string;
   accentOnPrimary: string;
   background: string;
   backgroundAlternate: string;
@@ -38,6 +40,7 @@ export const WEBSITE_PALETTES: readonly WebsitePalette[] = [
       deep: "#0E1510",
       accent: "#B8935A",
       accentLight: "#CFA96E",
+      accentSubtle: "#FFFCF5",
       accentOnPrimary: "#B8935A",
       background: "#F9F6F0",
       backgroundAlternate: "#F2EDE3",
@@ -51,6 +54,34 @@ export const WEBSITE_PALETTES: readonly WebsitePalette[] = [
     },
   },
   {
+    identifier: "green-gold",
+    name: "Green and gold",
+    description:
+      "Fresh green on warm cream, with the brand gold (#C8A062, from the Healthalyst Africa Figma file) as the accent.",
+    colors: {
+      primary: "#145A46",
+      emphasis: "#0F4637",
+      deep: "#112C23",
+      // Gold reaches 2.4:1 on white, so it is for fills with dark text,
+      // markers and decoration, never for text or focus on light surfaces.
+      accent: "#C8A062",
+      accentLight: "#E4D0B1",
+      // The subtle gold background of the Figma file's step cards.
+      accentSubtle: "#FFFCF5",
+      // Pale gold for text and icons on the primary green (5.4:1).
+      accentOnPrimary: "#E4D0B1",
+      background: "#FAF7EF",
+      backgroundAlternate: "#EAF2EC",
+      backgroundLight: "#FFF9F5",
+      border: "#CDDCD2",
+      borderStrong: "#9CB9AA",
+      controlBorder: "#748B80",
+      decorativeMuted: "#80968A",
+      foreground: "#112C23",
+      secondaryForeground: "#40584E",
+    },
+  },
+  {
     identifier: "green-coral",
     name: "Green and coral",
     description: "Fresh green with a warm coral accent. Open and approachable.",
@@ -60,6 +91,7 @@ export const WEBSITE_PALETTES: readonly WebsitePalette[] = [
       deep: "#112C23",
       accent: "#ED927D",
       accentLight: "#F5B6A6",
+      accentSubtle: "#FFF8F5",
       accentOnPrimary: "#F5B6A6",
       background: "#FAF7EF",
       backgroundAlternate: "#EAF2EC",
@@ -82,6 +114,7 @@ export const WEBSITE_PALETTES: readonly WebsitePalette[] = [
       deep: "#162440",
       accent: "#E7CF58",
       accentLight: "#F2E29B",
+      accentSubtle: "#FFFDF0",
       accentOnPrimary: "#E7CF58",
       background: "#F6F8FE",
       backgroundAlternate: "#EAF0FC",
@@ -104,6 +137,7 @@ export const WEBSITE_PALETTES: readonly WebsitePalette[] = [
       deep: "#2C2030",
       accent: "#F0B39D",
       accentLight: "#F7D4C6",
+      accentSubtle: "#FFF9F6",
       accentOnPrimary: "#F0B39D",
       background: "#FBF6F3",
       backgroundAlternate: "#F1E8F0",
@@ -135,7 +169,7 @@ export const DESIGN_PALETTE_OPTIONS: readonly DesignPaletteOption[] =
 
 export const THEME_PREFERENCE_CONFIGURATION: ThemePreferenceConfiguration = {
   cookieName: "healthalyst-design-palette",
-  defaultIdentifier: "original",
+  defaultIdentifier: "green-gold",
   paletteIdentifiers: WEBSITE_PALETTES.map((palette) => palette.identifier),
 };
 
@@ -183,6 +217,7 @@ export const WEBSITE_THEME_STYLES = WEBSITE_PALETTES.map((palette) => {
     "muted-foreground": colors.secondaryForeground,
     accent: colors.accent,
     "accent-foreground": colors.foreground,
+    "accent-subtle": colors.accentSubtle,
     destructive: "#B42318",
     "destructive-foreground": "#FFFFFF",
     border: colors.border,

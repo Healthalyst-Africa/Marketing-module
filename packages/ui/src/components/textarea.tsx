@@ -2,16 +2,20 @@
 
 import * as React from "react";
 
+import { FORM_CONTROL_CLASS_NAME } from "@healthalyst/ui/lib/form-control-variants";
 import { cn } from "@healthalyst/ui/lib/utilities";
 
+/** Multi-line text control. Set its visible height with the `rows` attribute. */
 const Textarea = React.forwardRef<
   HTMLTextAreaElement,
   React.ComponentProps<"textarea">
 >(({ className, ...properties }, elementReference) => {
   return (
     <textarea
+      data-slot="textarea"
       className={cn(
-        "flex min-h-[60px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+        FORM_CONTROL_CLASS_NAME,
+        "flex min-h-[60px] py-3",
         className
       )}
       ref={elementReference}

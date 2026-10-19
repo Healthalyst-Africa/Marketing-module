@@ -735,3 +735,640 @@ the application manifest as the only new dependency.
   storage failure reasons.
 - Not done: no commit, push or deployment. Slices 4, 5, 7 and 8 are unchanged
   and still await instruction.
+
+## Multi-page website — 19 October 2026
+
+The user asked to turn the one-page site into a multi-page site with a proper
+page for every footer destination except individual products, one page at a
+time, following a written design system. Drafted copy is reviewed by the user
+before it ships. This section covers the foundation and the first page,
+`/contact` (the contact half of Slice 4).
+
+### Page order
+
+Contact us → About us → Our approach → Partners → Partnership enquiries →
+Support → Investor relations → Careers → Press and media → Terms and privacy,
+then a homepage revision that links out to the new pages and a cross-route
+review. Each page starts only after the previous one is approved.
+
+### Foundation
+
+- `DESIGN.md` at the repository root records the design direction ("intake and
+  wayfinding"), colour roles, type scale, spacing, shapes, components, imagery
+  and copy rules. It is a proposal for the product designer.
+- Source Serif 4 now loads as a variable font with its optical-size axis, so
+  large headings use the display cut. No new family or dependency.
+- Header and footer are shared by every route in the `(homepage)` route group.
+  The group keeps its name because this session could not move files on the
+  developer's machine; renaming it to `(site)` with `git mv` is a safe
+  follow-up. Its layout no longer sets a canonical address; each page sets
+  its own.
+- `SITE_ROUTES`, `FOOTER_COMPANY_LINKS` and `FOOTER_CONNECT_LINKS` in
+  `src/data/site.ts` are the route registry. A footer link without a
+  destination renders as text. Until their pages ship, About us and Our
+  approach point to `/#about`, and Partners, Partnership enquiries, Investor
+  relations and Support point to `/contact`.
+- Navigation and footer labels use sentence case. Section links use
+  `/#identifier` so they work from every page. The current page is marked with
+  `aria-current="page"`, weight and an accent underline.
+- The logo links to `/` with the name "Healthalyst Africa home". A space
+  between the wordmark and subtitle makes the visible name part of the
+  accessible name.
+- New shared compositions in `@healthalyst/ui`: `breadcrumb` (shadcn
+  primitive), `marketing-page-header`, `marketing-task-layout`,
+  `marketing-sequence`, `marketing-record-list`, `marketing-figure` and
+  `marketing-closing-band`. The shadcn CLI could not reach the registry from
+  this session's sandbox, so the breadcrumb source was read from the official
+  `new-york` registry entry and adapted to the naming rules (and the upstream
+  `BreadcrumbElipssis` display name spelling corrected). Running
+  `pnpm dlx shadcn@latest add breadcrumb --cwd apps/healthalyst-website --dry-run`
+  locally will confirm it matches.
+- `ProductDetails` and `MarketingProcess` no longer hard-code `#contact`; the
+  application supplies the destination.
+
+### Contact page
+
+- Route: `src/app/(homepage)/contact/page.tsx`; copy in
+  `src/data/contact-page-content.ts`.
+- Layout: page header with trail, then the enquiry form beside "What happens
+  next", "Who we work with" and "Partnerships and investment". On phones the
+  short next-steps list comes first, then the form, then the rest.
+- The form keeps the same eight fields, limits, endpoint and server
+  validation. It now has visible persistent labels, an "Optional" marker,
+  descriptions where they help, and three fieldsets: About you, Your
+  institution, Your enquiry.
+- "Enquire about {product}" links open `/contact?product={name}` with that
+  product preselected. Unknown or repeated values are ignored. Reading the
+  query makes `/contact` render on request rather than statically.
+- The homepage `#contact` section is now an invitation band that links to
+  `/contact`; the anchor still works. Hero, process and about links point to
+  `/contact`.
+- Photograph: the documented Pexels image `clinician-tablet.webp`, shown on
+  wide screens only beside the next steps.
+
+### Drafted copy awaiting approval
+
+| Location                    | Draft                                                                                                                                      | Basis                                      |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------ |
+| Contact page heading        | Tell us about your institution                                                                                                             | New                                        |
+| What happens next           | We reply within two business days; We arrange a discovery consultation; We recommend a way forward                                         | FAQ answer and existing response-time copy |
+| Response time               | "Our team aims to respond within two business days" (previously "We respond to all enquiries within two business days")                    | Matches the server's existing message      |
+| Partnerships and investment | Use the form and choose General Partnership / Investment Enquiry as the product of interest                                                | Existing form options                      |
+| Form labels                 | First name, Last name, Email address, Phone number (Optional), Organisation or institution, Institution type, Product of interest, Message | Sentence case of existing labels           |
+| Field guidance              | "Not sure yet? Choose Full Product Suite…"; "…Please do not include patient information."                                                  | New; supports the no-patient-data rule     |
+| Actions and messages        | Send enquiry; Sending enquiry…; Enquiry sent. Our team aims to respond within two business days.; Your enquiry was not sent…               | New wording, same behaviour                |
+| Homepage invitation action  | Start an enquiry                                                                                                                           | New                                        |
+
+### Evidence
+
+- `pnpm check-format`, `pnpm lint`, `pnpm check-types` and `pnpm test` pass:
+  33 tests in seven files, including new tests for grouped legends, the
+  optional marker, field descriptions, product preselection, the sent,
+  rejected-field and network-failure journeys, the contact destination helper
+  and the homepage invitation.
+- `pnpm build` passes with Google Fonts replaced by a local mock
+  (`NEXT_FONT_GOOGLE_MOCKED_RESPONSES`), because the sandbox cannot reach
+  Google Fonts. A build on a networked machine has not been run.
+- Browser (Chromium, development server): 1440, 720, 390 and 320 pixels wide
+  with no horizontal overflow; product link from the homepage preselected the
+  product; empty submit focused the first required field; a submission
+  without a database returned `503` and showed the recoverable message with
+  input kept and focus on the alert; the mobile menu opened and Escape
+  returned focus to its trigger; first Tab reaches the skip link; tab order
+  runs header, trail, then form; focus rings visible; no touch target under
+  44 pixels; no console errors or warnings.
+- axe-core (WCAG 2.0–2.2 A/AA and best practice): no violations on `/contact`
+  at 1440 and 390 or on `/` at 1440, after fixing the logo name mismatch.
+- Not verified: a successful live submission (no database in the sandbox),
+  screen reader output, or a production deployment. No commit, push or
+  deployment.
+
+### Open items
+
+- Image provenance: `doctor-at-clinic.webp` (homepage hero) and
+  `clinical-team.webp` (homepage about section) have no recorded source in
+  `docs/website-assets.md`. Record or replace them before release.
+- Default palette: `THEME_PREFERENCE_CONFIGURATION.defaultIdentifier` is
+  `green-coral`, while `AGENTS.md` names forest and gold as the default. The
+  product designer should confirm which is intended.
+- Remaining pages need licensed photography. The sandbox cannot download
+  images; candidates will be proposed per page for the user to approve.
+
+## Reference study and typography — 19 October 2026
+
+The user judged the first contact page too generic and asked for five
+professional health websites to study before more pages are built, and for
+Inter to be used throughout.
+
+- `docs/design-case-studies.md` records the study of Abridge, Flatiron
+  Health, Commure, Helium Health and Hinge Health, the patterns they share and
+  what they imply for HealthAlyst. The contact page and `DESIGN.md` will be
+  revised against it once the user agrees the direction.
+- Inter replaces Source Serif 4 and Source Sans 3. It loads through
+  `next/font/google` with its optical-size axis as `--font-sans`; the Tailwind
+  `serif` family now resolves to the same variable, so older components keep
+  working until they are reworked. At the user's instruction, `AGENTS.md`
+  now names Inter as the only typeface for now.
+- Evidence: format, lint, type check and 33 tests pass; the production build
+  passes with Google Fonts replaced by a local Inter mock (the sandbox cannot
+  reach Google Fonts); `/` and `/contact` render in Inter at 1440 pixels with
+  no console messages.
+
+## Contact page and header rebuild — 19 October 2026
+
+The user approved rebuilding the contact page and the shared header using the
+reference study. `DESIGN.md` now records the resulting direction.
+
+### What changed
+
+- **Header** (`packages/ui/src/components/marketing-navigation.tsx`): sticky,
+  64 px on phones and 72 px from tablet up. On routes listed in
+  `BRAND_HEADER_ROUTES` it starts in the brand colour and turns white once the
+  page scrolls past 8 px. Items: a Solutions menu, How we work, About and one
+  "Contact us" button. "Partner with us" was removed from the header because it
+  led to the same page.
+- **Solutions menu**: the shadcn navigation menu (`navigation-menu.tsx`, Radix
+  `@radix-ui/react-navigation-menu` 1.4.1, added to `packages/ui`). Six
+  institution types, each naming its product with a one-line description, plus
+  "Talk to our team". Choosing one opens that product on the homepage. The
+  shadcn CLI could not reach the registry from the sandbox, so the source was
+  written from the official `new-york` component and adapted to the naming
+  rules; `pnpm dlx shadcn@latest add navigation-menu --cwd apps/healthalyst-website --dry-run`
+  will confirm it locally.
+- **Contact page**: forest-green page header with the plain heading "Contact
+  us"; the form panel rises into it; "Other ways to reach us" (partnership and
+  investment links that open the form with the topic chosen) and "What happens
+  next" sit beside it on desktop and below it on smaller screens. No decorative
+  photograph.
+- **Form** (`marketing-contact.tsx`): routing questions first (Your
+  institution, Your enquiry, Your details); a spinner while sending; a
+  confirmation panel that replaces the form, takes focus and offers "Send
+  another enquiry". Field names, limits, endpoint and server validation are
+  unchanged.
+- **Presets**: `?product=<name>` and `?enquiry=partnership|investment` preset
+  the form (`readContactEnquiryPreset`). Footer links for Partners, Partnership
+  enquiries and Investor relations now use these presets.
+- **Contact details**: `CONTACT_DETAILS` in `contact-page-content.ts` holds
+  email, phone and office address. It is empty, so nothing is shown; each item
+  appears once the company supplies it.
+- Institution names are now in sentence case. The unused scroll-reveal code
+  was removed from the shared package. Shared figures use a 12 px radius.
+
+### Drafted copy awaiting approval
+
+| Location               | Draft                                                                                                                                                                         |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Page header            | "Contact us" / "Tell us about your institution and what you need. Our team aims to respond within two business days."                                                         |
+| Form                   | "Send an enquiry" / "It takes about two minutes."                                                                                                                             |
+| Topic question         | "What would you like to discuss?" / "Choose a product, or Full Product Suite if you are not sure yet."                                                                        |
+| Confirmation           | "Enquiry sent" / "Thank you. Our team aims to respond within two business days." / "Send another enquiry"                                                                     |
+| Other ways to reach us | Partnerships: "Technology, implementation and development partners working in African healthcare." Investors: "Funds and investors who would like to speak with the company." |
+| Solutions menu         | "{Product} for {existing description}" and "Not sure which product fits your institution? Talk to our team"                                                                   |
+
+### Evidence
+
+- `pnpm install --frozen-lockfile`, `pnpm check-format`, `pnpm lint`,
+  `pnpm check-types` and `pnpm test` (36 tests) pass. `pnpm build` passes with
+  the local font mock.
+- Browser (Chromium): 1440, 768, 390 and 320 pixels wide with no horizontal
+  overflow and no target under 44 pixels. Header turns white on scroll. The
+  Solutions menu opens with Enter, Tab enters it, Escape closes it with
+  `aria-expanded="false"` and focus back on the trigger; choosing "Pharmacies"
+  opened PharmaDesk on the homepage. "Start a partnership enquiry" preset
+  "General Partnership". Stubbed endpoint responses confirmed the sent panel
+  (focus on "Enquiry sent", form back after "Send another enquiry") and a
+  rejected email (focus on the field, `aria-invalid="true"`). Tab order: skip
+  link, logo, menu, contact button, trail, form, side links.
+- axe-core: no violations on `/contact` or `/`. With the Solutions menu open it
+  reports `aria-hidden-focus` on Radix's internal focus-proxy element, a known
+  pattern of that primitive.
+- Contrast (default palette): white on brand 8.1:1, 80% white on brand
+  5.9:1, secondary text on white 7.7:1.
+- Not verified: a real submission to Neon, a screen reader, or a production
+  deployment.
+
+### Follow-ups
+
+- `pnpm install` is needed locally for the new Radix dependency. The lockfile
+  also re-resolved one existing Vitest peer entry.
+- Unused files that this session cannot delete:
+  `apps/healthalyst-website/src/hooks/use-reveal.ts`. Remove with `git rm`.
+
+## Shared components aligned with HealthSchedule — 19 October 2026
+
+The contact form and header used shadcn primitives underneath but restyled
+them at the call site: a shared class string on every field, and six buttons
+rebuilt with `variant="unstyled"`. The primitives also came from two shadcn
+generations with different focus rings. The fix follows the practices of the
+`healthalyst-frontend` monorepo (HealthSchedule).
+
+### Practices adopted
+
+- Primitives carry the product's defaults, and call sites choose variants and
+  properties. Call sites pass layout classes only.
+- `ActionButton` is the only renderer of the shadcn `Button` for actions, with
+  shared loading, busy, disabled and icon behaviour. This site adds
+  `ActionLink` for navigation that looks like a button.
+- Icons come from the `@healthalyst/icons` workspace package with
+  purpose-based names; only that package imports Lucide.
+- Forms sit in a shadcn `Card`.
+
+Not copied: HealthSchedule's mixed focus rings, and its use of `accent` (coral)
+for hover states.
+
+### What changed
+
+| Area            | Change                                                                                                                                                                                                                                                   |
+| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Icons           | New `packages/icons`. Every icon import in `packages/ui` and the website goes through it; `lucide-react` moved there. `next.config.mjs` transpiles it.                                                                                                   |
+| Form controls   | `Input`, `Textarea` and `NativeSelect` share `lib/form-control-variants.ts`: one surface, hover, 2 px offset focus ring, rejected and disabled treatment. `Input` and `NativeSelect` take `controlSize` (`small`, `default` 44 px, `large` 48 px).       |
+| Button          | New variants `inverse` and `inverseOutline`, sizes `extraLarge` and `largeIcon`, and a `shape` variant (`pill`). `outline` and `ghost` hover with the `secondary` tint instead of coral. Busy buttons stay at 80% opacity so the label remains readable. |
+| Wrappers        | New `ActionButton` (ported from HealthSchedule, with the spinner stopped under reduced motion) and `ActionLink`. Every composition now uses them; nothing outside them imports `button`.                                                                 |
+| Navigation menu | `navigationMenuTriggerStyle` has a `tone` variant (`default`, `inverse`); plain links use it through `NavigationMenuLink`. The long override strings in the header are gone.                                                                             |
+| Enquiry form    | The panel is a `Card`; controls use `controlSize="large"` with no class overrides; Send and "Send another enquiry" are `ActionButton`s; labels, legends and descriptions use the field primitives' own type styles.                                      |
+| Header          | Contact is an `ActionLink` (`inverse` or `default`, `large`, `pill`); the phone menu trigger is an `ActionButton` (`inverseOutline` or `outline`, `largeIcon`, `pill`).                                                                                  |
+| Homepage        | Hero, product details, process, about, product navigation and the closing band moved to `ActionButton` or `ActionLink`. The closing band button is now `inverse` (white), matching the header on brand fields.                                           |
+| Rules           | `AGENTS.md`, `packages/ui/README.md`, `packages/README.md`, the website README and `DESIGN.md` record the rules and variant names.                                                                                                                       |
+
+### Visible differences
+
+A computed-style comparison of every link, button and control on `/` and
+`/contact` at 1440 and 390 pixels, before and after, plus side-by-side
+screenshots of both pages, show these visible changes (other differences, such
+as input padding inside a fixed height, do not change what is drawn):
+
+- Field labels are 14 px instead of 15 px and group legends are medium weight,
+  because they now use the field primitives' styles (seen in the screenshots;
+  the form is 14 to 20 px shorter).
+- The phone menu trigger on white has a control-outline border (`#748B80`)
+  instead of the pale rule colour.
+- "Send another enquiry" has a control-outline border and foreground text
+  instead of a brand-green outline.
+- Homepage buttons and button-styled links are semibold. The hero and product
+  enquiry buttons are 15 px. The closing band button is white instead of pale
+  green.
+
+### Defect found and fixed
+
+On phones, the "Contact us" button at the foot of the slide-out menu shrank to
+24 px when the menu content overflowed. It now keeps its 48 px height. This
+predates the refactor.
+
+### Evidence
+
+- `pnpm install --frozen-lockfile`, `pnpm check-format`, `pnpm lint`,
+  `pnpm check-types` and `pnpm test` (37 tests) pass. `pnpm build` passes with
+  the local font mock. One new test covers the busy state: while the enquiry
+  sends, the button reads "Sending enquiry…" and is disabled with
+  `aria-busy="true"`.
+- Browser (Chromium):
+  - Submit hover is brand at 90%. While sending, the spinner shows and opacity
+    is 0.8.
+  - In the sent state, focus lands on "Enquiry sent", and "Send another
+    enquiry" brings the form back.
+  - A rejected email moves focus to the field, which has
+    `aria-invalid="true"`.
+  - The Solutions menu opens with Enter and closes with Escape, returning focus
+    to the trigger. Choosing "Pharmacies" selects PharmaDesk.
+  - The phone menu opens and closes after a link is chosen, and its contact
+    button is 48 px tall.
+  - The control panel renders without errors, and nothing overflows
+    horizontally.
+- axe-core: no violations on `/contact` at 1440 and 390 or on `/`. The known
+  Radix focus proxy `aria-hidden-focus` appears only while the menu is open.
+- Not verified: a screen reader, a real submission to Neon, or a production
+  deployment.
+
+### Remaining
+
+- Restyling classes still passed to `ActionLink` and `ActionButton` in the
+  homepage compositions (hero secondary link, about, process, product
+  navigation) and the palette preview go when the homepage is reworked.
+- `apps/healthalyst-website/src/components/ui/{accordion,button,input,select,textarea}.tsx`
+  are unused wrappers in the old style, and `button.tsx` still uses
+  `variant="unstyled"`. This session cannot delete files; remove them with
+  `git rm`.
+- Proposed next, awaiting approval: move the field types and a
+  `DynamicFormFields` renderer into `packages/ui`, move the enquiry submission
+  into a website feature folder with a Zod schema, and adopt the
+  `features/`, `infrastructure/` and `shared/` structure.
+
+## Completion pass — 19 October 2026
+
+A review of the uncommitted work found one incomplete edit and finished the
+clean-up that earlier sessions could not do.
+
+- **Defect fixed:** `marketing-contact.tsx` rendered `SuccessIcon` in the sent
+  confirmation without importing it, so type checking, the build and the
+  sent-state tests failed. It now imports the icon from `@healthalyst/icons`.
+- **Removed:** the unused wrappers
+  `apps/healthalyst-website/src/components/ui/{accordion,button,input,select,textarea}.tsx`
+  (including the last `variant="unstyled"` call site) and
+  `apps/healthalyst-website/src/hooks/use-reveal.ts`. Nothing imported them.
+  The website README no longer lists them.
+- **Registry check:** `shadcn add breadcrumb --diff` and
+  `shadcn add navigation-menu --diff` against the official registry show only
+  the expected local changes: descriptive names, icons from
+  `@healthalyst/icons`, the corrected `BreadcrumbEllipsis` display name, the
+  navigation menu's `"use client"` boundary and its `tone` variant and
+  restyled trigger.
+
+### Evidence
+
+- `pnpm install --frozen-lockfile`, `pnpm check-format`, `pnpm lint`,
+  `pnpm check-types` and `pnpm test` (37 tests in seven files) pass.
+- `pnpm build` passes with Google Fonts fetched over the network; no font
+  mock was used. `/contact` and `/api/contact` render on request; `/`,
+  `/control-panel` and the not-found page are static.
+- Not verified: a browser run after this pass, a real submission to Neon, a
+  screen reader, or a production deployment. No commit, push or deployment.
+
+### Contact page adjustments
+
+At the user's request:
+
+- **Columns swapped.** On wide screens the enquiry form now sits in the right
+  column and "Other ways to reach us" and "What happens next" in the left.
+  `MarketingTaskLayout` places them with grid columns, so the form stays
+  first in reading and focus order and still comes first on phones.
+- **Breadcrumb removed.** `MarketingPageHeader` no longer renders a trail;
+  its `trail` and `currentPageLabel` properties and the `MarketingTrailStep`
+  type are gone, and the heading starts 48 px (phones) or 80 px (tablet up)
+  below the site header. Inner pages are one level deep, so the logo and the
+  header navigation lead back. The shadcn `breadcrumb` primitive stays in
+  `packages/ui`, unused. `DESIGN.md` records both changes.
+- Evidence: format, lint, type check and 37 tests pass. In the browser at
+  1440, 1024 and 375 pixels: form on the right from 1024 up and first on
+  phones, no breadcrumb, one `h1`, no horizontal overflow, no console errors.
+
+### Still open
+
+- Restyling classes passed to `ActionLink` and `ActionButton` in the homepage
+  compositions and the palette preview, to be replaced when the homepage is
+  reworked.
+- Renaming the `(homepage)` route group to `(site)`.
+- Image provenance for `doctor-at-clinic.webp` and `clinical-team.webp`, the
+  default palette question, and approval of the drafted copy above.
+- Next page in the agreed order: About us.
+
+## Shared select, form field renderer and manual testing — 19 October 2026
+
+The contact form's selects used the browser-native `NativeSelect`, so their
+open list was the operating system's menu rather than a shadcn component, and
+each control was placed by hand inside the form. This completes the change
+proposed under "Remaining" above, without the folder restructure or Zod
+schema.
+
+### What changed
+
+| Area               | Change                                                                                                                                                                                                                                                                                                                 |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Select primitive   | `select.tsx` installed with `shadcn add select` (new-york, `@radix-ui/react-select` 2.4.1) and adapted: descriptive names, icons from `@healthalyst/icons` (new `SelectedIcon` and `ChevronUpIcon`), the shared form control surface and `controlSize`, 44 px options highlighted with the `secondary` tint.           |
+| Field definitions  | `packages/ui/src/lib/form-definition.ts`: `FormFieldDefinition` with a `kind` of `text`, `email`, `tel`, `textarea` or `select`, and `FormFieldGroup`. The website's `ContactEnquiryField` builds on it; `type`, `multiline` and `optionPrompt` became `kind` and `placeholder`.                                       |
+| Field renderer     | `packages/ui/src/components/dynamic-form-fields.tsx` renders the fieldsets, labels, guidance, controls and error messages from the definition, following HealthSchedule's `DynamicFormFields`. The enquiry form uses it.                                                                                               |
+| Validation in page | The form sets `noValidate` and checks the fields before sending (`lib/form-field-validation.ts`). Messages appear below each field and focus moves to the first one, with no browser pop-ups. A field's message clears when it changes. Required fields carry the server's existing messages, so wording is unchanged. |
+| Focus              | Focus now goes to the visible control by its identifier. Radix keeps a hidden native select in the form, which `form.elements.namedItem` would return.                                                                                                                                                                 |
+| Removed            | `native-select.tsx`, no longer used.                                                                                                                                                                                                                                                                                   |
+
+### Manual testing only
+
+At the user's instruction, automated tests are not used for now; the
+maintainer tests the website manually.
+
+- Deleted all seven test files: the enquiry form, homepage invitation, route
+  handler, storage, throttle, validation and contact destination tests.
+- `pnpm test-all` (root and website) no longer runs `pnpm test`, so
+  continuous integration, which runs `pnpm test-all`, runs no tests. The
+  pre-push hook still runs only `pnpm build`.
+- Vitest, Testing Library and `packages/test-utilities` stay installed,
+  unused, for later.
+- `AGENTS.md`, `CONTRIBUTING.md`, the root, website, packages and
+  test-utilities READMEs record the rule.
+
+### Evidence
+
+- `pnpm test-all` passes: formatting, lint, type checks and the production
+  build. No tests and no browser checks were run; the maintainer will test the
+  form manually.
+- Worth checking by hand: choosing from both selects with mouse and keyboard;
+  sending with fields empty (messages under each field, focus on the first,
+  no browser pop-up); a product link such as "Enquire about LabConnect"
+  preselecting the product; the sent and failure states.
+
+## Rounded form controls — 19 October 2026
+
+The user found the form fields' corners too sharp. The website sets the theme
+radius `--radius` to 0.25 rem, so `rounded-md` on the controls drew 2 px
+corners.
+
+- Inputs, text areas and select triggers have 6 px corners, set once in
+  `FORM_CONTROL_CLASS_NAME` (`packages/ui/src/lib/form-control-variants.ts`)
+  rather than from the theme radius. A first try at 10 px was too round for
+  the user; 6 px matches the inputs in the Healthalyst Africa Figma file. The
+  focus ring follows the corners.
+- The select's open list has 8 px corners and its options 4 px.
+- `DESIGN.md` lists 6 px for inputs, selects and text areas.
+- Open: other elements that use `rounded-sm`, `rounded-md` or `rounded-lg`
+  (alerts, tabs, menu items, non-pill buttons, focus outlines on links) still
+  render at 0 to 4 px because of the 0.25 rem theme radius, smaller than
+  `DESIGN.md` lists. Raising `--radius` in `globals.css` would change all of
+  them together and needs a decision.
+- Evidence: `pnpm test-all` (format, lint, type checks, build). No tests or
+  browser checks were run.
+
+## Gold accent, no divider lines — 19 October 2026
+
+The user asked for the brand gold to be used properly, starting with the
+contact page, because green dominated. The gold was taken from the
+Healthalyst Africa Figma file
+(`kHA7dAre3U7zB3AwlywmHI`, "Design system" page, swatch "Secondary"):
+**`#C8A062`**, read from a lossless capture of the swatch because the file's
+inspect panel needs a Figma sign-in. Only the gold was taken; the file's green
+(`#1B3323`) was not.
+
+### Palette
+
+- New default palette "Green and gold" (`green-gold`) in
+  `design-palettes.ts`: the existing green, cream and neutrals with `accent`
+  `#C8A062` and a pale gold `#E4D0B1` for gold text on green. "Green and
+  coral" and the other palettes stay in the control panel. A browser that
+  chose another palette in the control panel keeps it until it is reset.
+- Contrast: dark text on gold 6.2:1; pale gold on green 5.4:1; gold on white
+  only 2.4:1, so gold is never used for text, focus rings or thin lines on
+  light surfaces. The footer's link focus outline used the accent (coral,
+  2.2:1) and now uses the focus ring colour.
+
+### Where gold appears
+
+| Place                        | Use                                                                                                                                 |
+| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Contact form                 | "Send enquiry" stays the app green; a gold version was tried and rejected by the user, and the `accent` button variant was removed  |
+| What happens next            | Step numbers in gold circles with dark numerals                                                                                     |
+| Other ways to reach us       | Link arrows in gold; link text in ink instead of green                                                                              |
+| Enquiry sent                 | Confirmation icon in gold; form and confirmation headings in ink instead of green                                                   |
+| Footer (all pages)           | Subtle gold background `#FFFCF5` (`accent-subtle`), sampled from the Figma file's step cards, at the user's request                 |
+| Homepage (through the token) | Elements already using the accent token (process and catalogue focus rings, the about quotation bar) now show gold instead of coral |
+
+The green contact page header (hero band), the green site header above it and
+the white section below are unchanged. A first attempt moved the contact page
+onto the cream background; the user rejected it and it was reverted: white
+sections and green hero bands are not to be changed.
+
+A first footer tint, the gold at 15% (about `#F3EADA`), did not match the
+Figma file. The file's subtle gold is the step-card fill on the "Staff filled"
+frame (node `50-9558`), read from the prototype view at actual size:
+`#FFFCF5`. It is now the `accent-subtle` token (with pale tints for the other
+palettes and a neutral default in `packages/ui/src/styles.css`). The step
+cards also use the gold `#C8A062` for numbered circles and the progress bar,
+which matches the accent.
+
+### Horizontal lines removed
+
+At the user's instruction, no horizontal divider lines are added without
+explicit approval, and the existing generic ones were removed: between form
+groups and above the send row, between record list rows, under the page
+header and site header, in the Solutions menu and phone menu, at the top of
+the footer and above its bottom bar, between FAQ and other accordion items,
+under homepage process steps, around product details and capabilities, in the
+hero and statistics band, about-section pillars, and the control panel header
+and separator. Spacing now separates these items. Kept on purpose: the
+underline that marks the selected product tab, link underlines, and vertical
+lines (statistics, sequence connector, quotation bar).
+
+### Open
+
+- `not-found.tsx` shows "404" as 11 px gold text on cream (2.3:1) and an
+  older hand-styled button; fix when that page is reworked.
+- Remaining pages and the homepage bands get gold accents as they are
+  reworked.
+
+### Evidence
+
+`pnpm test-all` (format, lint, type checks, build). No tests or browser checks
+were run; the maintainer will review the pages manually.
+
+## Contact hero as a card — 19 October 2026
+
+At the user's request the contact page's green hero is a card rather than a
+full-width band, below a white site header.
+
+- `MarketingPageHeader` takes `shape`: `band` (default, full width) or `card`.
+  A card sits inside external padding on the white surface (12 px on phones,
+  20 px from tablet up) and has 16 px corners. The contact page uses
+  `tone="brand"` with `shape="card"`; the green, the text and the form panel
+  rising into it are unchanged.
+- The site header is white on the contact page too and sits outside the card
+  (`BRAND_HEADER_ROUTES` is now empty). A version that put the navigation
+  inside the green card was tried and reverted at the user's request.
+- Evidence: `pnpm test-all` (format, lint, type checks, build). No tests were
+  run.
+
+## Quieter enquiry form — 19 October 2026
+
+At the user's request:
+
+- Form group legends are "Institution", "Enquiry" and "Details" (previously
+  "Your institution", "Your enquiry", "Your details").
+- Field borders are softer: inputs, text areas and select triggers draw the
+  control outline at 50% (about `#BAC5C0`) and at full strength on hover
+  (`FORM_CONTROL_CLASS_NAME`). Outline buttons keep the full-strength outline.
+- Accessibility: the softened border is about 1.8:1 against white, below the
+  3:1 that WCAG 2.2 success criterion 1.4.11 asks of the boundary that
+  identifies a field. Each field keeps a visible label directly above it, a
+  darker border on hover, a 2 px focus ring and a red border when rejected.
+  The lightest border that meets 3:1 is about `#85998F`, if strict AA
+  conformance is required.
+- Evidence: `pnpm test-all` (format, lint, type checks, build). No tests were
+  run.
+
+## Step circles on the subtle gold — 19 October 2026
+
+At the user's request the "What happens next" step circles use the footer's
+background, `accent-subtle` (`#FFFCF5`), instead of the solid gold. A gold
+outline (`border-accent`) keeps the circles visible on white; numerals are
+ink. Changed in `packages/ui/src/components/marketing-sequence.tsx`.
+Evidence: `pnpm test-all` (format, lint, type checks, build). No tests were
+run.
+
+## Field borders lighter again — 19 October 2026
+
+At the user's request field borders went from 50% to 35% of the control
+outline: about `#CED6D3`, 1.5:1 against white, still full strength on hover.
+The accessibility note under "Quieter enquiry form" applies with this lower
+figure. Evidence: `pnpm test-all` (format, lint, type checks, build). No tests
+were run.
+
+## Placeholders and first form group — 19 October 2026
+
+At the user's request:
+
+- Placeholders in inputs, text areas and the closed select are 14 px and
+  lighter: the secondary text colour at 60% (about `#8C9B95`), set in
+  `FORM_CONTROL_CLASS_NAME` and the select trigger. Typed values stay 16 px.
+  At 2.9:1 against white they are below the 4.5:1 WCAG asks of text; 80%
+  (about `#667971`, 4.6:1) is the lightest that meets it.
+- "Organisation or institution" now comes before "Institution type", and that
+  first group has no heading. `FormFieldGroup.legend` is optional; a group
+  without one is still a `fieldset`, so it is disabled while sending.
+- Evidence: `pnpm test-all` (format, lint, type checks, build). No tests were
+  run.
+
+## Lighter running text — 19 October 2026
+
+The user found supporting text too heavy (it was already regular, 400). All
+paragraphs and description-list descriptions (`p`, `dd`) are now light (300)
+through a base rule in `apps/healthalyst-website/src/app/globals.css`. Inter
+loads as a variable font, so no new font file is needed. Elements with a weight
+utility (headings, labels, links, `font-medium` lines) are unchanged. The field
+guidance text (`FieldDescription` in `packages/ui`) set its own regular
+weight and is now light too.
+`DESIGN.md` lists 300 for lede, body and small text. Evidence: `pnpm test-all`
+(format, lint, type checks, build). No tests were run.
+
+## Smaller field descriptions — 19 October 2026
+
+At the user's request field descriptions (the guidance between a label and its
+control, `FieldDescription` in `packages/ui/src/components/field.tsx`) are 13
+px instead of 14 px, still light. Labels stay 14 px medium. Evidence:
+`pnpm test-all` (format, lint, type checks, build). No tests were run.
+
+## Shorter form opening — 19 October 2026
+
+At the user's request:
+
+- The line "It takes about two minutes." under "Send an enquiry" is removed
+  (and its entry in `CONTACT_FORM_CONTENT`).
+- The message guidance, "Tell us about your institution and what you want to
+  achieve. Please do not include patient information.", is now the message
+  box's placeholder instead of a description above it.
+- Note: a placeholder disappears once the visitor starts typing, so the
+  request not to include patient information is no longer visible while they
+  write. The server still accepts only the defined fields.
+- Evidence: `pnpm test-all` (format, lint, type checks, build). No tests were
+  run.
+
+## Gold form group titles — 19 October 2026
+
+At the user's request the enquiry form's group titles ("Enquiry", "Details")
+use the accent colour, gold `#C8A062`. `FieldLegend` has a new `tone` variant
+(`default` or `accent`); `DynamicFormFields` takes `legendTone`, and the
+enquiry form sets it to `accent`.
+
+Accessibility: gold text reaches about 2.4:1 on white, below the 4.5:1 WCAG
+asks of 16 px text, and `DESIGN.md` had kept gold off text for that reason. A
+darker gold such as `#8C6A35` (about 5.0:1) would keep the titles gold-toned
+and readable if strict AA is needed. Evidence: `pnpm test-all` (format, lint,
+type checks, build). No tests were run.
+
+## Form group titles removed — 19 October 2026
+
+At the user's request the "Enquiry" and "Details" titles are removed, so no
+form group has a legend. The enquiry form no longer sets `legendTone`; the
+`FieldLegend` `tone` variant remains available.
+
+## Gold stepper line — 19 October 2026
+
+At the user's request the vertical line joining the "What happens next"
+steps uses the accent gold (`bg-accent`) instead of the edge colour.
+The line is drawn as a 1 px left border, like the circle outline, so it
+snaps to whole pixels and matches the outline's weight.

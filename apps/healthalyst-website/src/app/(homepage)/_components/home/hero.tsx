@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { MarketingHero } from "@healthalyst/ui/components/marketing-hero";
 import { HERO_CONTENT } from "~/data/homepage-content";
+import { SITE_ROUTES } from "~/data/site";
 import ProductNavigation from "./product-navigation";
 
 export default function Hero() {
@@ -9,7 +10,9 @@ export default function Hero() {
     <MarketingHero
       {...HERO_CONTENT}
       primaryAction={<Link href="#products">Explore our products →</Link>}
-      secondaryAction={<Link href="#contact">Speak to our team</Link>}
+      secondaryAction={
+        <Link href={SITE_ROUTES.contact}>Speak to our team</Link>
+      }
       image={
         <Image
           src="/images/doctor-at-clinic.webp"

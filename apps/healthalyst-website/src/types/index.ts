@@ -1,3 +1,8 @@
+import type {
+  FormFieldDefinition,
+  FormFieldGroup,
+} from "@healthalyst/ui/lib/form-definition";
+
 /** A single Healthalyst Africa product line. */
 export interface Product {
   /** Zero-padded display index, for example `01`. */
@@ -49,6 +54,12 @@ export interface Institution {
   description: string;
 }
 
+/** A footer or navigation destination; omit `destination` while the page is unpublished. */
+export interface SiteLink {
+  label: string;
+  destination?: string;
+}
+
 /** A navigation entry that scrolls to an in-page section anchor. */
 export interface NavigationLink {
   label: string;
@@ -66,23 +77,20 @@ export type ContactEnquiryFieldName =
   | "productInterest"
   | "message";
 
-/** One field collected by the public enquiry form. */
-export interface ContactEnquiryField {
+/**
+ * One field collected by the public enquiry form. Every field states whether
+ * it is required and its longest accepted value, which the server enforces.
+ */
+export type ContactEnquiryField = FormFieldDefinition & {
   /** Control name; also the request key and the validation key. */
   name: ContactEnquiryFieldName;
-  label: string;
-  placeholder: string;
-  type?: "text" | "email" | "tel";
-  autoComplete?: string;
-  options?: readonly string[];
-  multiline?: boolean;
-  /** Whether a submission must include a value for this field. */
   required: boolean;
   /** Longest accepted value, enforced in the browser and on the server. */
   maxLength: number;
-  /** Message shown when the field is submitted without a value. */
-  requiredMessage?: string;
-}
+};
+
+/** Fields presented together under one legend in the enquiry form. */
+export type ContactEnquiryFieldGroup = FormFieldGroup<ContactEnquiryField>;
 
 /** A validated enquiry, ready to be stored. */
 export interface ContactEnquirySubmission {

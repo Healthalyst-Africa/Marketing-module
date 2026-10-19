@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
-import { ChevronDown } from "lucide-react";
+import { ChevronDownIcon } from "@healthalyst/icons";
 
 import { cn } from "@healthalyst/ui/lib/utilities";
 
@@ -14,7 +14,7 @@ const AccordionItem = React.forwardRef<
 >(({ className, ...properties }, elementReference) => (
   <AccordionPrimitive.Item
     ref={elementReference}
-    className={cn("border-b", className)}
+    className={className}
     {...properties}
   />
 ));
@@ -41,7 +41,7 @@ const AccordionTrigger = React.forwardRef<
       >
         {children}
         {showIndicator && (
-          <ChevronDown
+          <ChevronDownIcon
             aria-hidden="true"
             className="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 motion-reduce:transition-none"
           />

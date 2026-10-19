@@ -1,5 +1,5 @@
 import type { ReactElement, ReactNode } from "react";
-import { Button } from "@healthalyst/ui/components/button";
+import { ActionLink } from "@healthalyst/ui/components/action-link";
 import {
   MarketingContainer,
   MarketingIntroduction,
@@ -108,13 +108,12 @@ export function MarketingAbout({
             <blockquote className="border-l-2 border-accent pl-6 font-serif text-3xl leading-[1.2] text-primary">
               {quotation}
             </blockquote>
-            <Button
-              asChild
+            <ActionLink
               variant="link"
               className="mt-5 h-auto min-h-12 whitespace-normal p-0 text-left underline underline-offset-8"
             >
               {partnershipAction}
-            </Button>
+            </ActionLink>
           </div>
           <div className="flex flex-col gap-5 text-base leading-[1.8] text-muted-foreground lg:pt-10">
             {content.paragraphs.map((paragraph) => (
@@ -123,9 +122,9 @@ export function MarketingAbout({
             <h3 className="mt-5 text-base font-semibold text-primary">
               {approachLabel}
             </h3>
-            <div className="divide-y divide-border border-t">
+            <div className="flex flex-col gap-6">
               {pillars.map((pillar) => (
-                <article key={pillar.title} className="py-5">
+                <article key={pillar.title}>
                   <div>
                     <h4 className="mb-2 font-semibold text-primary">
                       {pillar.title}

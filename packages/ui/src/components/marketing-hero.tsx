@@ -1,5 +1,5 @@
 import type { ReactElement, ReactNode } from "react";
-import { Button } from "@healthalyst/ui/components/button";
+import { ActionLink } from "@healthalyst/ui/components/action-link";
 import { MarketingContainer } from "@healthalyst/ui/components/marketing-section";
 
 export function MarketingHero({
@@ -29,20 +29,19 @@ export function MarketingHero({
               {paragraphs[0]}
             </p>
             <div className="mt-8 flex flex-wrap items-center justify-center gap-x-7 gap-y-3 lg:justify-start">
-              <Button
-                asChild
+              <ActionLink
                 size="large"
-                className="h-auto min-h-12 whitespace-normal rounded-full px-6"
+                shape="pill"
+                className="h-auto min-h-12 whitespace-normal"
               >
                 {primaryAction}
-              </Button>
-              <Button
-                asChild
+              </ActionLink>
+              <ActionLink
                 variant="link"
                 className="h-auto min-h-12 whitespace-normal px-0 underline decoration-primary/40 underline-offset-8"
               >
                 {secondaryAction}
-              </Button>
+              </ActionLink>
             </div>
           </div>
           <figure className="relative aspect-[4/5] w-full overflow-hidden rounded-[2rem] bg-secondary">
@@ -61,7 +60,7 @@ export function MarketingHero({
                 {paragraph}
               </p>
             ))}
-            <div className="mt-5 flex justify-center border-t border-primary-foreground/20 pt-4">
+            <div className="mt-5 flex justify-center pt-4">
               {productNavigation}
             </div>
           </div>
@@ -81,7 +80,7 @@ export function MarketingStatistics({
   }[];
 }) {
   return (
-    <section aria-label="Company overview" className="border-b bg-background">
+    <section aria-label="Company overview" className="bg-background">
       <MarketingContainer>
         <dl className="grid grid-cols-2 gap-x-8 gap-y-8 py-10 md:py-12 lg:grid-cols-4">
           {statistics.map((statistic) => (

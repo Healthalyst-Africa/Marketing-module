@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { Button } from "@healthalyst/ui/components/button";
+import { ActionLink } from "@healthalyst/ui/components/action-link";
 import type { ProductPresentation } from "@healthalyst/ui/components/product-catalogue";
 import {
   MarketingContainer,
@@ -22,12 +22,15 @@ export function ProductDetails({
   selectedIndex,
   onSelect,
   illustrations,
+  createEnquiryDestination,
 }: {
   content: MarketingSectionContent;
   products: readonly ProductPresentation[];
   selectedIndex: number;
   onSelect: (index: number) => void;
   illustrations: readonly ReactNode[];
+  /** Address of the enquiry journey for a product. */
+  createEnquiryDestination: (product: ProductPresentation) => string;
 }) {
   return (
     <MarketingSection id="products" className="bg-secondary">
@@ -80,7 +83,7 @@ export function ProductDetails({
                   <p className="text-base leading-[1.8] text-muted-foreground">
                     {product.description}
                   </p>
-                  <div className="border-t border-border pt-4">
+                  <div className="pt-2">
                     <h4 className="mb-2 text-sm font-semibold text-primary">
                       Built for
                     </h4>
@@ -88,13 +91,15 @@ export function ProductDetails({
                       {product.builtFor}
                     </p>
                   </div>
-                  <Button
-                    asChild
+                  <ActionLink
                     size="large"
-                    className="mt-2 h-auto min-h-12 w-fit whitespace-normal rounded-full"
+                    shape="pill"
+                    className="mt-2 h-auto min-h-12 w-fit whitespace-normal"
                   >
-                    <a href="#contact">Enquire about {product.name}</a>
-                  </Button>
+                    <a href={createEnquiryDestination(product)}>
+                      Enquire about {product.name}
+                    </a>
+                  </ActionLink>
                 </div>
                 <div className="flex flex-col gap-6 bg-background p-6 md:p-10">
                   <div className="flex items-center justify-between gap-4">
@@ -108,11 +113,11 @@ export function ProductDetails({
                       {illustrations[index]}
                     </span>
                   </div>
-                  <ul className="flex flex-1 flex-col divide-y divide-border">
+                  <ul className="flex flex-1 flex-col gap-4">
                     {product.capabilities.map((capability) => (
                       <li
                         key={capability}
-                        className="flex gap-4 py-4 text-sm leading-[1.75] text-foreground md:text-base"
+                        className="flex gap-4 text-sm leading-[1.75] text-foreground md:text-base"
                       >
                         <span>{capability}</span>
                       </li>

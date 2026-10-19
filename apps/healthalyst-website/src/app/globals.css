@@ -20,6 +20,13 @@
     @apply bg-cream font-sans text-ink antialiased;
     overflow-x: hidden;
   }
+
+  /* Running text is light so it supports headings and labels instead of
+     competing with them. A weight utility on the element still wins. */
+  p,
+  dd {
+    @apply font-light;
+  }
 }
 
 /* ── Reduced motion ─────────────────────────────── */

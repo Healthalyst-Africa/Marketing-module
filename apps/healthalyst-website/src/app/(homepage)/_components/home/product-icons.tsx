@@ -1,17 +1,17 @@
 import {
-  CalendarDays,
-  FlaskConical,
-  PackageCheck,
-  Pill,
-  ScanLine,
-  Smile,
-} from "lucide-react";
+  DentalIcon,
+  ImagingIcon,
+  LaboratoryIcon,
+  PharmacyIcon,
+  SchedulingIcon,
+  SupplyIcon,
+} from "@healthalyst/icons";
 
 export const PRODUCT_ICONS = [
-  <CalendarDays key="scheduling" />,
-  <FlaskConical key="laboratory" />,
-  <Pill key="pharmacy" />,
-  <Smile key="dental" />,
-  <ScanLine key="imaging" />,
-  <PackageCheck key="supply" />,
+  <SchedulingIcon key="scheduling" />,
+  <LaboratoryIcon key="laboratory" />,
+  <PharmacyIcon key="pharmacy" />,
+  <DentalIcon key="dental" />,
+  <ImagingIcon key="imaging" />,
+  <SupplyIcon key="supply" />,
 ];

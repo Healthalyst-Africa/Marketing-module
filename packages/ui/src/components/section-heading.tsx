@@ -38,17 +38,3 @@ export function SectionHeading({
     </h2>
   );
 }
-
-export function Reveal({
-  visible,
-  className,
-  children,
-}: {
-  visible: boolean;
-  className?: string;
-  children: ReactNode;
-}) {
-  return (
-    <div className={cn("reveal", visible && "show", className)}>{children}</div>
-  );
-}

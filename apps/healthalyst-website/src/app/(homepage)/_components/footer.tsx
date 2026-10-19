@@ -3,9 +3,33 @@
 import Link from "next/link";
 import { MarketingFooter } from "@healthalyst/ui/components/marketing-footer";
 import { LogoMark } from "~/components/layout/logo";
-import { FOOTER_COMPANY_LINKS, FOOTER_CONNECT_LINKS } from "~/data/site";
+import {
+  FOOTER_COMPANY_LINKS,
+  FOOTER_CONNECT_LINKS,
+  SITE_ROUTES,
+} from "~/data/site";
 import { PRODUCTS } from "~/data/products";
 import { useProducts } from "~/store/ProductsContext";
+import type { SiteLink } from "~/types";
+
+function renderSiteLink(siteLink: SiteLink) {
+  if (!siteLink.destination) {
+    return (
+      <span
+        key={siteLink.label}
+        className="inline-flex min-h-11 items-center text-sm text-muted-foreground"
+      >
+        {siteLink.label}
+      </span>
+    );
+  }
+
+  return (
+    <Link key={siteLink.label} href={siteLink.destination}>
+      {siteLink.label}
+    </Link>
+  );
+}
 
 export default function Footer() {
   const { selectProduct } = useProducts();
@@ -23,7 +47,7 @@ export default function Footer() {
           links: PRODUCTS.map((product, index) => (
             <Link
               key={product.name}
-              href="#products"
+              href={`${SITE_ROUTES.home}#products`}
               onClick={() => selectProduct(index)}
             >
               {product.name}
@@ -32,31 +56,11 @@ export default function Footer() {
         },
         {
           heading: "Company",
-          links: FOOTER_COMPANY_LINKS.map((label) =>
-            label === "Careers" || label === "Press & Media" ? (
-              <span
-                key={label}
-                className="inline-flex min-h-11 items-center text-sm text-muted-foreground"
-              >
-                {label}
-              </span>
-            ) : (
-              <Link
-                key={label}
-                href={label === "Partners" ? "#contact" : "#about"}
-              >
-                {label}
-              </Link>
-            )
-          ),
+          links: FOOTER_COMPANY_LINKS.map(renderSiteLink),
         },
         {
           heading: "Connect",
-          links: FOOTER_CONNECT_LINKS.map((label) => (
-            <Link key={label} href="#contact">
-              {label}
-            </Link>
-          )),
+          links: FOOTER_CONNECT_LINKS.map(renderSiteLink),
         },
       ]}
     />

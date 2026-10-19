@@ -1,7 +1,8 @@
 "use client";
 
-import { useRef } from "react";
-import { Button } from "@healthalyst/ui/components/button";
+import { useRef, type ReactElement } from "react";
+import { ActionButton } from "@healthalyst/ui/components/action-button";
+import { ActionLink } from "@healthalyst/ui/components/action-link";
 import {
   MarketingContainer,
   MarketingIntroduction,
@@ -28,11 +29,14 @@ export function MarketingProcess({
   steps,
   selectedIndex,
   onSelect,
+  conversationAction,
 }: {
   content: MarketingSectionContent;
   steps: readonly ProcessStep[];
   selectedIndex: number;
   onSelect: (index: number) => void;
+  /** Link shown after the final step that starts an enquiry. */
+  conversationAction: ReactElement;
 }) {
   const stepTriggerReferences = useRef<(HTMLButtonElement | null)[]>([]);
   return (
@@ -59,7 +63,7 @@ export function MarketingProcess({
                 ref={(elementReference) => {
                   stepTriggerReferences.current[index] = elementReference;
                 }}
-                className="justify-start gap-5 whitespace-normal rounded-none border-b px-0 py-5 text-left text-base leading-relaxed text-muted-foreground data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none"
+                className="justify-start gap-5 whitespace-normal rounded-none px-0 py-5 text-left text-base leading-relaxed text-muted-foreground data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none"
               >
                 <span>{step.title}</span>
               </TabsTrigger>
@@ -81,7 +85,8 @@ export function MarketingProcess({
                 {step.body}
               </p>
               {index < steps.length - 1 ? (
-                <Button
+                <ActionButton
+                  type="button"
                   variant="link"
                   className="h-auto min-h-12 justify-start whitespace-normal p-0 text-left text-primary-foreground underline underline-offset-8 focus-visible:ring-accent"
                   onClick={() => {
@@ -90,15 +95,14 @@ export function MarketingProcess({
                   }}
                 >
                   Next: {steps[index + 1]?.title} →
-                </Button>
+                </ActionButton>
               ) : (
-                <Button
-                  asChild
+                <ActionLink
                   variant="link"
                   className="h-auto min-h-12 justify-start whitespace-normal p-0 text-primary-foreground underline underline-offset-8 focus-visible:ring-accent"
                 >
-                  <a href="#contact">Start a conversation →</a>
-                </Button>
+                  {conversationAction}
+                </ActionLink>
               )}
             </TabsContent>
           ))}

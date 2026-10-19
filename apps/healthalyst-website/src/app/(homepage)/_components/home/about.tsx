@@ -2,14 +2,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { MarketingAbout } from "@healthalyst/ui/components/marketing-about";
 import { ABOUT_CONTENT } from "~/data/homepage-content";
-import { PILLARS } from "~/data/site";
+import { PILLARS, SITE_ROUTES } from "~/data/site";
 
 export default function About() {
   return (
     <MarketingAbout
       content={ABOUT_CONTENT}
       quotation="“Africa’s healthcare system doesn’t need software written elsewhere and adapted. It needs technology built here, for here.”"
-      partnershipAction={<Link href="#contact">Partner with us →</Link>}
+      partnershipAction={
+        <Link href={SITE_ROUTES.contact}>Partner with us</Link>
+      }
       pillars={PILLARS}
       approachLabel="Our approach"
       image={

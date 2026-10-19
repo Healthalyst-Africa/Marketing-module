@@ -72,11 +72,7 @@ export const FAQ_CONTENT = {
 } satisfies MarketingSectionContent;
 
 export const CONTACT_CONTENT = {
-  heading: (
-    <>
-      Ready to build better <em>healthcare technology?</em>
-    </>
-  ),
+  heading: "Ready to build better healthcare technology?",
   paragraphs: [
     "Whether you’re a hospital, laboratory, pharmacy, or any other healthcare institution, we’d like to understand your context and explore how Healthalyst Africa can serve your needs.",
   ],
