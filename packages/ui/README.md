@@ -43,6 +43,22 @@ application content and semantic theme values.
 - `@healthalyst/ui/components/breadcrumb`
 - `@healthalyst/ui/components/navigation-menu`
 - `@healthalyst/ui/components/marketing-page-header`
+- `@healthalyst/ui/components/marketing-content-section`
+- `@healthalyst/ui/components/marketing-step-showcase` (steps beside a panel
+  that crossfades between them, with auto-advance and a pause control)
+- `@healthalyst/ui/components/marketing-card-grid` (linked cards on the subtle
+  accent surface, with an optional 4:3 illustration)
+- `@healthalyst/ui/components/marketing-arrow-link` (text link with an accent
+  arrow, shared by record lists and cards)
+- `@healthalyst/ui/components/marketing-icon-badge` (the site's single
+  treatment for product, feature and contact icons: a thin ring, no fill)
+- `@healthalyst/ui/components/marketing-hub-diagram` (a hub joined to six
+  linked destinations, with a looping signal and a pause control; server
+  markup with the client layer `marketing-hub-diagram-motion`)
+- `@healthalyst/ui/components/marketing-location-map` (an address card beside
+  an embedded map, loaded lazily)
+- `@healthalyst/ui/components/marketing-care-network` (decorative hero pattern
+  for `MarketingPageHeader`'s `decoration` slot)
 - `@healthalyst/ui/components/marketing-task-layout`
 - `@healthalyst/ui/components/marketing-sequence`
 - `@healthalyst/ui/components/marketing-record-list`
@@ -96,7 +112,9 @@ spacing.
   import `button`.
 - Button `variant`: `default` (brand fill), `outline` (secondary action,
   control-outline border), `ghost`, `secondary`, `link`, `destructive`,
-  `inverse` (primary action on a brand-coloured field) and `inverseOutline`
+  `inverse` (primary action on a brand-coloured field), `inverseGhost` (a quiet
+  control on a brand-coloured field, such as pausing decoration) and
+  `inverseOutline`
   (secondary action on a brand-coloured field). `size`: `small`, `default`,
   `large` (44 px), `extraLarge` (48 px), `icon` and `largeIcon` (44 px).
   `shape`: `default` or `pill`. Hover tints use `secondary`, never `accent`.

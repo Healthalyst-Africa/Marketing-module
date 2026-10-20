@@ -1,17 +1,7 @@
-import {
-  DentalIcon,
-  ImagingIcon,
-  LaboratoryIcon,
-  PharmacyIcon,
-  SchedulingIcon,
-  SupplyIcon,
-} from "@healthalyst/icons";
+import { PRODUCT_ICONS_BY_NAME } from "~/components/product-icons";
+import { PRODUCTS } from "~/data/products";
 
-export const PRODUCT_ICONS = [
-  <SchedulingIcon key="scheduling" />,
-  <LaboratoryIcon key="laboratory" />,
-  <PharmacyIcon key="pharmacy" />,
-  <DentalIcon key="dental" />,
-  <ImagingIcon key="imaging" />,
-  <SupplyIcon key="supply" />,
-];
+/** The product icons in the order of `PRODUCTS`. */
+export const PRODUCT_ICONS = PRODUCTS.map(
+  (product) => PRODUCT_ICONS_BY_NAME[product.name]
+);

@@ -44,3 +44,25 @@
   --input: 0 0% 15%;
   --ring: 0 0% 83%;
 }
+
+/* A signal travelling along a connector drawn with pathLength="100". */
+@keyframes marketing-hub-signal {
+  from {
+    stroke-dashoffset: 12;
+  }
+  to {
+    stroke-dashoffset: -100;
+  }
+}
+
+/* A ring expanding out of a hub as it sends a signal. */
+@keyframes marketing-hub-pulse {
+  from {
+    opacity: 0.45;
+    scale: 1;
+  }
+  to {
+    opacity: 0;
+    scale: 1.18;
+  }
+}

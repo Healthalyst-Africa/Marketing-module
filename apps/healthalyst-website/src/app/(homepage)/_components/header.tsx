@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { MarketingNavigation } from "@healthalyst/ui/components/marketing-navigation";
 import { LogoLink } from "~/components/layout/logo";
+import { PRODUCT_ICONS_BY_NAME } from "~/components/product-icons";
 import { PRODUCTS } from "~/data/products";
 import {
   BRAND_HEADER_ROUTES,
@@ -33,6 +34,7 @@ export default function Header() {
           return {
             title: institution.name,
             description: `${institution.product} for ${institution.description}`,
+            icon: PRODUCT_ICONS_BY_NAME[institution.product],
             link: (
               <Link
                 href={`${SITE_ROUTES.home}#products`}
@@ -53,7 +55,12 @@ export default function Header() {
       navigationLinks={NAVIGATION_LINKS.map((navigationLink) => ({
         label: navigationLink.label,
         link: (
-          <Link href={`${SITE_ROUTES.home}#${navigationLink.identifier}`}>
+          <Link
+            href={navigationLink.destination}
+            aria-current={
+              currentPath === navigationLink.destination ? "page" : undefined
+            }
+          >
             {navigationLink.label}
           </Link>
         ),

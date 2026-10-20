@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { MarketingIconBadge } from "@healthalyst/ui/components/marketing-icon-badge";
 import { ActionLink } from "@healthalyst/ui/components/action-link";
 import type { ProductPresentation } from "@healthalyst/ui/components/product-catalogue";
 import {
@@ -106,12 +107,10 @@ export function ProductDetails({
                     <h4 className="text-base font-semibold text-primary">
                       Platform capabilities
                     </h4>
-                    <span
-                      aria-hidden="true"
-                      className="text-primary [&_svg]:size-12 [&_svg]:stroke-[1.25]"
-                    >
-                      {illustrations[index]}
-                    </span>
+                    <MarketingIconBadge
+                      icon={illustrations[index]}
+                      size="large"
+                    />
                   </div>
                   <ul className="flex flex-1 flex-col gap-4">
                     {product.capabilities.map((capability) => (

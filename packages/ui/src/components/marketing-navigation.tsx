@@ -29,11 +29,14 @@ import {
   SheetTrigger,
 } from "@healthalyst/ui/components/sheet";
 import { cn } from "@healthalyst/ui/lib/utilities";
+import { MarketingIconBadge } from "@healthalyst/ui/components/marketing-icon-badge";
 
 /** A destination in the header's dropdown, shown with a one-line description. */
 export interface MarketingMenuItem {
   title: string;
   description: string;
+  /** Optional icon, shown in a thin ring beside the title. */
+  icon?: ReactNode;
   /** A link element without children; the menu supplies the visible content. */
   link: ReactElement<{ children?: ReactNode; className?: string }>;
 }
@@ -125,16 +128,24 @@ export function MarketingNavigation({
                       <li key={item.title}>
                         <NavigationMenuLink
                           asChild
-                          className="block rounded-lg px-4 py-3 text-foreground transition-colors duration-150 hover:bg-secondary focus:bg-secondary focus:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none"
+                          className="flex items-start gap-4 rounded-[8px] px-4 py-3 text-foreground transition-colors duration-150 hover:bg-secondary focus:bg-secondary focus:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none"
                         >
                           {cloneElement(item.link, {
                             children: (
                               <>
-                                <span className="block text-[15px] font-semibold leading-snug text-primary">
-                                  {item.title}
-                                </span>
-                                <span className="mt-1 block text-sm leading-relaxed text-muted-foreground">
-                                  {item.description}
+                                {item.icon && (
+                                  <MarketingIconBadge
+                                    icon={item.icon}
+                                    size="small"
+                                  />
+                                )}
+                                <span className="flex flex-col">
+                                  <span className="block text-[15px] font-semibold leading-snug text-primary">
+                                    {item.title}
+                                  </span>
+                                  <span className="mt-1 block text-sm leading-relaxed text-muted-foreground">
+                                    {item.description}
+                                  </span>
                                 </span>
                               </>
                             ),
@@ -144,7 +155,7 @@ export function MarketingNavigation({
                     ))}
                   </ul>
                   {menu.footer && (
-                    <p className="mt-2 px-4 pb-1 pt-3 text-sm text-muted-foreground">
+                    <p className="mt-3 border-t border-border px-4 pb-1 pt-4 text-sm text-muted-foreground">
                       {menu.footer.prompt}{" "}
                       <NavigationMenuLink
                         asChild
@@ -207,14 +218,22 @@ export function MarketingNavigation({
                     <li key={item.title}>
                       {cloneElement(item.link, {
                         className:
-                          "block rounded-lg px-3 py-3 -mx-3 transition-colors duration-150 hover:bg-secondary focus:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                          "flex items-start gap-4 rounded-lg px-3 py-3 -mx-3 transition-colors duration-150 hover:bg-secondary focus:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                         children: (
                           <>
-                            <span className="block text-base font-semibold text-primary">
-                              {item.title}
-                            </span>
-                            <span className="block text-sm text-muted-foreground">
-                              {item.description}
+                            {item.icon && (
+                              <MarketingIconBadge
+                                icon={item.icon}
+                                size="small"
+                              />
+                            )}
+                            <span className="flex flex-col">
+                              <span className="block text-base font-semibold text-primary">
+                                {item.title}
+                              </span>
+                              <span className="block text-sm text-muted-foreground">
+                                {item.description}
+                              </span>
                             </span>
                           </>
                         ),

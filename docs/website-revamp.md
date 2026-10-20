@@ -1372,3 +1372,583 @@ At the user's request the vertical line joining the "What happens next"
 steps uses the accent gold (`bg-accent`) instead of the edge colour.
 The line is drawn as a 1 px left border, like the circle outline, so it
 snaps to whole pixels and matches the outline's weight.
+
+## About us page — 19 October 2026
+
+The second page in the agreed order, built from the reference study
+(`docs/design-case-studies.md`) and in the contact page's style.
+
+### What the study suggested, and what was used
+
+| Reference pattern                                                    | On this page                                                                                 |
+| -------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| Brand-colour page header with a plain heading (Flatiron, Helium)     | The green header card from the contact page, heading "About us"                              |
+| "What we do" beside a photograph (Flatiron)                          | Approved about-section copy beside the one photograph with a recorded licence                |
+| Products grouped by who uses them (Helium, Commure)                  | "Who we build for": six institution types, each with its product and an enquiry link         |
+| A genuine workflow sequence (Abridge)                                | "How we work with institutions": the four approved implementation stages in the gold stepper |
+| Mission and values (Helium)                                          | "What guides our work": the four approved pillars                                            |
+| Closing band repeating the main action (Hinge)                       | "Talk to our team" with "Contact us" and "Start a partnership enquiry"                       |
+| Leadership, partners and investors, news (Abridge, Flatiron, Helium) | Left out: no approved names, partners, coverage or headshots exist yet                       |
+
+### Build
+
+- Route `src/app/(homepage)/about/page.tsx`, copy in
+  `src/data/about-page-content.ts`; paragraphs reuse `homepage-content.tsx`,
+  `PILLARS` and `STEPS` (pillar titles shown in sentence case).
+- New shared composition `marketing-content-section` in `packages/ui`.
+- `SITE_ROUTES.about` added. The header "About" link opens `/about` and is
+  marked as the current page there; `NavigationLink` now carries a
+  `destination`. Footer "About us" opens `/about`; "Our approach" opens
+  `/about#how-we-work` until its own page ships.
+- Photograph: `clinician-tablet.webp` (Pexels, recorded in
+  `docs/website-assets.md`), with alternative text that describes the photo
+  without implying it shows company staff.
+
+### Drafted copy awaiting approval
+
+| Location         | Draft                                                                                                                                          |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| Page header lede | We build the digital infrastructure of African healthcare: purpose-built products for the institutions that deliver care across the continent. |
+| Section headings | What we do; Who we build for; How we work with institutions; What guides our work; Talk to our team                                            |
+| Product rows     | "{Product} for {existing description}." and "Enquire about {Product}"                                                                          |
+| Closing actions  | Contact us; Start a partnership enquiry                                                                                                        |
+
+### Claims to confirm
+
+- "Institution-grade security" says the platforms comply "with international
+  health data protection standards". This is existing homepage copy, but no
+  certification or assessment is recorded. An accountable company owner
+  should confirm it or it should be reworded.
+
+### Content the company needs to supply for a complete About page
+
+Leadership names, roles and headshots; partners, pilots or investors who
+agree to be named; the company's story (founding year, location); photographs
+of the team; press coverage.
+
+### Evidence
+
+- `pnpm test-all` (format, lint, type checks, build).
+- Browser (development server), a load check only: `/about` at desktop and
+  375 px wide renders with one `h1` and ordered headings, the header marks
+  "About" as current, no horizontal overflow, links at least 44 px tall, no
+  console errors. No tests were run.
+
+## Office address in the footer — 19 October 2026
+
+The user supplied the office address: 11 Adenubi Close, off Majekodunmi
+Street, off Allen Avenue, Ikeja, Lagos, Nigeria. It is
+`COMPANY_OFFICE_ADDRESS` in `src/data/site.ts` and appears in the footer's
+first column, under the description, as an `<address>` headed "Office"
+(`MarketingFooter` takes an optional `address`). The contact page's
+`CONTACT_DETAILS.officeAddress` is still empty, so the contact page does not
+show it yet. Evidence: `pnpm test-all` (format, lint, type checks, build). No
+tests were run.
+
+## Solutions menu card — 19 October 2026
+
+At the user's request:
+
+- The Solutions dropdown card has 12 px corners (`rounded-xl` on the
+  navigation menu viewport in `navigation-menu.tsx`); it drew `rounded-md`,
+  which the website's 0.25 rem theme radius made 2 px. Its items have 8 px
+  corners.
+- A 1 px rule (`border-border`) separates the menu's closing line, "Not sure
+  which product fits your institution? Talk to our team", from the grid. This
+  divider was explicitly requested; no other lines were added.
+- Evidence: `pnpm test-all` (format, lint, type checks, build). No tests were
+  run.
+
+## Animated hero pattern — 19 October 2026
+
+The user found the green hero cards too plain and asked for subtle animated
+patterns that represent a healthcare system.
+
+### Research
+
+- From the reference study: Flatiron's hero illustrates its own data network
+  (a dot map); Helium's generic dotted globe and Commure's glowing arc read as
+  decoration, not meaning.
+- A quick web search found mostly generic "node mesh" hero backgrounds
+  ([Framer NeuroMesh](https://www.framer.com/marketplace/components/neuralmesh/),
+  [Synaptic Pro](https://www.framer.com/community/marketplace/components/synaptic-pro/)).
+  The useful idea is a sparse set of distinct care points with signals moving
+  between them, which matches HealthAlyst's "one connected healthcare
+  ecosystem" positioning.
+- Accessibility guidance
+  ([accessible SVG animation](https://noti.st/cariefisher/MKSNhs/present),
+  [reduced motion](https://blog.openreplay.com/prefers-reduced-motion-accessible-animation/)):
+  honour `prefers-reduced-motion`, prefer gentle opacity and slow movement,
+  and give looping motion longer than five seconds a pause control (WCAG
+  2.2.2).
+
+### What was built
+
+- `packages/ui/src/components/marketing-care-network.tsx`: inline SVG, no
+  animation library. A field of small medical crosses masked to fade in from
+  the right; six rounded-square facility nodes with crosses joined by curved
+  spokes to a gold hub, with dashed curved links between neighbours; gold
+  signals travel along the spokes (SMIL `animateMotion`), the hub's ring
+  expands and fades, and alternate facilities breathe.
+- `MarketingPageHeader` has a `decoration` slot (the card clips it). About
+  uses `<MarketingCareNetwork />`; Contact uses
+  `<MarketingCareNetwork reserveLowerSpace />` so the network stays above the
+  overlapping form.
+- Pause control: an `ActionButton` with the new `inverseGhost` variant and
+  `PauseIcon` / `PlayIcon` (added to `@healthalyst/icons`), labelled "Pause
+  background animation" / "Play background animation", in the card's top
+  right corner. It pauses the SVG's animations.
+- Reduced motion: animated elements and the pause control are hidden, leaving
+  the static network. Phones show only the static crosses.
+- The green background and the white sections are unchanged.
+
+### Evidence
+
+- `pnpm test-all` (format, lint, type checks, build).
+- Browser (development server), a load check only: `/about` and `/contact` at
+  desktop show the pattern to the right of the text and, on contact, above the
+  form; the pause control stopped the animation clock and resumed it, its
+  label switching between pause and play; at 375 px the network and control
+  are hidden, with no horizontal overflow; no console errors. Reduced motion
+  was not emulated in this browser. No tests were run.
+
+## About page: actions under "What we do" — 19 October 2026
+
+At the user's request "What we do" ends with two actions: "Explore our
+products" (green, opens the homepage product suite at `/#products`) and "See
+how we work" (outline, jumps to the page's own "How we work with
+institutions" section). Both labels are drafts awaiting approval. Evidence:
+`pnpm test-all` (format, lint, type checks, build). No tests were run.
+
+## About page: institution cards — 19 October 2026
+
+At the user's request "Who we build for" is a grid of cards on the light
+accent colour: `MarketingCardGrid` (new, `packages/ui`) with the subtle gold
+fill `accent-subtle` (`#FFFCF5`), a soft gold edge (`border-accent/25`) and 12
+px corners, three columns on desktop, two on tablets, one on phones. The
+arrow-link styling moved into `MarketingArrowLink`, used by both cards and
+record lists. Cards take an optional 4:3 illustration.
+
+### Illustration source
+
+[unDraw](https://undraw.co/) is the proposed source: its
+[licence](https://undraw.co/license) allows commercial use on websites with
+no attribution and allows modification; it forbids redistributing the
+illustrations in packs, rebuilding unDraw and using them to train AI. Its
+main colour can be set before download, so the set can match the brand.
+Considered and set aside: DrawKit (MIT, health packs, but a less consistent
+match for six institution types), Manypixels, and GetIllustrations (paid).
+unDraw has no dental illustration.
+
+Proposed mapping, awaiting the user's approval to download:
+
+| Card                                 | unDraw illustration |
+| ------------------------------------ | ------------------- |
+| Hospitals and clinics                | Medical care        |
+| Laboratories                         | Scientist           |
+| Pharmacies                           | Doctor's Orders     |
+| Dental practices                     | Doctor              |
+| Imaging centres                      | Medical research    |
+| Equipment suppliers and institutions | Logistics           |
+
+## About page: fading step showcase — 19 October 2026
+
+At the user's request "How we work with institutions" shows the four stages
+one at a time with a fade, instead of the stepper.
+
+- New `MarketingStepShowcase` (`packages/ui`), built on the shared Tabs:
+  `TabsList`, `TabsTrigger` and `TabsContent` gained semantic variants
+  (`steps`, `step`, `crossfade`); the default variant keeps the homepage tabs
+  unchanged.
+- The four steps (approved `STEPS` tags) are tabs on the left; the panel on
+  the right shows "Step n of 4", the stage headline and the full stage
+  description from `STEPS`, and crossfades over 500 ms. It advances every 6 s,
+  holds while the pointer or focus is inside, stops as soon as the visitor
+  clicks or presses a key on the steps, and has a "Pause steps" / "Play
+  steps" control (WCAG 2.2.2). Under reduced motion it neither advances nor
+  fades and the control is hidden. Arrow keys move between steps.
+- Inactive panels are `visibility: hidden`, so only the shown panel can be
+  focused or read.
+- Panels take an optional 16:10 illustration. Proposed unDraw picks,
+  awaiting approval to download: File Searching (discovery and scoping),
+  Master plan (design and architecture), Device Sync (build and
+  integration), Product iteration (launch and continuous improvement).
+- Evidence: `pnpm test-all`. Browser load check: it advanced from step 1 to
+  step 2 after six seconds with only the active panel visible; clicking
+  "Build & integration" selected it, it stayed there seven seconds later and
+  the control read "Play steps". No tests were run.
+
+## About page: illustrations in place — 20 October 2026
+
+The ten unDraw illustrations proposed above for the institution cards and the
+implementation steps are now in the page, as React components in
+`packages/icons/src/illustrations` (new export
+`@healthalyst/icons/illustrations`). `MarketingCardGrid` and
+`MarketingStepShowcase` colour them with the primary green and set
+`--illustration-accent` to the theme gold. The "Doctor" illustration (Dental
+practices card) still had unDraw's light skin tones and pale hair; they now
+use the deeper tone and dark hair like the other nine. Sources, licence and
+placements are recorded in `docs/website-assets.md`.
+
+Evidence: `pnpm test-all` (format, lint, type checks, build). Browser
+(development server), a load check only: `/about` on desktop shows all six
+card illustrations and the step illustration; at 375 px there is no
+horizontal overflow, one `h1` and ordered headings; no console errors. No
+tests were run.
+
+## About page: even illustration frames — 20 October 2026
+
+The user found the institution cards inconsistent in size. The unDraw art
+ranges from 0.63:1 (Pharmacies, tall) to 1.97:1 (Supply, wide), and the
+frames did not constrain it: the SVG's `size-full` resolved against an auto
+height, so the tall illustration stretched its card. In `MarketingCardGrid`
+(4:3) and `MarketingStepShowcase` (16:10) the illustration now sits in an
+absolutely positioned box inset 24 px (32 px on wider screens for steps)
+inside a frame on the page background with 8 px corners, and is fitted to
+it. Evidence: browser on the development server, all six cards 459 px tall
+at desktop and 423 px at 375 px, no horizontal overflow, no console errors;
+`pnpm test-all`. No tests were run.
+
+## About page: illustrations matched to institutions — 20 October 2026
+
+The user found three institution cards with the wrong illustration.
+
+- "Medical care" (nurses beside a jar of medicines) reads as a pharmacy and
+  "Doctor's Orders" (a doctor writing on a chart) as a hospital, so they were
+  swapped, and their components renamed for what they show:
+  `MedicationDispensingIllustration` (Pharmacies) and
+  `ClinicalChartingIllustration` (Hospitals and clinics).
+- "Doctor" (a general examination with a stethoscope) does not represent
+  dental practices. unDraw has no dental illustration (searches for
+  "dentist" and "teeth" return nothing). It stays on the Dental card until a
+  replacement is chosen.
+
+At the user's choice the Dental card now has `DentalCareIllustration`, adapted
+from unDraw's "Medical research" (the licence allows modification): the
+clinician with a tablet is kept without the stethoscope, in dark scrubs and a
+surgical mask so the figure differs from the Imaging card's, and the X-ray
+board is replaced with a dental chair, an overhead lamp, an instrument tray
+and a tooth sign drawn for this site in the same flat style and colours. The
+unused "Doctor" illustration was removed. Evidence: `pnpm test-all`; browser
+on the development server, all six cards the same height, no console errors.
+No tests were run.
+
+## About page: card border removed — 20 October 2026
+
+At the user's request the institution cards (`MarketingCardGrid`) no longer
+have the soft gold border; they keep the subtle gold fill and 12 px corners
+and, at the user's request, have a subtle shadow instead
+(`0 1px 2px` at 4% and `0 4px 16px` at 6% of the ink colour), a lighter
+version of the form panel's shadow.
+The step showcase panel is unchanged. Evidence: `pnpm test-all`; browser on
+the development server. No tests were run.
+
+## Section heading size — 20 October 2026
+
+The user found the About page's section headings ("What we do", "Who we build
+for") too small for sub-headings. They used Heading 2 (28 px), the step meant
+for panel headings such as the contact form's. A new "Section" step, 40 px on
+desktop and 32 px on phones (line height 1.15, weight 600, −0.02em), now sets
+`MarketingContentSection` headings, between the 64 px page heading and 20 px
+card headings and in line with the homepage's 36–48 px section headings. The
+introduction sits 20 px below. Panel headings keep 28 px. Evidence:
+`pnpm test-all`; browser on the development server. No tests were run.
+
+At the user's request the "Who we build for" heading and introduction are
+centred over the cards: `MarketingContentSection` gained
+`alignment="center"` (stacked sections without media), which centres the
+heading, introduction and actions. The other sections keep start alignment.
+
+At the user's request the illustration frames have visible rounded corners:
+they asked for `rounded-lg`, which the website's 0.25 rem theme radius made
+4 px, so they now use `rounded-[8px]`, as `DESIGN.md` records and as the
+Solutions menu items do. Evidence: `pnpm test-all`; browser on the
+development server. No tests were run.
+
+## About page: card micro-interactions — 20 October 2026
+
+At the user's request the institution cards respond to the pointer and the
+"Enquire about …" link stays hidden until the card is hovered, fading in
+smoothly.
+
+- `MarketingCardGrid`: on hover or focus within, the card lifts 4 px with a
+  deeper shadow (300 ms, ease-out) and the illustration scales to 104%
+  (500 ms) inside its clipped frame. The link fades in from transparent
+  (300 ms); it does not move, because a transform on its wrapper would
+  confine the stretched link to the wrapper.
+- Accessibility: the link is hidden only on devices that can hover
+  (`@media (hover: hover)`), so touch visitors always see it; keyboard focus
+  reveals it (`focus-within`); it keeps its space while hidden, so nothing
+  shifts. Under reduced motion there is no movement or transition.
+- `MarketingArrowLink` gained `stretched`, which extends the link over the
+  card, so the whole card is clickable and its accessible name is still the
+  link text. Record lists are unchanged.
+
+## About page: "What we do" centred vertically — 20 October 2026
+
+At the user's request the "What we do" text is centred vertically against
+the photograph on wide screens: `MarketingContentSection` aligns sections
+with `media` to the centre (`lg:items-center`); split sections stay top
+aligned. Evidence: `pnpm test-all`; browser on the development server. No
+tests were run.
+
+## Contact page: office map — 20 October 2026
+
+The user asked for a Google map of the office address directly above the
+footer on the contact page, and chose a lazily loaded map (no click needed)
+and Google's keyless embed (no API key).
+
+### Build
+
+- New shared composition `marketing-location-map` (`packages/ui`): an address
+  column and the map frame in one card; new `LocationIcon` in
+  `@healthalyst/icons` (lucide `MapPin`).
+- Contact page: a last section, "Visit our office", using
+  `MarketingContentSection`, so it sits directly above the footer.
+- Data: `COMPANY_OFFICE_ADDRESS.mapQuery` ("11 Adenubi Close, Ikeja, Lagos,
+  Nigeria") in `src/data/site.ts`, and `CONTACT_OFFICE_MAP` in
+  `src/data/contact-page-content.ts`, which builds the embed address
+  (`maps.google.com/maps?q=…&z=16&hl=en&output=embed`) and the directions
+  link (Google's documented Maps URLs, `google.com/maps/dir/?api=1&destination=…`).
+- The frame has a title naming the place, `loading="lazy"` and
+  `referrerPolicy="strict-origin-when-cross-origin"`. "Get directions" opens
+  in a new tab and says so to screen readers. The address is real text, so it
+  is readable if the map fails to load.
+- A first version floated the address card over the map's top left corner;
+  it covered Google's own place box, so the card became a column beside the
+  map instead.
+
+### Privacy
+
+Once it loads, the Google map sets Google cookies and loads Google's scripts
+in the visitor's browser. The site has no privacy notice or cookie banner
+yet. An accountable company owner should decide whether a notice should
+mention Google Maps, or whether the map should become click-to-load.
+
+### To confirm
+
+- Google labels the pinned place "11 Adenubi Cl, behind St. Leo's Catholic
+  Church, off Toyin Street", while the site's address says "off Majekodunmi
+  Street, off Allen Avenue". Zoomed in, the pin sits on Adenubi Close beside
+  Majekodunmi Street, so it appears right; someone who knows the office
+  should still confirm it.
+- Drafts awaiting approval: the heading "Visit our office", the introduction
+  "Our office is in Ikeja, Lagos." and "Get directions". If visits need an
+  appointment, the introduction should say so.
+
+### Evidence
+
+`pnpm test-all` (format, lint, type checks, build). Browser on the
+development server: desktop shows the address column beside the map with
+the pin in Ikeja and Google's place box visible; at 375 px the address comes
+first, then the map, with no horizontal overflow; the section is the last in
+`main`, directly before the footer; headings are in order; the directions
+link is 48 px tall and named "Get directions (opens in a new tab)"; no
+console errors. No tests were run.
+
+At the user's request the address column's type is smaller (name 18 px,
+address 15 px light) and it carries a pattern: a faint field of green medical
+crosses, the page header's motif, at 20% opacity on a 28 px grid, masked by a
+radial fade from the lower right corner so the area behind the text stays
+calm. Decorative and hidden from assistive technology. Evidence:
+`pnpm test-all`; browser on the development server, no console errors. No
+tests were run.
+
+At the user's request there is no added space between a section heading and
+its introduction (first 20 px, then 12 px, now none) in every
+`MarketingContentSection` (About and Contact pages); only the lines' own
+leading separates them. Evidence:
+`pnpm test-all`; browser on the development server. No tests were run.
+
+## About page: settings in the institution illustrations — 20 October 2026
+
+At the user's request each institution card's illustration shows a
+recognisable setting behind or around the figures, drawn for this site in
+the same flat style and colours (green main colour, gold accents, unDraw's
+greys):
+
+| Card                  | Scenery added                                                                          |
+| --------------------- | -------------------------------------------------------------------------------------- |
+| Hospitals and clinics | Ward bed, drip stand, scheduling board; canvas widened to 1240 × 880                   |
+| Laboratories          | Lab bench with microscope, beaker and flask; shelf of reagent bottles; molecule poster |
+| Pharmacies            | Dispensary shelves of medicines under a pharmacy cross                                 |
+| Imaging centres       | Brain scan and chest X-ray in place of the abstract films; CT scanner                  |
+| Equipment suppliers   | Warehouse racking with stock; canvas extended upwards                                  |
+| Dental practices      | Unchanged (already has its chair, lamp, tray and tooth sign)                           |
+
+The widened canvases match the 4:3 frame, so the figures keep their size.
+Sources and changes are recorded in `docs/website-assets.md`. Evidence:
+`pnpm test-all`; browser on the development server, each card checked. No
+tests were run.
+
+The user found the scenery too noisy and asked for it to be really subtle,
+keeping the emphasis on the important elements. The added scenery is now
+drawn at 14% opacity (one `<g opacity="0.14">` per illustration; first 28%, made subtler at the user's request); the lab
+bench, which stands in front of the scientist, stays opaque in pale greys
+(`#ededed`, `#f3f3f3`, `#f8f8f8`) so her coat does not show through, and the
+instruments on it are faded. Full strength is kept for the figures, the
+original unDraw objects (pill jar, trolley and boxes, held flask) and the
+brain scan and chest X-ray, which carry the Imaging card's meaning. Dental
+practices is unchanged: its chair is the card's main subject. Evidence:
+`pnpm test-all`; browser on the development server. No tests were run.
+
+The user then asked for fewer elements and better balance, so each card keeps
+only one or two quiet background pieces: Hospitals and clinics loses the drip
+stand (bed and scheduling board stay); Laboratories loses the molecule poster
+and the beaker and flask (bench, microscope and bottle shelf stay); Pharmacies
+loses the pharmacy cross (shelves stay); Equipment suppliers keeps the racking
+with half the boxes; Imaging centres keeps the scanner. The added scenery is
+at 14% opacity (from 28%) and the lab bench in paler greys (`#ededed`,
+`#f3f3f3`, `#f8f8f8`). Evidence: `pnpm test-all`; browser on the development
+server, no console errors. No tests were run.
+
+At the user's request the Equipment suppliers illustration has no added
+background: the racking is removed and its original 800 × 406 canvas
+restored. Evidence: `pnpm test-all`; browser on the development server. No
+tests were run.
+
+At the user's request the Equipment suppliers illustration has no added
+background: the racking is removed and its original 800 × 406 canvas
+restored. Evidence: `pnpm test-all`; browser on the development server. No
+tests were run.
+
+At the user's request the potted plant beside the clinician is removed from
+the Imaging centres illustration (the Dental illustration, adapted from the
+same drawing, keeps its plant). Evidence: `pnpm test-all`; browser on the
+development server. No tests were run.
+
+At the user's request the dental chair is subtle: the chair, overhead lamp
+and instrument tray are drawn at 14% opacity like the other cards' scenery;
+the tooth sign stays at full strength as the card's dental cue. Evidence:
+`pnpm test-all`; browser on the development server. No tests were run.
+
+The user found the Pharmacies illustration too crowded and asked for a
+better one. unDraw has no pharmacist illustration (its "pharmacy" and
+"medicine" results are "Doctor's Orders", already on the Hospitals card, a
+medical representative and a pair of doctors), so "Medical care" is
+simplified instead: the second figure is removed, leaving one pharmacist
+beside the medicine jar with the faint dispensary shelves behind, and the
+canvas is recentred (`viewBox="288 0 570 618.1"`). Evidence:
+`pnpm test-all`; browser on the development server, no console errors. No
+tests were run.
+
+## About page: "How we work" reframed for health organisations — 20 October 2026
+
+The user found the section misleading: it read like a software agency's
+process ("before writing a line of code", "we architect platforms",
+"offline-first", "unstructured supplementary service data and short message
+service fallback"), while HealthAlyst builds products for health
+organisations and helps them manage and automate their workflows.
+
+The About page no longer uses the shared `STEPS`; it has its own
+`ABOUT_APPROACH_STEPS` in `src/data/about-page-content.ts`. Drafted copy,
+awaiting approval, limited to facts the site already states:
+
+| Step                            | Headline                                      | Description (summary)                                                                           |
+| ------------------------------- | --------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Understand your workflows       | We learn how your organisation works          | Time with clinical, administrative and management teams; where paperwork and repeats slow staff |
+| Fit the product to your setting | Set up around your services and your teams    | Configured for services, roles and approvals, including facilities with limited connectivity    |
+| Connect and automate            | Information moves without being entered twice | Products connected to each other and existing systems; the LabConnect and PharmaDesk examples   |
+| Train, launch and support       | Alongside your staff from launch onwards      | Staff training, launch support, continued improvement                                           |
+
+- Heading: "How we work with health organisations". Introduction: "We start
+  from how your organisation delivers care, then shape our products around
+  your teams and the work they do every day." Step list label: "How we work
+  with you".
+- Still open: the step illustrations are software-themed (unDraw "File
+  Searching", "Master plan", "Device Sync", "Product iteration"), and the
+  homepage "How we work" section still uses the original `STEPS` wording.
+
+Evidence: `pnpm test-all`; browser on the development server. No tests were
+run.
+
+## About page: hub diagram replaces the cards and the steps — 20 October 2026
+
+The user wanted no cards, illustrations or steppers in this part of the
+page, but a looping animated sequence like the sector diagram on
+MyCover.ai's homepage (a hub joined by connector lines to labelled pills),
+and chose to replace both "Who we build for" and "How we work" with one
+section. Our own design, not a copy: the reference was studied from the
+user's screenshot.
+
+### Build
+
+- New shared composition `marketing-hub-diagram` (`packages/ui`), rendered
+  on the server and complete without scripts, with a small client layer,
+  `marketing-hub-diagram-motion`, that marks the active node through
+  `data-active` (the diagram's classes light it up) and draws the signal, the
+  hub's pulse and the pause control. Shared geometry is in
+  `src/lib/hub-diagram-geometry.ts`; two keyframes are in
+  `packages/ui/src/styles.css` (`marketing-hub-signal`,
+  `marketing-hub-pulse`). Behaviour as recorded in `DESIGN.md`.
+- A first version was one client component receiving the product icons as
+  properties. It ran on the development server but the production build
+  failed to prerender `/about` ("Element type is invalid … got: undefined"):
+  icons passed from the server into the client component were missing from
+  the client bundle. Splitting the server markup from the client motion layer
+  fixed it.
+- About page: "Who we build for" (centred heading and introduction) now
+  holds the diagram, with the Healthalyst logo (`LogoMark`) in the hub and
+  the six `INSTITUTIONS` as pills, each with its product icon and a link to
+  that product's enquiry (accessible name, for example "Hospitals and clinics
+  HealthSchedule: enquire about HealthSchedule"). Under it, one sentence sums
+  up the four ways of working; it carries `id="how-we-work"`, so "See how we
+  work" and the footer's "Our approach" still land there.
+- Removed from the About page: the institution cards and their
+  illustrations, the step showcase and `ABOUT_APPROACH_STEPS`. The shared
+  components `marketing-card-grid` and `marketing-step-showcase`, the Tabs
+  variants and the illustrations in `@healthalyst/icons/illustrations` are
+  no longer used anywhere; they are kept until the user decides whether to
+  remove them.
+
+### Drafted copy awaiting approval
+
+- "We work with each organisation in four stages: we learn how your teams
+  work, set the product up around your services and roles, connect it to the
+  systems you already use so information is not entered twice, and train and
+  support your staff from launch onwards."
+- List name: "Institutions we build for"; control: "Pause animation" / "Play
+  animation".
+
+### Evidence
+
+`pnpm test-all`. Browser on the development server: at desktop width one
+pill lights at a time and advances every 1.8 s, about 0.7 s after its signal
+leaves the hub, and the hub's pulse ring sits exactly over the hub; "Pause
+animation" held the loop for 3.7 s and switched to "Play animation"; the six
+links open `/contact?product=…#enquiry-form`; at 375 px the hub sits above
+one column of pills (62–81 px tall), with no horizontal overflow and headings
+in order; no console errors after the edit. Reduced motion was not emulated.
+No tests were run.
+
+## Icons, illustrations and the MyCover Genius study — 20 October 2026
+
+The user asked for icons like MyCover Genius's products menu everywhere,
+for that site to be studied as the guide to section layout and arrangement
+(not its design, colours or copy), for every unDraw illustration to be
+removed as outdated, and for real, openly licensed photographs (not AI) to
+be used instead.
+
+- **Study:** `docs/design-case-studies.md`, section 6: their homepage
+  section by section with the layout idea and our equivalent, their products
+  menu, their imagery (commercial-style stock served through Cloudinary with
+  metadata stripped, so their source cannot be identified or reused) and
+  openly licensed sources for ours.
+- **Icons:** new `MarketingIconBadge` (`packages/ui`), applied to the
+  Solutions menu (desktop and phone; menu items take an optional `icon`), the
+  About hub diagram (gold ring when active), the homepage product catalogue
+  and product panel, and the office map card. Product icons now come from one
+  map, `src/components/product-icons.tsx`.
+- **Removed:** `packages/icons/src/illustrations` (all unDraw-based art and
+  the adapted dental scene) and its `@healthalyst/icons/illustrations`
+  export; `public/images/healthcare-collaboration.webp` (AI-generated, not
+  displayed). `docs/website-assets.md` records both removals.
+- **Not yet done:** choosing and downloading replacement photographs, which
+  needs the user's approval per file. `doctor-at-clinic.webp` (homepage
+  hero) and `clinical-team.webp` (homepage about) still have no recorded
+  source and should be replaced. The shared `marketing-card-grid` and
+  `marketing-step-showcase` are unused.
+
+Evidence: `pnpm test-all`; browser on the development server: the Solutions
+menu, the About diagram and the homepage product panel show the ringed icons;
+no console errors. No tests were run.

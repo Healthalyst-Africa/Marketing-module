@@ -1,51 +1,11 @@
 # Homepage imagery
 
-## Earlier healthcare collaboration illustration (not displayed)
+## Removed: AI-generated healthcare collaboration image — 20 October 2026
 
-- Asset: `apps/healthalyst-website/public/images/healthcare-collaboration.webp`.
-- Origin: generated specifically for the Slice 3 prototype with the built-in
-  OpenAI image generation tool. Mode: new image generation; no reference image.
-- Date: 6 October 2026.
-- Format: WebP, 960 × 1200 pixels, 175,402 bytes. Encoded from the original PNG
-  using the Sharp dependency already available through Next.js. No image package
-  was added to the repository.
-- Previous placement: homepage hero. Retained as an earlier experiment; the
-  current review uses the licensed healthcare photographs below.
-- Alternative text: “Editorial illustration of a clinician and an operations
-  professional reviewing a tablet in a healthcare setting.”
-- Meaning: an illustrated healthcare context. The people, setting and tablet are
-  fictional. This is not a photograph of staff, customers, an actual company
-  office, patient information or a shipped product screen.
-- The illustration retains its original colours across palette choices, as a
-  raster image would. Surrounding surfaces, typography, controls and the ecosystem
-  diagram follow the selected semantic palette.
-- Approval: experimental imagery for the requested revamp. The product designer
-  still decides the final visual direction. No stock-photo licence, real-person
-  consent or company endorsement is claimed.
-
-### Generation prompt
-
-> Create one polished editorial illustration for the hero of HealthAlyst, an
-> African institutional healthcare technology company. This is an
-> illustration-story asset, not a website screenshot. Portrait canvas, 4:5 aspect
-> ratio, full-bleed warm ivory paper background #F9F6F0. An art-directed contemporary
-> print illustration with subtle risograph grain and hand-drawn ink texture,
-> restrained forest green #183020, ochre gold #B8935A and warm sand #E2D9C8. Show a
-> welcoming modern outpatient healthcare setting in Africa: two clearly
-> illustrated African adult people, a clinician in a simple work coat and an
-> institutional operations professional reviewing a closed, unlabelled tablet
-> together at a desk; a palm-frond shadow through a tall arched window, a modest
-> cabinet of laboratory bottles and a small potted plant. Faces simple but
-> expressive and anatomically coherent, hands believable. Editorial composition
-> with architectural geometry and tactile paper, beautiful clean negative space,
-> sophisticated magazine cover quality, warm and humane. Not a generic flat SaaS
-> cartoon, not isometric blocks, not 3D plastic, not photorealistic stock
-> photography, no floating icons, no decorative confetti. No readable text,
-> letters, logos, symbols, badges, numbers, charts, patient information or product
-> screens anywhere. This illustrates the healthcare context; it must not imply a
-> real company office, real staff, real customers or actual shipped software.
-> Keep key subjects comfortably within frame so it crops well in a right-hand
-> website hero column.
+`public/images/healthcare-collaboration.webp`, generated with an AI image
+tool for the Slice 3 prototype and no longer displayed, was removed at the
+user's request: the website uses real, openly licensed photographs, not
+AI-generated images. It remains in Git history.
 
 ## Connected product diagram
 
@@ -67,10 +27,10 @@ These photographs illustrate healthcare settings. They do not depict Healthalyst
 staff, offices, customers, endorsed services or real product screens. The images
 keep their natural colours when the website palette changes.
 
-| Asset                                 | Placement                                                                                            | Source and photographer                                                                                               |
-| ------------------------------------- | ---------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| `public/images/clinician-tablet.webp` | Contact page, beside "What happens next"; wide screens only, 5:4 crop (previously the homepage hero) | [Tima Miroshnichenko, Pexels](https://www.pexels.com/photo/a-braided-hair-woman-using-a-tablet-computer-5452188/)     |
-| `public/images/clinical-team.webp`    | About section; responsive landscape, lazy loaded                                                     | [Cedric Fauntleroy, Pexels](https://www.pexels.com/photo/a-receptionist-and-a-practitioner-at-the-reception-4269274/) |
+| Asset                                 | Placement                                                                                                              | Source and photographer                                                                                               |
+| ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `public/images/clinician-tablet.webp` | About us page, beside "What we do"; 4:5 portrait crop, lazy loaded (previously the homepage hero and the contact page) | [Tima Miroshnichenko, Pexels](https://www.pexels.com/photo/a-braided-hair-woman-using-a-tablet-computer-5452188/)     |
+| `public/images/clinical-team.webp`    | About section; responsive landscape, lazy loaded                                                                       | [Cedric Fauntleroy, Pexels](https://www.pexels.com/photo/a-receptionist-and-a-practitioner-at-the-reception-4269274/) |
 
 The [Pexels licence](https://www.pexels.com/license/) permits commercial website
 use. No endorsement is implied. Both source photographs were downloaded from
@@ -89,6 +49,15 @@ footer present its original gold mark through a constrained image viewport,
 alongside a readable wordmark. The source image is unchanged. The deleted
 replacement `logo.svg` has not been restored. Metadata now points to the supplied
 JPEG rather than the missing SVG.
+
+## Removed: unDraw illustrations — 20 October 2026
+
+The unDraw illustrations once on the About page (institution cards and
+implementation steps), with the scenery and the dental illustration adapted
+from them, were removed at the user's request, who considers the style
+outdated. `packages/icons/src/illustrations` and the
+`@healthalyst/icons/illustrations` export no longer exist. The site uses real,
+openly licensed photographs instead of illustrations.
 
 ## Images without a recorded source — 19 October 2026
 

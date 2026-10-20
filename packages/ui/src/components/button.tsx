@@ -34,6 +34,9 @@ const buttonVariants = createClassVariants(
         /** The primary action on a brand-coloured field: inverted fill. */
         inverse:
           "bg-primary-foreground text-primary hover:bg-primary-foreground/90 focus-visible:ring-primary-foreground focus-visible:ring-offset-primary",
+        /** A quiet control on a brand-coloured field, such as pausing decoration. */
+        inverseGhost:
+          "bg-transparent text-primary-foreground/70 hover:bg-primary-foreground/10 hover:text-primary-foreground focus-visible:ring-primary-foreground focus-visible:ring-offset-primary",
         /** A secondary action on a brand-coloured field. */
         inverseOutline:
           "border border-primary-foreground/30 bg-transparent text-primary-foreground hover:bg-primary-foreground/10 focus-visible:ring-primary-foreground focus-visible:ring-offset-primary",

@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ActionLink } from "@healthalyst/ui/components/action-link";
+import { MarketingCareNetwork } from "@healthalyst/ui/components/marketing-care-network";
 import { MarketingEnquiryForm } from "@healthalyst/ui/components/marketing-contact";
+import { MarketingContentSection } from "@healthalyst/ui/components/marketing-content-section";
+import { MarketingLocationMap } from "@healthalyst/ui/components/marketing-location-map";
 import { MarketingPageHeader } from "@healthalyst/ui/components/marketing-page-header";
 import {
   MarketingRecordList,
@@ -16,6 +20,7 @@ import {
   CONTACT_DETAILS,
   CONTACT_FORM_CONTENT,
   CONTACT_NEXT_STEPS,
+  CONTACT_OFFICE_MAP,
   CONTACT_OTHER_ROUTES,
   CONTACT_PAGE_CONTENT,
 } from "~/data/contact-page-content";
@@ -126,6 +131,7 @@ export default async function ContactPage({
         tone="brand"
         shape="card"
         overlapBelow
+        decoration={<MarketingCareNetwork reserveLowerSpace />}
         heading={CONTACT_PAGE_CONTENT.heading}
         lede={<p>{CONTACT_PAGE_CONTENT.lede}</p>}
       />
@@ -150,6 +156,30 @@ export default async function ContactPage({
         }
         asides={asides}
       />
+      <MarketingContentSection
+        identifier={CONTACT_OFFICE_MAP.identifier}
+        heading={CONTACT_OFFICE_MAP.heading}
+        introduction={<p>{CONTACT_OFFICE_MAP.introduction}</p>}
+      >
+        <MarketingLocationMap
+          embedSource={CONTACT_OFFICE_MAP.embedSource}
+          mapTitle={CONTACT_OFFICE_MAP.mapTitle}
+          name={CONTACT_OFFICE_MAP.organisationName}
+          addressLines={CONTACT_OFFICE_MAP.addressLines}
+          action={
+            <ActionLink size="extraLarge" shape="pill">
+              <a
+                href={CONTACT_OFFICE_MAP.directionsDestination}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {CONTACT_OFFICE_MAP.directionsLabel}
+                <span className="sr-only"> (opens in a new tab)</span>
+              </a>
+            </ActionLink>
+          }
+        />
+      </MarketingContentSection>
     </>
   );
 }

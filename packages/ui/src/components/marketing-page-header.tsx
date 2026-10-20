@@ -13,6 +13,7 @@ export function MarketingPageHeader({
   lede,
   actions,
   media,
+  decoration,
   showMediaOnSmallScreens = true,
   tone = "default",
   shape = "band",
@@ -23,6 +24,8 @@ export function MarketingPageHeader({
   lede: ReactNode;
   actions?: ReactNode;
   media?: ReactNode;
+  /** Decorative layer behind the content, such as an animated pattern; it is clipped to the header. */
+  decoration?: ReactNode;
   /** Set to false when the media is decorative and would delay the page's task on phones. */
   showMediaOnSmallScreens?: boolean;
   tone?: "default" | "brand";
@@ -40,12 +43,15 @@ export function MarketingPageHeader({
         isBrand
           ? "bg-primary text-primary-foreground"
           : "bg-background text-foreground",
+        decoration && "relative isolate overflow-hidden",
         isCard ? "rounded-2xl" : className
       )}
     >
+      {decoration}
       <MarketingContainer
         className={cn(
           "pt-12 md:pt-20",
+          decoration && "relative",
           overlapBelow ? "pb-28 md:pb-36" : "pb-12 md:pb-16"
         )}
       >

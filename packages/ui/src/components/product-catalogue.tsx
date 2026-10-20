@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 import { ArrowUpRightIcon } from "@healthalyst/icons";
+import { MarketingIconBadge } from "@healthalyst/ui/components/marketing-icon-badge";
 import { ActionLink } from "@healthalyst/ui/components/action-link";
 import { Card, CardContent, CardHeader } from "@healthalyst/ui/components/card";
 import {
@@ -71,12 +72,7 @@ export function ProductCatalogue({
               <article className="flex h-full flex-col">
                 <CardHeader className="flex-1 p-6 md:p-7">
                   <div className="mb-8 flex items-center justify-between">
-                    <span
-                      aria-hidden="true"
-                      className="flex size-12 items-center justify-center rounded-xl border border-border bg-secondary text-primary [&_svg]:size-6 [&_svg]:stroke-[1.5]"
-                    >
-                      {icons[index]}
-                    </span>
+                    <MarketingIconBadge icon={icons[index]} size="large" />
                     <span
                       aria-hidden="true"
                       className="text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-focus-within:-translate-y-0.5 group-focus-within:translate-x-0.5 motion-reduce:transition-none"

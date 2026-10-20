@@ -4,6 +4,7 @@ import { MarketingContainer } from "@healthalyst/ui/components/marketing-section
 export function MarketingFooter({
   brand,
   description,
+  address,
   location,
   groups,
   copyright,
@@ -11,6 +12,8 @@ export function MarketingFooter({
 }: {
   brand: ReactNode;
   description: string;
+  /** A postal address shown under the description, one entry per line. */
+  address?: { label: string; lines: readonly string[] };
   location: string;
   groups: readonly { heading: string; links: ReactNode }[];
   copyright: string;
@@ -25,6 +28,20 @@ export function MarketingFooter({
             <p className="mb-5 mt-6 max-w-[30ch] text-sm leading-[1.8] text-muted-foreground">
               {description}
             </p>
+            {address && (
+              <div className="mb-5">
+                <p className="text-sm font-medium text-primary">
+                  {address.label}
+                </p>
+                <address className="mt-1 text-sm font-light not-italic leading-[1.8] text-muted-foreground">
+                  {address.lines.map((line) => (
+                    <span key={line} className="block">
+                      {line}
+                    </span>
+                  ))}
+                </address>
+              </div>
+            )}
             <p className="text-sm text-muted-foreground">{location}</p>
           </div>
           {groups.map((group) => (

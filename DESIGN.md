@@ -94,7 +94,8 @@ reworked.
 | Step      | Size (desktop / mobile) | Line height | Weight | Tracking | Use                                 |
 | --------- | ----------------------- | ----------- | ------ | -------- | ----------------------------------- |
 | Display   | 64 / 40 px              | 1.04        | 600    | −0.03em  | Page heading, one per page          |
-| Heading 2 | 28 / 24 px              | 1.2         | 600    | −0.02em  | Panel and section headings          |
+| Section   | 40 / 32 px              | 1.15        | 600    | −0.02em  | Section headings on content pages   |
+| Heading 2 | 28 / 24 px              | 1.2         | 600    | −0.02em  | Panel headings                      |
 | Heading 3 | 20 px                   | 1.3         | 600    | −0.01em  | Side-column headings                |
 | Lede      | 20 / 18 px              | 1.6         | 300    | 0        | Opening paragraph under the heading |
 | Body      | 16–17 px                | 1.6–1.7     | 300    | 0        | Paragraphs and descriptions         |
@@ -139,6 +140,64 @@ phones and tablets the form comes first and the side column follows it.
 On wide screens the form stays first in reading and focus order although it
 sits in the right-hand column.
 
+### Office map (Contact us)
+
+The contact page ends, directly above the footer, with a "Visit our office"
+section (`MarketingContentSection`) holding `MarketingLocationMap`: one card
+with the subtle gold fill, 12 px corners and the linked-card shadow, split
+into an address column (location icon in a soft gold circle, the company name
+at 18 px, the address at 15 px light, a green "Get directions" pill, over a
+faint field of green medical crosses, the page header's motif, at 20% opacity
+on a 28 px grid, strongest in the lower right corner and fading out behind
+the text) and Google's map at 320
+px tall (440 px from tablets up). On wide screens the address is a third of
+the width on the left; on phones it comes first and the map follows. The
+address never sits over the map, so Google's own place box and controls stay
+visible.
+
+### Inner page of sections (About us)
+
+The green page header card, then white sections built with
+`MarketingContentSection`, separated by space only:
+
+- A section has a 40 px (32 px on phones) semibold ink heading and an optional light
+  introduction of up to 68 characters a line.
+- `stacked` puts the content below, and may centre the heading and
+  introduction over it (`alignment="center"`, used for "Who we build for"); `split` puts the heading in a 5-column
+  side column beside 7 columns of content; a `media` photograph takes 5
+  columns beside the text, which is centred vertically against it.
+- A short ordered process can be a step showcase (`MarketingStepShowcase`):
+  the steps as a list of tabs on the left (number in a gold-outlined circle,
+  filled gold when selected, row on the subtle gold surface) and one panel on
+  the right on the subtle gold surface that crossfades in 500 ms. It moves on
+  every 6 s, holds under the pointer or focus, stops when a step is chosen,
+  has a "Pause steps" control and does not move under reduced motion. "How we
+  work with institutions" on the About page uses it.
+- Items that each lead somewhere can be cards (`MarketingCardGrid`): subtle
+  gold fill (`accent-subtle`) with no border and a subtle shadow, 12 px
+  corners, an optional illustration fitted inside a 4:3 frame on the page
+  background with 8 px corners (so every card has the same shape whatever the
+  art's proportions), a title, a light description and an arrow link. "Who we build for" on the About page uses them.
+- **Hub diagram** (`MarketingHubDiagram`, "Who we build for" on the About
+  page, at the user's request, after a MyCover.ai reference; it replaced the
+  institution cards and the step showcase there). The logo sits in a 32 px
+  rounded hub card with a soft shadow on a faint gold glow; three institution
+  pills a side (icon in a gold-tinted circle, institution at 15 px semibold,
+  product at 13 px light, full-round with a green 20% edge) join it by curved
+  connectors in green at 20%. Every 1.8 s a gold signal travels from the hub
+  along one connector (0.9 s), the hub's gold ring pulses, and the pill it
+  reaches lights up (gold edge, gold icon circle, deeper shadow) 0.7 s later;
+  then the next. Each pill links to that product's enquiry. The loop holds
+  under the pointer or focus, stops off screen, has a "Pause animation"
+  control and does not run under reduced motion. On phones and tablets the
+  hub sits above the pills in one or two columns. The four ways of working
+  follow as one centred sentence (`#how-we-work`).
+- Lists of labelled items use record rows in two or three columns; real
+  sequences use the gold stepper; a closing section repeats the main action
+  ("Contact us", green) with one outline secondary action.
+- Sections the company cannot yet support with real material (leadership,
+  partners, news) are left out rather than filled.
+
 ## Shape and depth
 
 | Element                     | Radius |
@@ -152,7 +211,9 @@ sits in the right-hand column.
 | Buttons                     | Full   |
 
 Depth: 1 px edges on cards, panels and controls, plus one soft shadow on panels
-that sit over a brand field (the form panel) and on dropdown menus. No other shadows. No horizontal divider
+that sit over a brand field (the form panel) and on dropdown menus, and a
+lighter shadow on linked cards (`MarketingCardGrid`, at the user's request).
+No other shadows. No horizontal divider
 lines anywhere unless the user explicitly approves one.
 
 ## Components
@@ -167,7 +228,8 @@ lines anywhere unless the user explicitly approves one.
   request (`bg-accent-subtle`).
 - **Solutions menu.** The shadcn navigation menu (Radix). Six destinations by
   institution type, each with its product and a one-line description, and a
-  closing "Talk to our team" link. Opens with Enter, Space or hover; Escape
+  closing "Talk to our team" link, set apart by a 1 px rule (added at the
+  user's request). The menu card has 12 px corners and its items 8 px. Opens with Enter, Space or hover; Escape
   closes it and returns focus to the trigger. On phones the same list sits at
   the top of the slide-out menu.
 - **Buttons.** 48 px tall in content (`size="extraLarge"`), 44 px in the
@@ -224,8 +286,20 @@ lines anywhere unless the user explicitly approves one.
   sheets slide in.
 - No scroll-triggered entrances, count-ups, auto-advancing carousels, logo
   marquees or autoplaying video without a pause control.
+- **Linked cards.** The whole card opens its link. On hover or keyboard focus
+  it lifts 4 px and its shadow deepens (300 ms), its illustration scales to
+  104% (500 ms), and the "Enquire about …" link fades into view (300 ms). The link is hidden until then only on devices that can hover; on
+  touch screens it is always shown, and keyboard focus always reveals it.
 - Every transition is removed under `prefers-reduced-motion: reduce`, and the
   sending spinner stops.
+- **Hero pattern.** Green page header cards carry `MarketingCareNetwork`: a
+  faint field of medical crosses (8–9% white) fading in from the right, and on
+  tablet and desktop a network of six facilities joined to a gold hub (the
+  shared record), with gold signals moving along the links over 6.5–10 s, the
+  hub's ring expanding every 4 s and alternate facilities breathing every 5 s.
+  It is decorative (`aria-hidden`), kept to the right so text is never over
+  it, still under reduced motion, and has a pause control in the card's top
+  right corner (WCAG 2.2.2). On phones only the static crosses show.
 
 ## Imagery and icons
 
@@ -241,9 +315,19 @@ lines anywhere unless the user explicitly approves one.
   show invented product screens or patient information, and never use
   AI-generated images as photographs.
 - Task pages (contact, forms) carry no decorative photography.
-- Icons come from Lucide only and are functional: arrows on links, chevrons on
-  menus and accordions, ticks for confirmations, a menu icon on phones. Hidden
-  from assistive technology when the text already says the same thing.
+- No illustrations (the unDraw set was removed at the user's request as
+  outdated) and no AI-generated images: imagery is real, openly licensed
+  photography (Pexels, Unsplash, nappy, Wikimedia Commons; see
+  `docs/design-case-studies.md`, section 6).
+- Icons come from Lucide only, through `@healthalyst/icons`. Functional icons
+  (arrows on links, chevrons on menus and accordions, ticks for confirmations,
+  a menu icon on phones) sit inline. Product, feature and contact icons always
+  use `MarketingIconBadge`: a thin 1 px ring with no fill, brand green at 60%
+  (gold when active or highlighted), around a Lucide glyph at 1.75 stroke;
+  32 px in menus, 40 px in lists and cards, 64 px for a product's own icon.
+  This follows the clean ringed icons of MyCover Genius's products menu, at
+  the user's request, in our own colours. Icons are hidden from assistive
+  technology when the text already says the same thing.
 
 ## Copy
 

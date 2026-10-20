@@ -4,6 +4,7 @@ import Link from "next/link";
 import { MarketingFooter } from "@healthalyst/ui/components/marketing-footer";
 import { LogoMark } from "~/components/layout/logo";
 import {
+  COMPANY_OFFICE_ADDRESS,
   FOOTER_COMPANY_LINKS,
   FOOTER_CONNECT_LINKS,
   SITE_ROUTES,
@@ -38,6 +39,7 @@ export default function Footer() {
     <MarketingFooter
       brand={<LogoMark />}
       description="Building the digital infrastructure of African healthcare, one institution at a time."
+      address={COMPANY_OFFICE_ADDRESS}
       location="Pan-African / Health technology"
       copyright={`© ${currentYear} Healthalyst Africa. All rights reserved.`}
       closingText="Building the digital infrastructure of African healthcare"

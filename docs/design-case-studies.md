@@ -361,3 +361,77 @@ loaded image elements and the live carousel and video objects.
 - **Announcements.** Commure and Hinge show a thin bar above the header for
   company news; Abridge places a small product-launch card inside the hero.
 - **Consent.** Every site offers a clear decline option in its cookie banner.
+
+## 6. MyCover Genius (primary layout guide) — 20 October 2026
+
+[mycovergenius.com](https://www.mycovergenius.com), a Nigerian insurance
+platform, studied on 20 October 2026 at the user's request as **the** guide
+for the layout and arrangement of sections on the HealthAlyst website. The
+user was explicit: take the layouts and the order of sections, **not** their
+design, colours or copy. Nothing below may be copied visually; every element
+is rebuilt in HealthAlyst's own forest, gold, cream and sand palette, in
+Inter, with our own content.
+
+### Homepage, top to bottom
+
+| #   | Their section                                                                                                                                                                  | Layout idea worth keeping                                                         | HealthAlyst equivalent                                                                                                  |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| 1   | Full-width brand-colour hero: centred two-line headline with a rotating audience word, one sentence, one white pill call to action, a text link                                | Centred, short, one primary action; the rotating word names each audience in turn | Hero naming each institution type in turn (hospitals, laboratories, pharmacies…), one "Talk to our team" action         |
+| 2   | Three portrait photographs of real-looking professionals rising out of the hero band, middle one taller                                                                        | Photographs of people at work, not illustrations; overlapping the hero edge       | Three openly licensed photographs of African health workers (clinician, laboratory scientist, pharmacist)               |
+| 3   | "Transformed insurance for these businesses" logo strip                                                                                                                        | Social proof directly under the hero                                              | **Leave out** until real customers agree to be named (no invented logos)                                                |
+| 4   | "Not your regular…" — a list of benefits on the left (active one expanded with a sentence, the rest collapsed, thin dividers) beside a photograph with a floating product card | Benefit list that expands one item at a time beside a single photograph           | "Why HealthAlyst": approved pillars as an expanding list beside one photograph (dividers only with the user's approval) |
+| 5   | "Flexible products": a row of pill tabs (Health, Auto, Gadget, Travel) over a brand band of three plan cards                                                                   | Tabs that switch a group of product cards                                         | The existing product suite, grouped by institution type                                                                 |
+| 6   | "Get started in 3 simple steps": three columns, a large outlined numeral behind a small icon illustration, title, sentence; one action below                                   | Three plain steps, centred, with one action                                       | "How we work" in three or four plain steps, if the user wants steps back (currently a sentence)                         |
+| 7   | "It's all digital": a coloured band with a horizontal carousel of feature cards (text left, product screenshot right) and filter chips                                         | Real product screens in a carousel                                                | Only once real product screenshots exist                                                                                |
+| 8   | "It works!": a very large display word over a row of testimonial cards                                                                                                         | Testimonials as a horizontal row                                                  | **Leave out** until real, consented testimonials exist                                                                  |
+| 9   | Dark closing band: headline, sentence, two actions, a photograph of a team on the right                                                                                        | Closing call to action beside a photograph                                        | "Talk to our team" band with one photograph                                                                             |
+| 10  | "Meet the visionaries behind us": investor logos on dark tiles                                                                                                                 | Backers as tiles                                                                  | **Leave out** until named partners agree                                                                                |
+| 11  | FAQ: heading and line on the left, accordion on the right                                                                                                                      | Two-column FAQ                                                                    | The existing FAQ, in two columns                                                                                        |
+| 12  | Dark footer: product, company, legal and contact columns; logo and line; social icons                                                                                          | Four columns plus contact                                                         | Existing footer                                                                                                         |
+
+### Products menu (the user's reference for icons)
+
+A wide dropdown with a Business / Personal switch, three category columns
+(Health, Auto, Others) of items, and a photograph with a line and "Contact
+Sales" on the right. Each item: icon in a **30 px circle with a 1 px border
+in the icon's colour and no fill**, an 18 px glyph, a 16 px gap, a 12 px
+semibold title and a 10 px grey description. Their glyphs are custom solid
+SVGs served through Iconify, a different hue per product.
+
+HealthAlyst's version (built): `MarketingIconBadge` in `packages/ui` — a thin
+ring (1 px, brand green at 60%, or gold for an active or highlighted item)
+with no fill around a Lucide glyph at 1.75 stroke, in three sizes (32, 40 and
+64 px). One colour family, not a hue per product, so it stays ours. Used in
+the Solutions menu (desktop and phone), the About page hub diagram, the
+homepage product catalogue and product panel, and the office map card.
+
+### Imagery: what they use and where it comes from
+
+- **Photographs, not illustrations**, almost everywhere: portraits of Black
+  African professionals at work (a chef, office workers, a team), warm
+  daylight, real settings, cropped into rounded rectangles.
+- They are served from their own Cloudinary account (`res.cloudinary.com`,
+  file names such as `sales`, `MSMEs`, `large-corporates`) as re-encoded
+  WebP with all metadata removed, so the files do not reveal a photographer,
+  agency or licence. Their style matches commercial stock (iStock, Getty,
+  Shutterstock), which is **not** open licence, so their source cannot be
+  reused. Their three-step icons are inline SVGs drawn for them.
+- Their pages load many third-party trackers (Facebook, LinkedIn, X, Google
+  Ads, FullStory, Mixpanel, Intercom). Not a pattern to follow: HealthAlyst
+  adds trackers only with an approved purpose and privacy handling.
+
+### Openly licensed photograph sources for HealthAlyst
+
+Real photographs (no AI), free for commercial websites, with African health
+workers and settings:
+
+| Source                                             | Licence                                                    | Notes                                                                                     |
+| -------------------------------------------------- | ---------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| [Pexels](https://www.pexels.com/license/)          | Pexels licence: free commercial use, no attribution needed | Good range of African clinicians, laboratories and pharmacies; the site already uses two  |
+| [Unsplash](https://unsplash.com/license)           | Unsplash licence: free commercial use                      | Strong editorial portraits; fewer clinical settings                                       |
+| [nappy](https://nappy.co/license)                  | CC0                                                        | Made specifically for photographs of Black and Brown people                               |
+| [Wikimedia Commons](https://commons.wikimedia.org) | Varies per file (CC BY, CC BY-SA, public domain)           | Real African hospitals and laboratories; check each file and give attribution as required |
+
+Rules: record source, photographer, licence and placement for each in
+`docs/website-assets.md`; never imply the people are HealthAlyst staff or
+customers; avoid photographs of identifiable patients in treatment.

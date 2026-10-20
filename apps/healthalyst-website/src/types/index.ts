@@ -60,10 +60,10 @@ export interface SiteLink {
   destination?: string;
 }
 
-/** A navigation entry that scrolls to an in-page section anchor. */
+/** A header navigation entry: a page or a section anchor on a page. */
 export interface NavigationLink {
   label: string;
-  identifier: string;
+  destination: string;
 }
 
 /** Names of the controls collected by the public enquiry form. */

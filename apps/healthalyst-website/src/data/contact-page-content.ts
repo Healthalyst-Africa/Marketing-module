@@ -1,5 +1,8 @@
 import type { MarketingSequenceStep } from "@healthalyst/ui/components/marketing-sequence";
-import { CONTACT_TOPIC_DESTINATIONS } from "~/data/site";
+import {
+  COMPANY_OFFICE_ADDRESS,
+  CONTACT_TOPIC_DESTINATIONS,
+} from "~/data/site";
 
 /**
  * Contact page copy. Text marked as drafted in `docs/website-revamp.md` awaits
@@ -73,3 +76,22 @@ export const CONTACT_NEXT_STEPS: readonly MarketingSequenceStep[] = [
       "We identify the right products and outline an implementation approach.",
   },
 ];
+
+const OFFICE_MAP_QUERY = encodeURIComponent(COMPANY_OFFICE_ADDRESS.mapQuery);
+
+/**
+ * The office map above the footer. Google's keyless address embed, loaded
+ * lazily; directions use Google's documented Maps URLs. The heading,
+ * introduction and labels are drafts awaiting approval.
+ */
+export const CONTACT_OFFICE_MAP = {
+  identifier: "visit-our-office",
+  heading: "Visit our office",
+  introduction: "Our office is in Ikeja, Lagos.",
+  organisationName: "Healthalyst Africa",
+  addressLines: COMPANY_OFFICE_ADDRESS.lines,
+  mapTitle: "Map of the Healthalyst Africa office in Ikeja, Lagos",
+  embedSource: `https://maps.google.com/maps?q=${OFFICE_MAP_QUERY}&z=16&hl=en&output=embed`,
+  directionsDestination: `https://www.google.com/maps/dir/?api=1&destination=${OFFICE_MAP_QUERY}`,
+  directionsLabel: "Get directions",
+} as const;

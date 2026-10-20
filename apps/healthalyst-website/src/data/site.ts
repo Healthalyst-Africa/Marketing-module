@@ -9,7 +9,23 @@ import type {
 /** Published routes. Add a page here when it is released. */
 export const SITE_ROUTES = {
   home: "/",
+  about: "/about",
   contact: "/contact",
+} as const;
+
+/** The company's office, one entry per displayed line. */
+export const COMPANY_OFFICE_ADDRESS = {
+  label: "Office",
+  lines: [
+    "11 Adenubi Close, off Majekodunmi Street,",
+    "off Allen Avenue, Ikeja,",
+    "Lagos, Nigeria",
+  ],
+  /**
+   * The address as a map search. The "off …" directions are left out so the
+   * map service matches the street address itself.
+   */
+  mapQuery: "11 Adenubi Close, Ikeja, Lagos, Nigeria",
 } as const;
 
 /** Element on the contact page that enquiry links scroll to. */
@@ -32,8 +48,8 @@ export const BRAND_HEADER_ROUTES: readonly string[] = [];
 
 /** Header links shown after the Solutions menu. */
 export const NAVIGATION_LINKS: NavigationLink[] = [
-  { label: "How we work", identifier: "how-we-work" },
-  { label: "About", identifier: "about" },
+  { label: "How we work", destination: `${SITE_ROUTES.home}#how-we-work` },
+  { label: "About", destination: SITE_ROUTES.about },
 ];
 
 /** The header's Solutions menu, listing products by the institution they serve. */
@@ -123,12 +139,13 @@ export const INSTITUTIONS: Institution[] = [
 
 /**
  * Footer destinations. A link without a destination has no published page yet
- * and is shown as plain text. Links that point at the homepage or the contact
- * page are interim destinations until their own page is released.
+ * and is shown as plain text. Links that point at the contact page or at a
+ * section of another page are interim destinations until their own page is
+ * released.
  */
 export const FOOTER_COMPANY_LINKS: readonly SiteLink[] = [
-  { label: "About us", destination: "/#about" },
-  { label: "Our approach", destination: "/#about" },
+  { label: "About us", destination: SITE_ROUTES.about },
+  { label: "Our approach", destination: `${SITE_ROUTES.about}#how-we-work` },
   { label: "Careers" },
   { label: "Press and media" },
   { label: "Partners", destination: CONTACT_TOPIC_DESTINATIONS.partnership },
