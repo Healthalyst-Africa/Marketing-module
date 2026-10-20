@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type React from "react";
-import { Inter } from "next/font/google";
+import { Inter, Young_Serif } from "next/font/google";
 import { ThemePreferenceProvider } from "@healthalyst/ui/components/theme-preference-provider";
 import { createThemeInitializationScript } from "@healthalyst/ui/lib/theme-preference";
 import {
@@ -10,12 +10,21 @@ import {
 import "@healthalyst/ui/styles.css";
 import "./globals.css";
 
-// Inter is the only typeface for now. The optical-size axis gives large
-// headings Inter's tighter display cut automatically.
+// Inter sets body text, controls and labels. Its optical-size axis gives
+// larger text the tighter display cut automatically.
 const interFont = Inter({
   subsets: ["latin"],
   axes: ["opsz"],
   variable: "--font-sans",
+  display: "swap",
+});
+
+// Young Serif sets page and section headings. It has one weight, already
+// heavy, so headings use `font-normal` to avoid synthesised bold.
+const headingFont = Young_Serif({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-heading",
   display: "swap",
 });
 
@@ -82,7 +91,7 @@ export default function RootLayout({
       data-palette={THEME_PREFERENCE_CONFIGURATION.defaultIdentifier}
       suppressHydrationWarning
       data-scroll-behavior="smooth"
-      className={interFont.variable}
+      className={`${interFont.variable} ${headingFont.variable}`}
     >
       <head>
         <style id="website-palette-tokens">{WEBSITE_THEME_STYLES}</style>

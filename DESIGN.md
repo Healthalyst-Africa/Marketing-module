@@ -21,8 +21,8 @@ investors. They arrive with a question and limited time.
 The site follows what the most credible health technology sites do (Abridge,
 Flatiron Health, Commure, Helium Health, Hinge Health):
 
-- **One confident typeface, set large.** Hierarchy comes from size, weight and
-  space, never from styling tricks.
+- **A serif for headings, a sans-serif for text, set large.** Hierarchy comes
+  from size, weight and space, never from styling tricks.
 - **One brand colour in large fields, gold as the accent.** Forest green
   fills page headers (the hero band) and closing bands; white is the surface
   people read and work on. These backgrounds do not change. The brand gold
@@ -86,26 +86,41 @@ brand green only for large text and icons.
 
 ## Typography
 
-**Inter** only, at the user's request (19 October 2026), loaded through
-`next/font/google` with its optical-size axis. The `font-serif` utility still
-appears in older homepage components and resolves to Inter until they are
-reworked.
+Two typefaces, at the user's request (20 October 2026), both loaded through
+`next/font/google`:
+
+- **Young Serif** (`font-serif`, `--font-heading`) for page, section and
+  panel headings and the homepage statement. It has a single weight that is
+  already heavy, so headings use `font-normal`; never `font-bold`, which
+  would make the browser synthesise a fake bold. Tracking −0.01em.
+- **Inter** (`font-sans`, `--font-sans`) with its optical-size axis for
+  everything else: body text, descriptions, controls, navigation, labels and
+  small item titles.
+
+The description under a page or section heading is regular (400).
 
 | Step      | Size (desktop / mobile) | Line height | Weight | Tracking | Use                                 |
 | --------- | ----------------------- | ----------- | ------ | -------- | ----------------------------------- |
-| Display   | 64 / 40 px              | 1.04        | 600    | −0.03em  | Page heading, one per page          |
-| Section   | 40 / 32 px              | 1.15        | 600    | −0.02em  | Section headings on content pages   |
-| Heading 2 | 28 / 24 px              | 1.2         | 600    | −0.02em  | Panel headings                      |
+| Display   | 64 / 32 px              | 1.04        | 400    | −0.01em  | Page heading, one per page          |
+| Section   | 40 / 28 px              | 1.15        | 400    | −0.01em  | Section headings on content pages   |
+| Heading 2 | 28 / 24 px              | 1.2         | 400    | −0.01em  | Panel headings                      |
 | Heading 3 | 20 px                   | 1.3         | 600    | −0.01em  | Side-column headings                |
-| Lede      | 20 / 18 px              | 1.6         | 300    | 0        | Opening paragraph under the heading |
+| Lede      | 20 / 18 px              | 1.6         | 400    | 0        | Opening paragraph under the heading |
 | Body      | 16–17 px                | 1.6–1.7     | 300    | 0        | Paragraphs and descriptions         |
 | Label     | 14 px                   | 1.4         | 500    | 0        | Field labels; 16 px for legends     |
 | Small     | 14 px                   | 1.5         | 300    | 0        | Helper text                         |
 | Guidance  | 13 px                   | 1.5         | 300    | 0        | Field descriptions under labels     |
 
-- Paragraphs and descriptions (`p`, `dd`) are light (300) by default, set in
-  the website's `globals.css`, at the user's request; headings, labels and
-  links keep their own weights.
+- Text weight has two tiers, at the user's request:
+  - **Running text is light (300)**, the default for `p` and `dd` in the
+    website's `globals.css`: body paragraphs, addresses, field guidance and
+    diagram notes.
+  - **Every description under a heading is regular (400)**, at the user's
+    request (medium 500 was distracting): hero and page-header ledes,
+    section introductions, the FAQ and closing-band descriptions, the
+    Contact panel descriptions and item descriptions such as the "Why
+    HealthAlyst" pillars.
+    Headings, labels and links keep their own weights.
 - Measure: paragraphs up to 68 characters; ledes up to 52.
 - Sentence case everywhere except product names.
 
@@ -166,28 +181,16 @@ The green page header card, then white sections built with
   introduction over it (`alignment="center"`, used for "Who we build for"); `split` puts the heading in a 5-column
   side column beside 7 columns of content; a `media` photograph takes 5
   columns beside the text, which is centred vertically against it.
-- A short ordered process can be a step showcase (`MarketingStepShowcase`):
-  the steps as a list of tabs on the left (number in a gold-outlined circle,
-  filled gold when selected, row on the subtle gold surface) and one panel on
-  the right on the subtle gold surface that crossfades in 500 ms. It moves on
-  every 6 s, holds under the pointer or focus, stops when a step is chosen,
-  has a "Pause steps" control and does not move under reduced motion. "How we
-  work with institutions" on the About page uses it.
-- Items that each lead somewhere can be cards (`MarketingCardGrid`): subtle
-  gold fill (`accent-subtle`) with no border and a subtle shadow, 12 px
-  corners, an optional illustration fitted inside a 4:3 frame on the page
-  background with 8 px corners (so every card has the same shape whatever the
-  art's proportions), a title, a light description and an arrow link. "Who we build for" on the About page uses them.
 - **Hub diagram** (`MarketingHubDiagram`, "Who we build for" on the About
   page, at the user's request, after a MyCover.ai reference; it replaced the
   institution cards and the step showcase there). The logo sits in a 32 px
   rounded hub card with a soft shadow on a faint gold glow; three institution
-  pills a side (icon in a gold-tinted circle, institution at 15 px semibold,
+  pills a side (ringed icon, institution at 15 px semibold,
   product at 13 px light, full-round with a green 20% edge) join it by curved
-  connectors in green at 20%. Every 1.8 s a gold signal travels from the hub
-  along one connector (0.9 s), the hub's gold ring pulses, and the pill it
-  reaches lights up (gold edge, gold icon circle, deeper shadow) 0.7 s later;
-  then the next. Each pill links to that product's enquiry. The loop holds
+  connectors in green at 20%. Every 2.4 s the hub's gold ring pulses and
+  gold signals travel along all six connectors at once (0.9 s); all six pills
+  light up together (gold edge, gold icon ring, deeper shadow) 0.7 s later
+  and fade back after about a second. Each pill links to that product's enquiry. The loop holds
   under the pointer or focus, stops off screen, has a "Pause animation"
   control and does not run under reduced motion. On phones and tablets the
   hub sits above the pills in one or two columns. The four ways of working
@@ -197,6 +200,84 @@ The green page header card, then white sections built with
   ("Contact us", green) with one outline secondary action.
 - Sections the company cannot yet support with real material (leadership,
   partners, news) are left out rather than filled.
+
+### Homepage (rebuilt 20 October 2026)
+
+Section order and arrangement follow the MyCover Genius study
+(`docs/design-case-studies.md`, section 6; `docs/website-refactor-plan.md`),
+in HealthAlyst's own palette, type and content. Headings, ledes and section
+surfaces match the About and Contact pages (40 / 32 px section headings,
+white sections, one green band, one cream band).
+
+1. **Hero** (`MarketingRotatingHero`): the green card of the inner pages,
+   at least 540 px tall, with a centred 64 / 40 px heading, "Digital
+   infrastructure for" and a gold word naming one institution type at a time
+   (the full list for screen readers). Every 3.6 s the word changes (the old
+   one leaves in 0.2 s, the new one rises in 0.5 s, so they never overlap)
+   and the photograph of that setting behind it crossfades in 1.2 s and
+   zooms slowly over 7 s. A radial brand-colour wash (86% behind the text,
+   40% at the edges) keeps the text readable and the setting recognisable.
+   Lede, a white "Talk to our team" pill, a "See our products" arrow link,
+   the static cross pattern and a pause control top right; under reduced
+   motion the first photograph and "African healthcare" stay still. This
+   replaced a three-photograph card row that copied MyCover Genius too
+   closely (the user's call).
+2. **Built for** (`MarketingChipRow`): a caption and six institution chips
+   with ringed icons, wrapping on wide screens, scrolling sideways on phones;
+   each opens its product in the suite.
+3. **Why HealthAlyst** (`MarketingScrollStory`): on wide screens the
+   section heading, a photograph (5 of 12 columns, up to 440 px tall, 16 px
+   corners) and a text window of the same height (columns 7 to 12) stay
+   pinned under the site header while the section scrolls by (55% of the
+   window's height per pillar, with a short hold at each end). Inside the
+   window each pillar has a 300 px slot, the current one centred against the
+   photograph, and the pillars move with the scroll through a light
+   smoothing (each frame closes 14% of the remaining distance), so wheel
+   steps glide; under reduced motion they follow the scroll directly. The
+   Behind the photograph's lower right corner, offset 40 px, sits a field of
+   the brand's medical crosses (22 px grid, green at 32%, fading out
+   radially), drifting 10 px per pillar with the story (still under reduced
+   motion), with a small cluster of gold crosses at the upper left. The
+   text window is clipped and fully visible only between 22% and 78% of its
+   height, so neighbouring pillars stay hidden at rest. The next photograph
+   fades in over the current one in the middle 20% of the scroll between two
+   Only the centred pillar is in full colour, its 32 px
+   title in the accent gold (trial at the user's request; gold on white is
+   about 2.4:1, below the 3:1 large-text minimum); incoming and outgoing
+   pillars are grey (title and description mixed towards muted grey, icon
+   desaturated), mixing smoothly with the scroll. Each pillar: a ringed
+   icon, the title and its description; no numbers or list. On phones and tablets the heading
+   leads and each pillar shows its photograph above it.
+4. **Our product suite** (`MarketingProductSuite`, green band): pill tabs
+   (Care delivery, Diagnostics, Medicines and supply) over two white product
+   cards each: 64 px ringed icon, tagline, name, summary, gold-tick
+   capabilities, enquiry link and a faint oversized icon in the corner; the
+   selected product has a gold ring. The header menu and the chips select a
+   product through `ProductsContext`.
+5. **One connected ecosystem**: the hub diagram with the six products and
+   the approved LabConnect and PharmaDesk example under it.
+6. **How we work with you** (`MarketingNumberedSteps`): four columns of
+   64 px gold-outlined numerals with ringed icons, rising in order on first
+   view; one "Start a conversation" pill. (No progress line: lines need the
+   user's approval.)
+7. **Built for African operating conditions** (`MarketingFeatureCarousel`,
+   cream band): chips that select a card in an Embla carousel of five
+   feature cards (ringed 64 px icon, title, sentence), previous and next
+   controls, arrow keys; the selected card has a gold ring.
+8. **Testimonials** (`MarketingTestimonials`), at the user's request in
+   place of the statement and in its design: one quotation at a time in
+   Young Serif at up to 56 px, gold quotation marks, its words lighting up in
+   reading order as it scrolls; a round 80 px avatar (portrait, or initials
+   on the subtle gold with a gold ring) floats at the quote's lower right,
+   overlapping its end slightly; name, role and institution below; previous
+   and next buttons, no automatic rotation. Only approved testimonials are
+   published; until one exists the section is absent in production, and
+   labelled samples show in development.
+9. **Frequently asked questions** (`MarketingFAQ`): heading and line in five
+   columns, accordion in seven.
+10. **Talk to our team** (`MarketingClosingBand`): a green card with the
+    heading, approved sentence, "Contact us" and "Start a partnership
+    enquiry", the cross pattern and a photograph on the right.
 
 ## Shape and depth
 
@@ -212,8 +293,9 @@ The green page header card, then white sections built with
 
 Depth: 1 px edges on cards, panels and controls, plus one soft shadow on panels
 that sit over a brand field (the form panel) and on dropdown menus, and a
-lighter shadow on linked cards (`MarketingCardGrid`, at the user's request).
-No other shadows. No horizontal divider
+lighter shadow on cards and photographs that stand on a surface (hub
+pills and hub card, location map, product and feature cards), at the user's request. No
+other shadows. No horizontal divider
 lines anywhere unless the user explicitly approves one.
 
 ## Components
@@ -226,12 +308,17 @@ lines anywhere unless the user explicitly approves one.
 - **Footer.** The subtle gold background `accent-subtle` (`#FFFCF5`), the
   fill of the step cards in the Healthalyst Africa Figma file, at the user's
   request (`bg-accent-subtle`).
-- **Solutions menu.** The shadcn navigation menu (Radix). Six destinations by
-  institution type, each with its product and a one-line description, and a
-  closing "Talk to our team" link, set apart by a 1 px rule (added at the
-  user's request). The menu card has 12 px corners and its items 8 px. Opens with Enter, Space or hover; Escape
-  closes it and returns focus to the trigger. On phones the same list sits at
-  the top of the slide-out menu.
+- **Solutions menu.** The shadcn navigation menu (Radix), laid out after the
+  MyCover Genius products menu: a wide panel centred under the header
+  (`viewportPlacement="container"`, up to 1120 px) with a heading ("Find the
+  right product for your institution"), three columns grouped by need (Care
+  delivery, Diagnostics, Medicines and supply) under small uppercase labels,
+  each item a ringed icon badge, institution type and one-line product
+  description, and a closing photograph column with a short prompt and a
+  "Talk to our team" link. No column rules (no lines without permission). The
+  menu card has 12 px corners and its items 8 px. Opens with Enter, Space or
+  hover; Escape closes it and returns focus to the trigger. On phones the same
+  groups sit at the top of the slide-out menu under their labels.
 - **Buttons.** 48 px tall in content (`size="extraLarge"`), 44 px in the
   header (`size="large"`), full radius (`shape="pill"`), semibold sentence-case
   labels. Primary: brand fill (`variant="default"`), including "Send enquiry";

@@ -306,11 +306,11 @@ export function MarketingEnquiryForm({
           <h2
             ref={confirmationReference}
             tabIndex={-1}
-            className="text-2xl font-semibold tracking-[-0.02em] text-foreground focus:outline-none"
+            className="text-2xl font-serif font-normal tracking-[-0.01em] text-foreground focus:outline-none"
           >
             {successHeading}
           </h2>
-          <p className="max-w-[48ch] text-base leading-relaxed text-muted-foreground">
+          <p className="max-w-[48ch] text-base font-normal leading-relaxed text-muted-foreground">
             {sentMessage}
           </p>
           <ActionButton
@@ -331,12 +331,12 @@ export function MarketingEnquiryForm({
     <Card id={identifier} className={PANEL_LAYOUT_CLASS_NAME}>
       <h2
         id="enquiry-form-heading"
-        className="text-2xl font-semibold tracking-[-0.02em] text-foreground md:text-[28px]"
+        className="text-2xl font-serif font-normal tracking-[-0.01em] text-foreground md:text-[28px]"
       >
         {heading}
       </h2>
       {description && (
-        <p className="mt-2 text-base leading-relaxed text-muted-foreground">
+        <p className="mt-2 text-base font-normal leading-relaxed text-muted-foreground">
           {description}
         </p>
       )}

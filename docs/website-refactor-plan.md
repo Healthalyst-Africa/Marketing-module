@@ -1,6 +1,8 @@
 # Website refactor plan
 
-Drafted 20 October 2026 for approval before any page is rebuilt. It applies
+Drafted 20 October 2026 for approval before any page is rebuilt. Status:
+the homepage (phase 4) and shared blocks (phase 3) are built; see
+`docs/website-revamp.md`, "Homepage rebuilt from the refactor plan". It applies
 the layout and section-arrangement lessons from MyCover Genius
 (`docs/design-case-studies.md`, section 6) to HealthAlyst's own identity:
 the forest, gold, cream and sand palette, Inter, real openly licensed

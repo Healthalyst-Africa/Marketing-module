@@ -18,26 +18,10 @@ export interface Product {
   capabilities: string[];
 }
 
-/** One stage of the implementation process. */
-export interface Step {
-  number: string;
-  title: string;
-  tag: string;
-  headline: string;
-  body: string;
-}
-
 /** A frequently asked question and its answer. */
 export interface FAQ {
   question: string;
   answer: string;
-}
-
-/** A headline figure shown in the statistics bar. */
-export interface Statistic {
-  number: string;
-  label: string;
-  supportingText: string;
 }
 
 /** A supporting principle shown in the About section. */

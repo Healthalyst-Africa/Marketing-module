@@ -39,7 +39,7 @@ export function MarketingTaskLayout({
                 >
                   <h2
                     id={headingIdentifier}
-                    className="text-xl font-semibold tracking-[-0.01em] text-foreground"
+                    className="text-xl font-serif font-normal tracking-[-0.01em] text-foreground"
                   >
                     {aside.heading}
                   </h2>

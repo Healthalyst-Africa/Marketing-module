@@ -131,7 +131,7 @@ export default async function ContactPage({
         tone="brand"
         shape="card"
         overlapBelow
-        decoration={<MarketingCareNetwork reserveLowerSpace />}
+        decoration={<MarketingCareNetwork showNetwork={false} />}
         heading={CONTACT_PAGE_CONTENT.heading}
         lede={<p>{CONTACT_PAGE_CONTENT.lede}</p>}
       />
@@ -167,7 +167,12 @@ export default async function ContactPage({
           name={CONTACT_OFFICE_MAP.organisationName}
           addressLines={CONTACT_OFFICE_MAP.addressLines}
           action={
-            <ActionLink size="extraLarge" shape="pill">
+            <ActionLink
+              variant="inverse"
+              size="extraLarge"
+              shape="pill"
+              className="w-full sm:w-auto"
+            >
               <a
                 href={CONTACT_OFFICE_MAP.directionsDestination}
                 target="_blank"

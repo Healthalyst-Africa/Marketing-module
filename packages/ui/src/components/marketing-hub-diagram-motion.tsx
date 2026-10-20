@@ -4,16 +4,18 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { PauseIcon, PlayIcon } from "@healthalyst/icons";
 import { ActionButton } from "@healthalyst/ui/components/action-button";
 import {
-  HUB_ACTIVE_NODE_VALUES,
   HUB_BOX_CLASSES,
   HUB_CANVAS_VIEW_BOX,
   HUB_CONNECTOR_PATHS,
-  HUB_NODE_COUNT,
 } from "@healthalyst/ui/lib/hub-diagram-geometry";
+import { SHOW_MOTION_CONTROLS } from "@healthalyst/ui/lib/motion-controls";
 import { cn } from "@healthalyst/ui/lib/utilities";
 
-/** Time each node holds the signal before it moves on. */
-const STEP_DURATION_IN_MILLISECONDS = 1800;
+/** Time between pulses; each pulse reaches all six destinations at once. */
+const PULSE_INTERVAL_IN_MILLISECONDS = 2400;
+
+/** How long the destinations stay lit after a pulse is sent. */
+const LIT_DURATION_IN_MILLISECONDS = 1700;
 
 function usePrefersReducedMotion() {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
@@ -33,9 +35,9 @@ function usePrefersReducedMotion() {
 
 /**
  * The motion layer of `MarketingHubDiagram`. It wraps the server-rendered
- * diagram, marks which node holds the signal through `data-active` (the
- * diagram's own classes light that node up), and draws the travelling signal,
- * the hub's pulse and the pause control. Without it, or under reduced motion,
+ * diagram, marks the signal as arrived through `data-signal` (the diagram's
+ * own classes light every node up), and draws the signals travelling along
+ * all six connectors together, the hub's pulse and the pause control. Without it, or under reduced motion,
  * the diagram is complete and still.
  */
 export function MarketingHubDiagramMotion({
@@ -52,13 +54,11 @@ export function MarketingHubDiagramMotion({
   const diagramReference = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = usePrefersReducedMotion();
   const [signalCount, setSignalCount] = useState(0);
+  const [isLit, setIsLit] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [isHeld, setIsHeld] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const isRunning = !prefersReducedMotion && !isPaused && !isHeld && isVisible;
-  const activeIndex = prefersReducedMotion
-    ? undefined
-    : signalCount % HUB_NODE_COUNT;
 
   useEffect(() => {
     const diagram = diagramReference.current;
@@ -80,22 +80,34 @@ export function MarketingHubDiagramMotion({
       return;
     }
 
+    let unlightTimeout = 0;
+    const sendPulse = () => {
+      setSignalCount((count) => count + 1);
+      setIsLit(true);
+      window.clearTimeout(unlightTimeout);
+      unlightTimeout = window.setTimeout(
+        () => setIsLit(false),
+        LIT_DURATION_IN_MILLISECONDS
+      );
+    };
+
+    sendPulse();
     const interval = window.setInterval(
-      () => setSignalCount((count) => count + 1),
-      STEP_DURATION_IN_MILLISECONDS
+      sendPulse,
+      PULSE_INTERVAL_IN_MILLISECONDS
     );
 
-    return () => window.clearInterval(interval);
+    return () => {
+      window.clearInterval(interval);
+      window.clearTimeout(unlightTimeout);
+      setIsLit(false);
+    };
   }, [isRunning]);
 
   return (
     <div
       ref={diagramReference}
-      data-active={
-        activeIndex === undefined
-          ? undefined
-          : HUB_ACTIVE_NODE_VALUES[activeIndex]
-      }
+      data-signal={isLit ? "on" : "off"}
       className={cn("group/hub relative", className)}
       onPointerEnter={() => setIsHeld(true)}
       onPointerLeave={() => setIsHeld(false)}
@@ -107,7 +119,7 @@ export function MarketingHubDiagramMotion({
       }}
     >
       {children}
-      {activeIndex !== undefined && (
+      {!prefersReducedMotion && signalCount > 0 && (
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-x-0 top-0 lg:aspect-[1200/560]"
@@ -117,17 +129,19 @@ export function MarketingHubDiagramMotion({
             viewBox={HUB_CANVAS_VIEW_BOX}
             className="absolute inset-0 hidden size-full lg:block"
           >
-            <path
-              key={`signal-${signalCount}`}
-              d={HUB_CONNECTOR_PATHS[activeIndex]}
-              pathLength={100}
-              fill="none"
-              strokeWidth="3"
-              strokeLinecap="round"
-              strokeDasharray="12 100"
-              strokeDashoffset="12"
-              className="animate-[marketing-hub-signal_0.9s_ease-in-out_forwards] stroke-accent"
-            />
+            {HUB_CONNECTOR_PATHS.map((path, pathIndex) => (
+              <path
+                key={`signal-${signalCount}-${pathIndex}`}
+                d={path}
+                pathLength={100}
+                fill="none"
+                strokeWidth="3"
+                strokeLinecap="round"
+                strokeDasharray="12 100"
+                strokeDashoffset="12"
+                className="animate-[marketing-hub-signal_0.9s_ease-in-out_forwards] stroke-accent"
+              />
+            ))}
           </svg>
           <span
             key={`pulse-${signalCount}`}
@@ -138,12 +152,12 @@ export function MarketingHubDiagramMotion({
           />
         </div>
       )}
-      {!prefersReducedMotion && (
-        <div className="mt-6 flex justify-center lg:mt-2">
+      {SHOW_MOTION_CONTROLS && !prefersReducedMotion && (
+        <div className="mt-6 flex justify-center lg:-mt-12">
           <ActionButton
             type="button"
             variant="ghost"
-            size="small"
+            size="large"
             onClick={() => setIsPaused((paused) => !paused)}
             leadingIcon={isPaused ? <PlayIcon /> : <PauseIcon />}
           >

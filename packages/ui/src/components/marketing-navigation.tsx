@@ -7,7 +7,7 @@ import {
   type ReactElement,
   type ReactNode,
 } from "react";
-import { MenuIcon } from "@healthalyst/icons";
+import { ArrowRightIcon, MenuIcon } from "@healthalyst/icons";
 import { ActionButton } from "@healthalyst/ui/components/action-button";
 import { ActionLink } from "@healthalyst/ui/components/action-link";
 import { MarketingContainer } from "@healthalyst/ui/components/marketing-section";
@@ -41,11 +41,27 @@ export interface MarketingMenuItem {
   link: ReactElement<{ children?: ReactNode; className?: string }>;
 }
 
-export interface MarketingMenu {
+/** A labelled column of destinations in the dropdown. */
+export interface MarketingMenuGroup {
   label: string;
   items: readonly MarketingMenuItem[];
-  /** Optional closing prompt and link shown beneath the items. */
-  footer?: { prompt: string; link: ReactElement };
+}
+
+/**
+ * The header's dropdown: a heading, labelled columns of destinations and an
+ * optional feature beside them (a photograph, a sentence and a link).
+ */
+export interface MarketingMenu {
+  label: string;
+  heading?: string;
+  groups: readonly MarketingMenuGroup[];
+  feature?: {
+    /** A photograph that fills its frame. */
+    photograph: ReactNode;
+    description: string;
+    /** A link element whose text names where it goes. */
+    link: ReactElement<{ className?: string; children?: ReactNode }>;
+  };
 }
 
 /**
@@ -109,12 +125,13 @@ export function MarketingNavigation({
       >
         Skip to content
       </a>
-      <MarketingContainer className="flex h-16 items-center justify-between gap-6 md:h-[72px]">
+      <MarketingContainer className="relative flex h-16 items-center justify-between gap-6 md:h-[72px]">
         {brand}
         <NavigationMenu
           aria-label="Main navigation"
           className="hidden flex-none lg:flex"
           delayDuration={150}
+          viewportPlacement="container"
         >
           <NavigationMenuList className="gap-1 space-x-0">
             <NavigationMenuItem>
@@ -122,49 +139,91 @@ export function MarketingNavigation({
                 {menu.label}
               </NavigationMenuTrigger>
               <NavigationMenuContent>
-                <div className="w-[min(720px,calc(100vw-80px))] p-3">
-                  <ul className="grid grid-cols-2 gap-1">
-                    {menu.items.map((item) => (
-                      <li key={item.title}>
-                        <NavigationMenuLink
-                          asChild
-                          className="flex items-start gap-4 rounded-[8px] px-4 py-3 text-foreground transition-colors duration-150 hover:bg-secondary focus:bg-secondary focus:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none"
-                        >
-                          {cloneElement(item.link, {
-                            children: (
-                              <>
-                                {item.icon && (
-                                  <MarketingIconBadge
-                                    icon={item.icon}
-                                    size="small"
-                                  />
-                                )}
-                                <span className="flex flex-col">
-                                  <span className="block text-[15px] font-semibold leading-snug text-primary">
-                                    {item.title}
-                                  </span>
-                                  <span className="mt-1 block text-sm leading-relaxed text-muted-foreground">
-                                    {item.description}
-                                  </span>
-                                </span>
-                              </>
-                            ),
-                          })}
-                        </NavigationMenuLink>
-                      </li>
-                    ))}
-                  </ul>
-                  {menu.footer && (
-                    <p className="mt-3 border-t border-border px-4 pb-1 pt-4 text-sm text-muted-foreground">
-                      {menu.footer.prompt}{" "}
-                      <NavigationMenuLink
-                        asChild
-                        className="rounded-sm font-semibold text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                      >
-                        {menu.footer.link}
-                      </NavigationMenuLink>
+                <div className="w-[min(1120px,calc(100vw-80px))] p-8">
+                  {menu.heading && (
+                    <p className="text-lg font-semibold tracking-[-0.01em] text-foreground">
+                      {menu.heading}
                     </p>
                   )}
+                  <div
+                    className={cn(
+                      "grid gap-x-10",
+                      menu.heading && "mt-10",
+                      menu.feature
+                        ? "grid-cols-[repeat(3,minmax(0,1fr))_240px]"
+                        : "grid-cols-3"
+                    )}
+                  >
+                    {menu.groups.map((group) => (
+                      <div key={group.label}>
+                        <p className="px-3 text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+                          {group.label}
+                        </p>
+                        <ul className="mt-3 flex flex-col gap-1">
+                          {group.items.map((item) => (
+                            <li key={item.title}>
+                              <NavigationMenuLink
+                                asChild
+                                className="flex items-start gap-4 rounded-[8px] px-3 py-3 text-foreground transition-colors duration-150 hover:bg-secondary focus:bg-secondary focus:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none"
+                              >
+                                {cloneElement(item.link, {
+                                  children: (
+                                    <>
+                                      {item.icon && (
+                                        <MarketingIconBadge
+                                          icon={item.icon}
+                                          size="small"
+                                        />
+                                      )}
+                                      <span className="flex flex-col">
+                                        <span className="block text-[15px] font-semibold leading-snug text-foreground">
+                                          {item.title}
+                                        </span>
+                                        <span className="mt-1 block text-[13px] leading-relaxed text-muted-foreground">
+                                          {item.description}
+                                        </span>
+                                      </span>
+                                    </>
+                                  ),
+                                })}
+                              </NavigationMenuLink>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                    {menu.feature && (
+                      <div>
+                        <div
+                          aria-hidden="true"
+                          className="relative aspect-[4/3] overflow-hidden rounded-xl bg-muted"
+                        >
+                          {menu.feature.photograph}
+                        </div>
+                        <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+                          {menu.feature.description}
+                        </p>
+                        <div className="mt-2">
+                          <NavigationMenuLink
+                            asChild
+                            className="group/action inline-flex min-h-11 items-center gap-2 rounded-sm text-[15px] font-semibold text-foreground underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                          >
+                            {cloneElement(menu.feature.link, {
+                              children: (
+                                <>
+                                  {menu.feature.link.props.children}
+                                  <ArrowRightIcon
+                                    aria-hidden="true"
+                                    className="size-4 text-accent transition-transform duration-200 group-hover/action:translate-x-0.5 motion-reduce:transition-none"
+                                  />
+                                </>
+                              ),
+                            })}
+                          </NavigationMenuLink>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </NavigationMenuContent>
             </NavigationMenuItem>
@@ -204,7 +263,9 @@ export function MarketingNavigation({
             </SheetTrigger>
             <SheetContent className="flex w-[min(100%,420px)] flex-col gap-8 overflow-y-auto bg-card px-6 py-10 text-foreground">
               <SheetHeader className="text-left">
-                <SheetTitle className="text-lg">Menu</SheetTitle>
+                <SheetTitle className="font-serif text-2xl font-normal tracking-[-0.01em]">
+                  Menu
+                </SheetTitle>
                 <SheetDescription className="sr-only">
                   Choose a page or a solution.
                 </SheetDescription>
@@ -213,35 +274,42 @@ export function MarketingNavigation({
                 <h2 className="pb-2 text-sm font-semibold text-muted-foreground">
                   {menu.label}
                 </h2>
-                <ul className="flex flex-col pb-4">
-                  {menu.items.map((item) => (
-                    <li key={item.title}>
-                      {cloneElement(item.link, {
-                        className:
-                          "flex items-start gap-4 rounded-lg px-3 py-3 -mx-3 transition-colors duration-150 hover:bg-secondary focus:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                        children: (
-                          <>
-                            {item.icon && (
-                              <MarketingIconBadge
-                                icon={item.icon}
-                                size="small"
-                              />
-                            )}
-                            <span className="flex flex-col">
-                              <span className="block text-base font-semibold text-primary">
-                                {item.title}
-                              </span>
-                              <span className="block text-sm text-muted-foreground">
-                                {item.description}
-                              </span>
-                            </span>
-                          </>
-                        ),
-                        onClickCapture: () => setMenuOpen(false),
-                      } as { className: string; children: ReactNode })}
-                    </li>
-                  ))}
-                </ul>
+                {menu.groups.map((group) => (
+                  <div key={group.label} className="pb-4">
+                    <h3 className="pt-2 text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+                      {group.label}
+                    </h3>
+                    <ul className="flex flex-col">
+                      {group.items.map((item) => (
+                        <li key={item.title}>
+                          {cloneElement(item.link, {
+                            className:
+                              "flex items-start gap-4 rounded-lg px-3 py-3 -mx-3 transition-colors duration-150 hover:bg-secondary focus:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                            children: (
+                              <>
+                                {item.icon && (
+                                  <MarketingIconBadge
+                                    icon={item.icon}
+                                    size="small"
+                                  />
+                                )}
+                                <span className="flex flex-col">
+                                  <span className="block text-[15px] font-semibold leading-snug text-foreground">
+                                    {item.title}
+                                  </span>
+                                  <span className="mt-1 block text-[13px] leading-relaxed text-muted-foreground">
+                                    {item.description}
+                                  </span>
+                                </span>
+                              </>
+                            ),
+                            onClickCapture: () => setMenuOpen(false),
+                          } as { className: string; children: ReactNode })}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
                 <ul className="flex flex-col pt-2">
                   {navigationLinks.map((navigationLink) => (
                     <li key={navigationLink.label}>

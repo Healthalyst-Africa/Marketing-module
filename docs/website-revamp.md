@@ -1952,3 +1952,568 @@ be used instead.
 Evidence: `pnpm test-all`; browser on the development server: the Solutions
 menu, the About diagram and the homepage product panel show the ringed icons;
 no console errors. No tests were run.
+
+## Homepage rebuilt from the refactor plan — 20 October 2026
+
+Built the homepage in the order approved in `docs/website-refactor-plan.md`
+(section 4), after committing earlier work (8dc88c2). Arrangement and motion
+are recorded in `DESIGN.md` ("Homepage"); type sizes and surfaces match the
+About and Contact pages, as the user asked.
+
+### Sections and shared components
+
+| #   | Section                      | Component (packages/ui)                                                    |
+| --- | ---------------------------- | -------------------------------------------------------------------------- |
+| 1   | Hero                         | `marketing-photo-hero`, `marketing-text-rotator`, `marketing-motion-pause` |
+| 2   | Built for                    | `marketing-chip-row`                                                       |
+| 3   | Why HealthAlyst              | `marketing-benefit-showcase` (shared Accordion)                            |
+| 4   | Our product suite            | `marketing-product-suite` (Tabs `pills` / `inversePill`)                   |
+| 5   | One connected ecosystem      | `marketing-hub-diagram` (existing)                                         |
+| 6   | How we work with you         | `marketing-numbered-steps`, `marketing-reveal`                             |
+| 7   | Built for African conditions | `marketing-feature-carousel`, `carousel` (shadcn on Embla)                 |
+| 8   | Statement                    | `marketing-statement`                                                      |
+| 9   | Frequently asked questions   | `marketing-faq` (restyled)                                                 |
+| 10  | Talk to our team             | `marketing-closing-band` (photograph and second action)                    |
+
+Also: `MarketingContentSection` gained `tone` (`brand`, `subtle`);
+`MarketingArrowLink` gained `tone="inverse"`; `MarketingCareNetwork` gained
+`showNetwork={false}` (cross pattern only, used where text is centred) and
+follows a shared pause provider; new icons in `@healthalyst/icons`
+(`OfflineIcon`, `InteroperabilityIcon`, `SecurityIcon`, `PartnershipIcon`,
+`DiscoveryIcon`, `ConfigurationIcon`, `IntegrationIcon`, `TrainingIcon`,
+`LowBandwidthIcon`, `TextMessageIcon`, `MultilingualIcon`,
+`FacilityScaleIcon`, `CapabilityIcon`, `PreviousIcon`).
+
+### Carousel install
+
+`pnpm dlx shadcn@latest add carousel --dry-run` would have overwritten the
+customised `button.tsx`, so only `carousel.tsx` was taken from the registry
+and adapted by hand (naming rule: `options`, `carouselReference`,
+`CarouselController`; icons from `@healthalyst/icons`; controls through
+`ActionButton`; `reInit` listener cleaned up). `embla-carousel-react` ^8.6.0
+is declared in `packages/ui`. The feature carousel uses
+`containScroll: "keepSnaps"` so each chip maps to one card.
+
+### Removed
+
+The statistics bar (unverifiable figures), and with it `STATISTICS` and the
+`Statistic` type; the old homepage sections (`what-we-build`, `products-dive`,
+`about`, `statistics-bar`, `product-navigation`, `section-heading`, the
+homepage `product-icons`); the shared `marketing-hero`, `marketing-about`,
+`marketing-process`, `product-catalogue`, `product-details`,
+`marketing-card-grid`, `marketing-step-showcase`, `section-heading` and
+`MarketingIntroduction`; the Tabs `steps`, `step` and `crossfade` variants;
+`STEPS` and the `Step` type (the four stages now live in
+`src/data/approach-stages.ts`); unused homepage content blocks.
+`doctor-at-clinic.webp` and `clinical-team.webp` are no longer displayed.
+
+### Decisions taken while building
+
+- The hero shows only the static cross pattern: the animated network ran
+  behind the centred heading and link. A pause control top right covers the
+  rotating word (WCAG 2.2.2).
+- No gold progress line in "How we work" (lines need the user's approval);
+  the steps rise in order instead.
+- Content that animates in stays visible before scripts run
+  (`MarketingReveal` hides only once mounted).
+- Gold is not used for text on white (contrast); the statement's second
+  sentence is brand green.
+- Sections whose cards hold product icons are client components, so the icons
+  reach the client bundle (the earlier prerender failure).
+
+### Drafted copy awaiting approval
+
+All new headings, ledes and labels in `src/data/homepage-page-content.ts`,
+the product groupings, the operating-condition card sentences and the four
+stage descriptions in `src/data/approach-stages.ts`. The security pillar
+omits the unconfirmed compliance claim.
+
+### Photographs
+
+The four approved Pexels photographs are used (hero, benefits, closing band).
+`doctors-discussing.webp` appears twice (benefits and closing band) and
+`doctors-reviewing-tablet.webp` twice (hero and benefits); one or two more
+photographs would remove the repeats.
+
+### Evidence
+
+`pnpm test-all` (format, lint, type checks, build; `/` now prerenders as
+static). Browser on the development server at desktop width, checked through
+the page because the browser pane was hidden: one `h1` and ordered headings;
+nine images loaded, all with alternative text except the decorative logo
+mark; every link reaches `/contact`, a product enquiry, the partnership
+enquiry or `#products`; no horizontal overflow; carousel chips, cards and
+controls stay in step; the Built for chips, the product tabs and the header
+Solutions menu select the right group and product; controls at least 44 px;
+no console errors in a fresh tab. Phone width and reduced motion were not
+verified in this run. No tests were run.
+
+## Homepage hero: rotating backgrounds instead of photo cards — 20 October 2026
+
+The user found the three-photograph card row under the hero too close to
+MyCover Genius's hero and asked for something unique: the photograph should
+change with the rotating word (pharmacies, a pharmacy; hospitals, a
+hospital).
+
+- New `MarketingRotatingHero` (`packages/ui`, client) owns the timing: one
+  index drives both the word (`MarketingTextRotator` now takes
+  `activeIndex`) and six stacked background photographs that crossfade
+  (1.2 s) with a slow zoom (7 s), every 3.6 s, under a radial brand wash.
+  One pause control covers both; reduced motion keeps the first photograph
+  and "African healthcare" still. `MarketingPhotoHero` was removed.
+- The word now leaves in 0.2 s before the next arrives (they overlapped).
+- Photographs: four more Pexels photographs, approved by the user
+  (hospital corridor, a Lagos dental clinic, an X-ray room, a stock
+  warehouse cropped below its retailer signs), plus 16:9 crops of the
+  laboratory and Lagos pharmacy photographs. Recorded in
+  `docs/website-assets.md`; the unused portrait crops were deleted.
+
+Evidence: `pnpm test-all`; browser on the development server: the word and
+the photograph change together through all six (sampled hospitals,
+laboratories, pharmacies, imaging centres, medical suppliers), the text stays
+readable over each, no overlap between words, at 375 px the hero is 645 px
+tall with long words wrapping inside a fixed-height slot, the pause control
+is 44 px, no horizontal overflow. Reduced motion was not emulated. No tests
+were run.
+
+## Why HealthAlyst: arch duotone instead of a bright photo and floating card — 20 October 2026
+
+The user found the photograph too bright (poor contrast) and the floating
+"In practice" card another MyCover Genius copy, and asked for something
+unique (and called the new hero fantastic).
+
+- `MarketingBenefitShowcase` now shows an arch-topped photograph on a soft
+  gold arch offset behind it, with a duotone treatment (desaturated,
+  darkened, brand-green multiply and bottom gradient), and the open pillar's
+  outlined "01 / 04" number and title inside the arch, rising in on change.
+- The facts moved into the open accordion item as outlined chips; the
+  floating card and its `factsLabel` were removed. The photographs are now
+  decorative (`alt=""`); the list carries the content.
+
+Evidence: `pnpm test-all`; browser on the development server: the photograph,
+number and title change with the open item (01 to 04 checked), text inside
+the arch is white on the dark gradient, the arch sits above the list at
+375 px with no horizontal overflow. No tests were run.
+
+## Why HealthAlyst: scroll story — 20 October 2026
+
+The user disliked the arch shape and the chips (too retro) and chose the
+scroll story from three directions offered (scroll story, expanding panels,
+bento grid).
+
+- New `MarketingScrollStory` (`packages/ui`, client) replaces
+  `MarketingBenefitShowcase`: a pinned photograph panel beside the four
+  pillars; the pillar crossing the middle of the view (an
+  `IntersectionObserver` with a 10% band at the centre) is active, its
+  photograph crossfades in and the others dim. Nothing dims before scripts
+  run; phones show each photograph above its pillar.
+- No accordion, chips, tint or shapes. The pillar facts were removed from
+  the data; the descriptions carry them.
+- The bright pharmacy photograph that the user flagged no longer appears
+  here: "African infrastructure first" uses the Lagos dental clinic
+  (`hero-dental.webp`); `lagos-pharmacy.webp` was deleted.
+
+Evidence: `pnpm test-all`; browser at 1280 × 800: the panel stays pinned and
+changes with the active pillar (01 dental clinic, 03 clinician with tablet);
+at 375 px photographs sit above each pillar, all at full opacity, no
+horizontal overflow. No tests were run.
+
+At the user's request (the text scrolled away while only the photograph
+stayed pinned, and the spacing around each pillar was wasteful) the scroll
+story became a pinned stage: the photograph, the active pillar's text and a
+list of all four pillars stay in view while the section scrolls, and the
+scroll position chooses the pillar (60% of the window per pillar). The list
+items are `ActionButton`s that scroll to a pillar and carry
+`aria-current="step"`. Evidence: `pnpm test-all`; browser at 1280 × 800:
+01 at 10% and 03 at 60% of the section, both photograph and text in view,
+choosing 04 and then 02 in the list moved to them, list buttons 44 px. The
+pillar photographs are still the earlier ones; replacements that show each
+pillar await the user's approval. No tests were run.
+
+Clarified by the user: the section's own heading and introduction should
+start the pinned area, not sit above it with a gap. `MarketingScrollStory`
+now takes `headingIdentifier`, `heading` and `introduction` and renders the
+section's `h2` at the top of the pinned stage (and above the stacked
+chapters on phones); "Why HealthAlyst" uses `MarketingSection` directly so
+there is one heading. Evidence: `pnpm test-all`; browser at 1280 × 800: the
+heading, photograph, active pillar and list are all in view at 5% (01) and
+85% (04) of the section; one `h2`; at 375 px the heading sits above the
+stacked pillars, no horizontal overflow. No tests were run.
+
+The user preferred the chapters to scroll rather than swap in place, and
+asked to remove the index list and the numbers ("generic"). Final
+behaviour: the section heading and introduction are pinned under the site
+header, the photograph is pinned below them, and the four pillars scroll past
+on the right, the one at the middle of the view active (photograph
+crossfades, others dim). `listLabel` and the "01 / 04" numbers were removed.
+Evidence: `pnpm test-all`; browser at 1280 × 800: heading and photograph
+stay in view while the pillars scroll, the photograph changes with the
+active pillar (03 checked), the previous pillar dims under the heading. No
+tests were run.
+
+The user found the scrolling version poor: neighbouring pillars were
+visible, the dimming too weak, the spacing too large and the continuity not
+smooth. The scroll story now pins the heading, the photograph and a text
+window of the photograph's height; the pillars glide through the window in
+step with the scroll (transform set each animation frame, no transition),
+the window clips and fades its edges so only one pillar is seen, and the
+next photograph fades in over the current one in a narrow band midway. No
+numbers or list. Evidence: `pnpm test-all`; browser at 1280 × 800: one pillar
+in view at rest (01, 02, 03, 04 checked across the scroll), the stage
+releases into the product suite at the end. No tests were run.
+
+The user still found too much space between pillars: each pillar was a full
+window tall, so it had to travel the whole photograph height. Each pillar now
+has a 300 px slot centred against the photograph, the window fades out from
+30% of its height towards each edge, and the scroll rests on each pillar (the
+first and last 30% between two) and glides eased between them. Evidence:
+`pnpm test-all`; browser at 1280 × 800: the text offset holds at −190 px from
+30% to 44% of the section and moves 150 px per half step between, one pillar
+in view at rest, the next arriving right behind the last. No tests were run.
+
+The user found the rest-and-glide motion no longer smooth and the photograph
+too big. The rest easing was removed; the shown position now follows the
+scroll through per-frame smoothing (14% of the remaining distance a frame,
+none under reduced motion), and the active chapter re-renders only when it
+changes. The photograph is 5 of 12 columns and up to 440 px tall (from
+6 columns and 520 px); the text window matches, fully visible between 22%
+and 78% of its height. Evidence: `pnpm test-all`; browser at 1280 × 800:
+after a scroll jump the text offset eased 70, 28, −8, −39 … to −230 over
+the following frames; photograph 456 × 440. No tests were run.
+
+At the user's request only the centred pillar is in full colour, with its
+title in the accent gold to see how it looks; incoming and outgoing pillars
+are grey. Each slot carries a `--story-focus` value (1 at the centre, 0 half
+a pillar away), set each frame, and its title, description and icon mix
+from grey to full colour with it (`color-mix` and a grayscale filter).
+Contrast: the gold title on white is about 2.4:1, below the 3:1 minimum for
+large text (WCAG 1.4.3); a darker gold would be needed to keep it.
+Evidence: `pnpm test-all`; browser at 1280 × 800: at rest the centred title
+computes to the gold, the others to grey at 45%; midway both neighbours are
+grey. No tests were run.
+
+At the user's request the photograph has a pattern behind it so it does not
+look plain: the brand's medical-cross field (the motif of the green headers)
+offset behind its lower left corner and fading out, drifting 10 px per
+pillar with the scroll for depth (not under reduced motion), and a small
+cluster of gold crosses at the upper right. Decorative and hidden from
+assistive technology. Evidence: `pnpm test-all`; browser at 1280 × 800. No
+tests were run.
+
+At the user's request the pattern is mirrored: the cross field now sits
+behind the photograph's lower right corner and the gold crosses at its upper
+left.
+
+At the user's request the Solutions menu follows the layout of the MyCover
+Genius products menu (layout only, in HealthAlyst colours): a wide panel
+centred under the header with a heading, three need-based columns of ringed
+icon items and a photograph column with "Talk to our team". `NavigationMenu`
+gained `viewportPlacement="container"`; menu `items` and `footer` were
+replaced by `groups` and `feature`. The menu groups are `SOLUTION_GROUPS` in
+`data/site.ts`, shared with the homepage product suite. Column rules were
+left out under the no-lines rule. Evidence: `pnpm test-all`; browser at
+1280 × 800: panel 1120 px wide and centred, three columns and the feature;
+at 375 × 812 the slide-out menu lists the three groups under level-three
+headings. No tests were run.
+
+At the user's request the "Why HealthAlyst" heading uses the accent gold, like
+the active pillar title (the same 2.4:1 contrast caveat applies), and the
+Solutions menu heading has 40 px of space above its columns (from 24 px).
+
+At the user's request headings are serif and body text sans-serif, like the
+MyCover Genius pairing of Maitree and Metropolis but with different
+typefaces. The user chose Young Serif from six candidates (Source Serif 4 was
+rejected) for page, section and panel headings and the statement; Inter
+remains for everything else. Young Serif has one heavy weight, so headings
+use `font-normal`. Descriptions under page and section headings are now
+medium (500). Evidence: `pnpm test-all`; browser at the homepage: the "Why
+HealthAlyst" heading computes to Young Serif 400 and the loaded face is
+available; its description computes to weight 500. No tests were run.
+
+At the user's request text weight has three tiers. Running text stays light
+(300), the `p` and `dd` default in `globals.css`. Descriptions under page and
+section headings are medium (500), like the "Built for the institutions that
+deliver care" label: ledes and section introductions set it on their
+paragraphs (`[&_p]:font-medium` where a wrapper holds them), and the FAQ,
+closing band, Contact panels and not-found page set it directly. Descriptions
+under item titles, such as the "Why HealthAlyst" pillars, are regular (400).
+
+At the user's request the "Why HealthAlyst" heading is back to the foreground
+colour, and the pinned stage no longer centres its content vertically, which
+left loose space above the heading. The stage starts its content 40 px from
+the top and the section adds 40 px on large screens, so the heading sits
+80 px below the section's top edge like the product suite's. Evidence:
+browser at 1280 × 800: 96 px from the institution row to the heading; when
+pinned the heading is 40 px under the header and the photograph ends at
+666 px of 800.
+
+At the user's request the space below the story is trimmed: the pinned stage
+no longer takes the full viewport height, so it ends with its photograph and
+only the section's 80 px bottom padding follows. Progress now counts from
+where the stage pins under the header. Evidence: browser at 1280 × 800: stage
+594 px tall; 80 px from the photograph to the section's end; the first
+pillar is in focus as pinning starts and the last as it ends.
+
+At the user's request the empty band under the pinned story is gone: the
+stage is again exactly one viewport tall below the header, and the photograph
+and text window grow into the space between the section opening and the
+stage's 40 px bottom padding, up to 520 px tall, centred when capped. The
+section's large-screen bottom padding is 40 px so the gap after the story
+stays about 80 px. Evidence: browser at 1280 × 800: photograph 456 × 520,
+47 px between it and the opening and 47 px below it while pinned, 87 px to
+the section's end afterwards; at 1920 × 1080 the photograph stays at 520 px
+with 187 px above and below.
+
+At the user's request the ecosystem diagram's signal runs along all six
+connectors at once: every 2.4 seconds the hub pulses, six signals travel
+together and all six destinations light up together for about a second
+before fading. The motion layer now sets `data-signal` (`on` or `off`)
+instead of naming one active node, and the per-node class lists and
+`HUB_ACTIVE_NODE_VALUES` were removed. Pause, hold on pointer or focus,
+off-screen stop and reduced motion are unchanged. Evidence: browser at
+1280 × 800: six signal paths animate per pulse and all six destination
+borders compute to the accent while the signal is on.
+
+At the user's request animation controls are shown only in development:
+`SHOW_MOTION_CONTROLS` in `packages/ui/src/lib/motion-controls.ts`
+(`NODE_ENV === "development"`) gates the hero pause button
+(`MarketingMotionPauseButton`), the ecosystem diagram's pause button and the
+care-network pattern's button. Production loops the hero rotation, the
+ecosystem pulse and the pattern without a control. **Accessibility gap,
+accepted by the user on 20 October 2026:** this does not meet WCAG 2.2.2
+(pause, stop, hide) at level AA, which `AGENTS.md` targets; holding on
+pointer or focus and reduced motion still apply. The compliant alternative
+offered was to stop each loop after about 5 seconds in production. To read
+`NODE_ENV`, `packages/ui` now declares `@types/node` (22.20.5, the version
+the website already resolves) and lists `node` in its compiler types.
+Evidence: `pnpm test-all`; the production prerender of `/` and `/about`
+contains no pause or play button; the development server still renders both
+"Pause animation" controls on the homepage.
+
+At the user's request every description under a heading is regular (400);
+medium (500) was distracting. Ledes, section introductions and the FAQ,
+closing band, Contact panel and not-found descriptions now use
+`font-normal` (`[&_p]:font-normal` where a wrapper holds the paragraphs).
+Running text stays light (300) and the "Built for the institutions that
+deliver care" label stays medium.
+
+At the user's request the block under the ecosystem diagram moves up into
+the canvas's spare space below the last row of products: on large screens
+the development-only pause control sits 21 px under the products and the
+example paragraph 16 px under it (about 85 px under the products in
+production, where the control is hidden), down from 129 px.
+
+At the user's request centred section headings have room for one line: in
+`MarketingContentSection` the opening of a centred section is up to 56 rem
+wide instead of 68 characters, while the introduction keeps its 68-character
+measure. Left-aligned and split sections are unchanged. Evidence: browser at
+1280 × 800: "Built for African operating conditions" and every other centred
+homepage heading set on one line.
+
+At the user's request the "Built for African operating conditions" band is
+no longer plain cream: a faint topographic field (`MarketingContourPattern`,
+new in `packages/ui`) sits behind it, thin gold contour rings rising from the
+top-right and bottom-left corners and fading out towards the middle so the
+heading, chips and cards stay clear. It is a static, decorative SVG (hidden
+from assistive technology, no motion). `MarketingContentSection` gained a
+`decoration` slot that layers it behind the content. Evidence:
+`pnpm test-all`; browser at 1280 × 800 (19 rings, visible at the corners)
+and 375 × 812 (no horizontal overflow).
+
+At the user's request the homepage "How we work with you" section is hidden
+for now: `page.tsx` no longer renders it, and `how-we-work.tsx`, its copy and
+`data/approach-stages.ts` stay in place to bring it back. The header's "How
+we work" link pointed at that section (`/#how-we-work`), so it now goes to
+the About page's how-we-work passage (`/about#how-we-work`) until the
+section returns. Evidence: `pnpm test-all`; browser: the homepage has no
+`#how-we-work` element and the header link's address is
+`/about#how-we-work`.
+
+At the user's request the homepage statement became testimonials, keeping
+its single bold-text design: `MarketingTestimonials` (new in `packages/ui`,
+replacing `MarketingStatement`, which was removed with the website's
+`statement.tsx` and `HOMEPAGE_STATEMENT_CONTENT`) shows one quotation at a
+time with a floating avatar overlapping its end slightly, the attribution,
+and previous and next buttons. **No testimonials are approved yet.** The
+user asked for generic testimonies; under the content rules
+(`AGENTS.md`: do not invent testimonials) the three entries in
+`HOMEPAGE_TESTIMONIALS` are labelled samples with `isApproved: false`. They
+render only in development, each marked "Sample testimonial"; production
+publishes only approved entries, so the section is absent there until an
+accountable company owner supplies real, permissioned quotes (quote, name,
+role, institution, and optionally a portrait). Evidence: `pnpm test-all`;
+browser at 1280 × 800: the avatar overlaps the closing quotation mark, next
+and previous change the quote; at 375 × 812 no horizontal overflow; the
+production prerender of `/` contains no testimonial.
+
+At the user's request the samples use dummy names (Adaeze Okafor, Kwame
+Mensah, Fatima Bello) with generic institutions, and the "Sample testimonial"
+tag is gone. They are still `isApproved: false`, so they remain
+development-only; production shows no testimonial until approved ones exist.
+
+At the user's request the testimonial avatars use stock portraits: face
+crops of two licensed photographs already in the project and one Pexels
+photograph downloaded with the user's approval (recorded in
+`docs/website-assets.md`). They are decorative (`alt=""`; the name beside
+each identifies the person) and, with the dummy testimonials, appear only in
+development. Evidence: `pnpm test-all`; browser at 1280 × 800: each of the
+three avatars loads and overlaps its quotation's end.
+
+At the user's request the About page reuses the homepage's sections instead
+of its own: "What guides our work" is now the same pinned scroll story as
+"Why HealthAlyst", and "Talk to our team" is the same green closing band.
+Both are website compositions in `src/components`: `PrinciplesStory`
+(`principles-story.tsx`; takes the anchor, heading and introduction) and
+`ClosingCall` (`closing-call.tsx`; takes the anchor). Their content moved to
+shared data: `PRINCIPLES` in `data/principles.ts` (formerly
+`HOMEPAGE_BENEFITS`) and `CLOSING_CALL_CONTENT` in `data/closing-content.ts`
+(formerly `HOMEPAGE_CLOSING_CONTENT`). The homepage's `why-healthalyst.tsx`
+and `contact.tsx` were removed; the homepage keeps its `#why-healthalyst`
+and `#contact` anchors and the About page its `#what-guides-our-work` and
+`#talk-to-our-team` anchors. The About page's record list of principles and
+its plain closing section are gone, and its principles now leave out the
+unconfirmed compliance claim, as the homepage does. The About page has no
+"Meet the team" section; "Talk to our team" was taken to be the one meant.
+Evidence: `pnpm test-all`; browser at 1280 × 800: the About page story shows
+four chapters with photographs, the band's links reach `/contact` and the
+partnership enquiry, the `#how-we-work` anchor remains, and a fresh load of
+the homepage logs no errors.
+
+At the user's request the About page header was reworked, inspired by the
+homepage hero without copying it. After two rejected attempts (a
+full-bleed crossfading photograph backdrop, then a photograph window rising
+from the band's edge, both removed), the user chose a centred statement: the
+green card keeps the faint cross pattern, the node-network animation is
+gone, and the heading and lede are centred with a short line below them,
+"Built for" and a gold word cycling through the six institution types
+(`MarketingTextRotator`; the full list is in visually hidden text, and under
+reduced motion it reads "every institution that delivers care").
+`MarketingPageHeader` gained `alignment` (`start` or `center`, without
+media) and `tagline` (a short line below the lede). The header sits in a
+`MarketingMotionPauseProvider` with the development-only pause control.
+Evidence: `pnpm test-all`; browser at 1280 × 800 (centred, no gap after
+"Built for") and 375 × 812 (no horizontal overflow).
+
+At the user's request the Contact page header's node-network animation is
+removed: `MarketingCareNetwork showNetwork={false}` keeps only the faint
+cross pattern, as on the About page, and its pause control goes with the
+animation. Evidence: `pnpm test-all`; browser: the header card holds only
+the pattern and no animation control.
+
+At the user's request the office map's address panel matches the green
+"Talk to our team" band: `MarketingLocationMap` sets the panel on the brand
+colour with light text, an inverse icon ring and a light cross field, and
+the Contact page's "Get directions" uses `ActionLink variant="inverse"` (the
+band's white button). Evidence: `pnpm test-all`; browser at 1280 × 800.
+
+At the user's request the "What happens next" stepper (`MarketingSequence`)
+joins its numbers with a dotted gold line (2 px) instead of a solid one.
+
+At the user's request the footer carries the logo as a very faint
+watermark: `MarketingFooter` gained a `watermark` slot that sets a large
+image behind the content at the lower right, bleeding off the edges, at 6%
+opacity (decorative, hidden from assistive technology). The website passes
+the logo's H mark as a transparent WebP (`logo-watermark.webp`, recorded in
+`docs/website-assets.md`). Evidence: `pnpm test-all`; browser at 1280 × 800:
+the mark sits behind the Company and Connect columns and the closing line,
+with the links unaffected.
+
+The user found the solid watermark not aesthetic enough, so it became line
+art: first the whole H mark in outline, whose straight edges read as
+divider lines through the link columns, then only the outline of the Africa
+cut-out and growth arrow (`logo-africa-outline.webp`). At the user's request
+("very distracting") it is now at 14% opacity, fading out towards the
+content. Evidence: `pnpm test-all`; browser at 1280 × 800.
+
+The footer watermark was removed: in a footer this dense with links it
+crossed text wherever it sat, and the user found it too distracting. The
+`watermark` slot and `logo-africa-outline.webp` were removed; the footer is
+plain subtle gold again.
+
+At the user's request the homepage was reworked for phones after an audit at
+375 × 812 (and checked at 768 × 1024 and 1280 × 800):
+
+- Display headings (hero and page headers) now run from 32 px on phones to
+  the same size as before on desktop (`clamp(2rem, 1.25rem + 3.2vw, 4rem)`),
+  so the hero heading is 3 lines instead of 5; section headings are 28 px on
+  phones (from 32 px); "Why HealthAlyst" pillar titles 24 px (from 28 px);
+  the testimonial quote 26 px (from 32 px) with its avatar centred below the
+  quote instead of over it.
+- The "Built for African operating conditions" section was 801 px wide: its
+  carousel track widened the grid column. `MarketingContentSection` now sets
+  a single `minmax(0, 1fr)` column, so content cannot widen the section.
+- Horizontally scrolling rows are not shown on phones, at the user's
+  request: the "Built for the institutions that deliver care" chip row is
+  hidden below tablets (the hero names the institutions); the condition
+  chips above the carousel are hidden on phones (its arrows and swipe
+  remain); the product suite drops its group tabs on phones and lists all
+  six products instead (`MarketingProductSuite`; tabs from tablets up).
+- Buttons sit deliberately: the hero's primary action is full width on
+  phones with the text link centred below; the closing band's two actions
+  stack full width with tighter card padding, so neither wraps.
+- The footer's Products and Company groups sit side by side on phones.
+
+Evidence: `pnpm test-all`; browser at 375 × 812: no horizontal overflow and
+no horizontally scrolling rows on the page, hero heading 32 px in 3 lines,
+all six product cards listed, carousel arrows present, both closing actions
+48 px tall on one line each; at 768 × 1024 the tabs and chips return; at
+1280 × 800 the hero heading is 61 px in 2 lines and the testimonial 56 px,
+as before.
+
+At the user's request the About page's calls to action were fixed on
+phones: `MarketingContentSection` and `MarketingPageHeader` now stack their
+actions full width on phones (side by side from small tablets), so "Explore
+our products" and "See how we work" no longer sit at two ragged widths. On
+the Contact page "Get directions" is full width on phones, like "Send
+enquiry". Evidence: `pnpm test-all`; browser at 375 × 812: both About
+actions 335 px wide and 48 px tall, the closing band's actions 287 px wide
+on one line each, no horizontal overflow on either page.
+
+At the user's request the phone menu follows the type rules: its sheet
+title "Menu" is a heading, so it is now Young Serif at its single weight
+(24 px, `font-normal`) instead of semibold Inter, and its product items match
+the desktop Solutions menu (titles 15 px semibold, descriptions 13 px
+regular with relaxed leading, from 16 px semibold and 14 px). Evidence:
+`pnpm test-all`; browser at 375 × 812 with the sheet open: "Menu" computes to
+Young Serif 400 24 px.
+
+Three more phone fixes at the user's request:
+
+- Sections beside media (`MarketingContentSection` with `media`, such as
+  the About page's "What we do") centre their heading and introduction below
+  large screens, where the text stacks above the photograph; beside it they
+  stay aligned to the start.
+- The logo lockup (`BrandLockup`) is smaller on phones: a 33 × 36 px mark
+  and a 16 px name (from 44 × 48 px and 20 px), full size from tablets up.
+  It applies to the header and the footer.
+- The sheet's close control is no longer shadcn's square button: it is the
+  site's round outline icon button (`ActionButton`, `largeIcon`, `pill`) in
+  exactly the menu trigger's place, so the menu opens and closes from one
+  spot, with the focus ring shown only for keyboard focus.
+
+Evidence: `pnpm test-all`; browser at 375 × 812: "What we do" heading and
+paragraphs computed as centred; the close button's box matches the trigger's
+(311, 10, 44 px), round, focused without a visible ring on opening.
+
+At the user's request the product suite is a carousel on phones instead of
+a stacked list: one card at a time (the shared Embla `Carousel`), swipe or
+the inverse previous and next buttons, and a polite live "2 of 6" position
+line. The carousel and the tabs share the page's selected product: swiping
+selects the product shown, and choosing a product elsewhere (such as the
+phone menu) scrolls the carousel to it. The carousel's options are fixed at
+first render, because new options restart Embla and made every change jump
+instead of slide. Tablets and up keep the group tabs. Evidence:
+`pnpm test-all`; browser at 375 × 812: next and previous step through the
+products with the position line and highlight following; "Imaging centres"
+in the menu lands on ImagingHub, "5 of 6"; after next the track eases from
+0 through −78, −144, −216 … to −349 px rather than jumping; no horizontal
+overflow.
+
+At the user's request the "Why HealthAlyst" story (homepage and About page)
+uses photographs chosen for each pillar instead of reused ones: a community
+outreach in Kaduna for African infrastructure first, two clinicians on
+connected devices for interoperability, a nurse at a records workstation for
+security, and a health educator with a large group for partnership. Sources
+and the one caveat are in `docs/website-assets.md`. Evidence:
+`pnpm test-all`; browser at 1280 × 800: each chapter shows its photograph
+with the subject in frame.

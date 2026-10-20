@@ -26,17 +26,14 @@ application content and semantic theme values.
 - `@healthalyst/ui/components/palette-selector`
 - `@healthalyst/ui/components/design-preview`
 - `@healthalyst/ui/components/design-control-panel`
-- `@healthalyst/ui/components/section-heading`
 - `@healthalyst/ui/components/theme-preference-provider`
-- `@healthalyst/ui/components/tabs`
+- `@healthalyst/ui/components/tabs` (variants: `default`; `pills` list with
+  `inversePill` triggers for brand-coloured bands)
+- `@healthalyst/ui/components/carousel` (shadcn carousel on Embla, adapted to
+  the naming rule and `ActionButton` controls)
 - `@healthalyst/ui/components/sheet`
 - `@healthalyst/ui/components/marketing-section`
-- `@healthalyst/ui/components/marketing-hero`
 - `@healthalyst/ui/components/marketing-navigation`
-- `@healthalyst/ui/components/product-catalogue`
-- `@healthalyst/ui/components/product-details`
-- `@healthalyst/ui/components/marketing-process`
-- `@healthalyst/ui/components/marketing-about`
 - `@healthalyst/ui/components/marketing-faq`
 - `@healthalyst/ui/components/marketing-contact`
 - `@healthalyst/ui/components/marketing-footer`
@@ -44,12 +41,33 @@ application content and semantic theme values.
 - `@healthalyst/ui/components/navigation-menu`
 - `@healthalyst/ui/components/marketing-page-header`
 - `@healthalyst/ui/components/marketing-content-section`
-- `@healthalyst/ui/components/marketing-step-showcase` (steps beside a panel
-  that crossfades between them, with auto-advance and a pause control)
-- `@healthalyst/ui/components/marketing-card-grid` (linked cards on the subtle
-  accent surface, with an optional 4:3 illustration)
+- `@healthalyst/ui/components/marketing-contour-pattern`
+- `@healthalyst/ui/components/marketing-rotating-hero` (homepage hero: a
+  rotating audience word with a matching background photograph that
+  crossfades behind a brand wash)
+- `@healthalyst/ui/components/marketing-text-rotator` (a word that changes in
+  place, self-timed or driven by `activeIndex`; hidden from assistive
+  technology)
+- `@healthalyst/ui/components/marketing-motion-pause` (one pause state and
+  control shared by a section's moving parts)
+- `@healthalyst/ui/components/marketing-chip-row` (a caption over linked
+  chips that scroll sideways on phones)
+- `@healthalyst/ui/components/marketing-scroll-story` (a pinned heading,
+  photograph and clipped text window; the chapters glide through the window
+  with the scroll and the photograph follows; renders the section's `h2`)
+- `@healthalyst/ui/components/marketing-product-suite` (pill tabs by need over
+  product cards on a brand band)
+- `@healthalyst/ui/components/marketing-numbered-steps` (outlined numerals and
+  ringed icons that rise in order)
+- `@healthalyst/ui/components/marketing-reveal` (marks content revealed when it
+  scrolls into view; visible before scripts run)
+- `@healthalyst/ui/components/marketing-feature-carousel` (chips that jump a
+  carousel of feature cards)
+- `@healthalyst/ui/components/marketing-testimonials` (one oversized
+  quotation at a time whose words light up as it scrolls, with a floating
+  avatar, attribution and previous and next buttons)
 - `@healthalyst/ui/components/marketing-arrow-link` (text link with an accent
-  arrow, shared by record lists and cards)
+  arrow; `tone="inverse"` on brand bands; `stretched` covers its card)
 - `@healthalyst/ui/components/marketing-icon-badge` (the site's single
   treatment for product, feature and contact icons: a thin ring, no fill)
 - `@healthalyst/ui/components/marketing-hub-diagram` (a hub joined to six
@@ -138,6 +156,13 @@ spacing.
 - `navigationMenuTriggerStyle` takes `tone` (`default` or `inverse`). Pass it to
   `NavigationMenuLink` as `className` for plain links in the same bar, and pass
   `tone` to `NavigationMenuTrigger`.
+- `NavigationMenu` takes `viewportPlacement` (`trigger`, the default, or
+  `container`). With `container` the root is not positioned, so the viewport
+  spans the nearest positioned ancestor, such as a header container, and
+  panels centre under it instead of the trigger.
+- `MarketingNavigation` menus take `heading`, `groups` (each a `label` and
+  `items`) and an optional `feature` (`photograph`, `description`, `link`)
+  shown as a closing column.
 
 The accordion trigger's `showIndicator` option lets a composition supply its own
 indicator. Icons come from `@healthalyst/icons`.
@@ -198,3 +223,15 @@ It checks the fields before sending and shows each message beside its field,
 posts to the endpoint the application supplies, and shows the sending,
 rejected-field, failure and sent states the endpoint reports. The application
 owns the field definitions, server validation, storage and copy.
+
+## Animation controls
+
+Pause and play controls (`MarketingMotionPauseButton`, the hub diagram's
+pause button and the care network's button) render only when
+`SHOW_MOTION_CONTROLS` from `@healthalyst/ui/lib/motion-controls` is true,
+which is in development. Production builds show no animation control; see
+`docs/website-revamp.md` for the accessibility trade-off.
+
+`MarketingContourPattern` is a faint topographic field for plain bands. Pass
+it to `MarketingContentSection` through `decoration` with a text colour
+class, such as `text-accent`; it is decorative and static.

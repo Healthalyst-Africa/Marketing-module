@@ -7,6 +7,7 @@ import {
   type VariantProps as VariantProperties,
 } from "class-variance-authority";
 import { CloseIcon } from "@healthalyst/icons";
+import { ActionButton } from "@healthalyst/ui/components/action-button";
 
 import { cn } from "@healthalyst/ui/lib/utilities";
 
@@ -72,9 +73,21 @@ const SheetContent = React.forwardRef<
         className={cn(sheetVariants({ side }), className)}
         {...properties}
       >
-        <SheetPrimitive.Close className="absolute right-2 top-2 flex size-11 items-center justify-center rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">
-          <CloseIcon className="size-4" aria-hidden="true" />
-          <span className="sr-only">Close</span>
+        {/*
+         * The same round outline button as the site's menu trigger, in the
+         * trigger's place, so the menu opens and closes from one spot.
+         */}
+        <SheetPrimitive.Close asChild>
+          <ActionButton
+            type="button"
+            variant="outline"
+            size="largeIcon"
+            shape="pill"
+            aria-label="Close"
+            className="absolute right-5 top-2.5 md:right-10 md:top-3.5"
+          >
+            <CloseIcon aria-hidden="true" />
+          </ActionButton>
         </SheetPrimitive.Close>
         {children}
       </SheetPrimitive.Content>

@@ -1,10 +1,4 @@
-import type {
-  Institution,
-  NavigationLink,
-  Pillar,
-  SiteLink,
-  Statistic,
-} from "~/types";
+import type { Institution, NavigationLink, Pillar, SiteLink } from "~/types";
 
 /** Published routes. Add a page here when it is released. */
 export const SITE_ROUTES = {
@@ -48,38 +42,30 @@ export const BRAND_HEADER_ROUTES: readonly string[] = [];
 
 /** Header links shown after the Solutions menu. */
 export const NAVIGATION_LINKS: NavigationLink[] = [
-  { label: "How we work", destination: `${SITE_ROUTES.home}#how-we-work` },
+  // Points to the About page while the homepage section is hidden.
+  { label: "How we work", destination: `${SITE_ROUTES.about}#how-we-work` },
   { label: "About", destination: SITE_ROUTES.about },
 ];
 
 /** The header's Solutions menu, listing products by the institution they serve. */
 export const SOLUTIONS_MENU_CONTENT = {
   label: "Solutions",
-  footerPrompt: "Not sure which product fits your institution?",
-  footerAction: "Talk to our team",
+  heading: "Find the right product for your institution",
+  featureDescription:
+    "Not sure which product fits your institution? Our team will help you choose.",
+  featureAction: "Talk to our team",
+  featurePhotograph: "/images/clinician-tablet.webp",
 } as const;
-export const STATISTICS: Statistic[] = [
-  {
-    number: "6",
-    label: "Digital Product Lines",
-    supportingText: "Purpose-built, not adapted",
-  },
-  {
-    number: "54+",
-    label: "African Nations",
-    supportingText: "Continent-wide expansion",
-  },
-  {
-    number: "100%",
-    label: "African-Context Design",
-    supportingText: "Offline-first architecture",
-  },
-  {
-    number: "1",
-    label: "Connected Ecosystem",
-    supportingText: "All products interoperable",
-  },
-];
+
+/**
+ * Products grouped by need, as product names; used by the Solutions menu and
+ * the homepage product suite. Drafted; awaiting approval.
+ */
+export const SOLUTION_GROUPS = [
+  { label: "Care delivery", productNames: ["HealthSchedule", "DentaFlow"] },
+  { label: "Diagnostics", productNames: ["LabConnect", "ImagingHub"] },
+  { label: "Medicines and supply", productNames: ["PharmaDesk", "MedSupply"] },
+] as const;
 
 export const PILLARS: Pillar[] = [
   {

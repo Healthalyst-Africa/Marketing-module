@@ -28,7 +28,7 @@ export function MarketingSequence({
           {stepIndex < steps.length - 1 && (
             <span
               aria-hidden="true"
-              className="absolute bottom-0 left-[15px] top-8 w-0 border-l border-accent"
+              className="absolute bottom-0 left-[15px] top-8 w-0 border-l-2 border-dotted border-accent"
             />
           )}
           <span className="relative flex size-8 items-center justify-center rounded-full border border-accent bg-accent-subtle text-sm font-semibold tabular-nums text-foreground">

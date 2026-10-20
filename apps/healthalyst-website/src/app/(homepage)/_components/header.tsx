@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { MarketingNavigation } from "@healthalyst/ui/components/marketing-navigation";
@@ -11,6 +12,7 @@ import {
   INSTITUTIONS,
   NAVIGATION_LINKS,
   SITE_ROUTES,
+  SOLUTION_GROUPS,
   SOLUTIONS_MENU_CONTENT,
 } from "~/data/site";
 import { useProducts } from "~/store/ProductsContext";
@@ -26,28 +28,50 @@ export default function Header() {
       tone={BRAND_HEADER_ROUTES.includes(currentPath) ? "brand" : "default"}
       menu={{
         label: SOLUTIONS_MENU_CONTENT.label,
-        items: INSTITUTIONS.map((institution) => {
-          const productIndex = PRODUCTS.findIndex(
-            (product) => product.name === institution.product
-          );
+        heading: SOLUTIONS_MENU_CONTENT.heading,
+        groups: SOLUTION_GROUPS.map((group) => ({
+          label: group.label,
+          items: group.productNames.flatMap((productName) => {
+            const institution = INSTITUTIONS.find(
+              (candidate) => candidate.product === productName
+            );
+            const productIndex = PRODUCTS.findIndex(
+              (product) => product.name === productName
+            );
 
-          return {
-            title: institution.name,
-            description: `${institution.product} for ${institution.description}`,
-            icon: PRODUCT_ICONS_BY_NAME[institution.product],
-            link: (
-              <Link
-                href={`${SITE_ROUTES.home}#products`}
-                onClick={() => selectProduct(Math.max(productIndex, 0))}
-              />
-            ),
-          };
-        }),
-        footer: {
-          prompt: SOLUTIONS_MENU_CONTENT.footerPrompt,
+            if (!institution) {
+              return [];
+            }
+
+            return [
+              {
+                title: institution.name,
+                description: `${institution.product} for ${institution.description}`,
+                icon: PRODUCT_ICONS_BY_NAME[institution.product],
+                link: (
+                  <Link
+                    href={`${SITE_ROUTES.home}#products`}
+                    onClick={() => selectProduct(Math.max(productIndex, 0))}
+                  />
+                ),
+              },
+            ];
+          }),
+        })),
+        feature: {
+          photograph: (
+            <Image
+              src={SOLUTIONS_MENU_CONTENT.featurePhotograph}
+              alt=""
+              fill
+              sizes="240px"
+              className="object-cover"
+            />
+          ),
+          description: SOLUTIONS_MENU_CONTENT.featureDescription,
           link: (
             <Link href={SITE_ROUTES.contact}>
-              {SOLUTIONS_MENU_CONTENT.footerAction}
+              {SOLUTIONS_MENU_CONTENT.featureAction}
             </Link>
           ),
         },

@@ -7,16 +7,15 @@ import { MarketingContentSection } from "@healthalyst/ui/components/marketing-co
 import { MarketingFigure } from "@healthalyst/ui/components/marketing-figure";
 import { MarketingHubDiagram } from "@healthalyst/ui/components/marketing-hub-diagram";
 import { MarketingPageHeader } from "@healthalyst/ui/components/marketing-page-header";
-import { MarketingRecordList } from "@healthalyst/ui/components/marketing-record-list";
+import { MarketingTextRotator } from "@healthalyst/ui/components/marketing-text-rotator";
 import {
-  ABOUT_PAGE_CONTENT,
-  ABOUT_PRINCIPLES,
-} from "~/data/about-page-content";
-import {
-  CONTACT_TOPIC_DESTINATIONS,
-  INSTITUTIONS,
-  SITE_ROUTES,
-} from "~/data/site";
+  MarketingMotionPauseButton,
+  MarketingMotionPauseProvider,
+} from "@healthalyst/ui/components/marketing-motion-pause";
+import { ABOUT_PAGE_CONTENT } from "~/data/about-page-content";
+import { ClosingCall } from "~/components/closing-call";
+import { PrinciplesStory } from "~/components/principles-story";
+import { INSTITUTIONS, SITE_ROUTES } from "~/data/site";
 import { LogoMark } from "~/components/layout/logo";
 import { PRODUCT_ICONS_BY_NAME } from "~/components/product-icons";
 import { createContactDestination } from "~/lib/contact-destination";
@@ -35,13 +34,34 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <>
-      <MarketingPageHeader
-        tone="brand"
-        shape="card"
-        decoration={<MarketingCareNetwork />}
-        heading={ABOUT_PAGE_CONTENT.heading}
-        lede={<p>{ABOUT_PAGE_CONTENT.lede}</p>}
-      />
+      <MarketingMotionPauseProvider>
+        <MarketingPageHeader
+          tone="brand"
+          shape="card"
+          alignment="center"
+          decoration={
+            <>
+              <MarketingCareNetwork showNetwork={false} />
+              <MarketingMotionPauseButton className="absolute right-3 top-3 z-10 md:right-5 md:top-5" />
+            </>
+          }
+          heading={ABOUT_PAGE_CONTENT.heading}
+          lede={<p>{ABOUT_PAGE_CONTENT.lede}</p>}
+          tagline={
+            <p>
+              {ABOUT_PAGE_CONTENT.taglineLead}{" "}
+              <span className="sr-only">
+                {ABOUT_PAGE_CONTENT.taglineWords.join(", ")}
+              </span>
+              <MarketingTextRotator
+                words={ABOUT_PAGE_CONTENT.taglineWords}
+                stillWord={ABOUT_PAGE_CONTENT.taglineStillWord}
+                className="text-left text-accent"
+              />
+            </p>
+          }
+        />
+      </MarketingMotionPauseProvider>
       <MarketingContentSection
         identifier="what-we-do"
         heading={ABOUT_PAGE_CONTENT.whatWeDoHeading}
@@ -101,34 +121,12 @@ export default function AboutPage() {
           {ABOUT_PAGE_CONTENT.approachSummary}
         </p>
       </MarketingContentSection>
-      <MarketingContentSection
+      <PrinciplesStory
         identifier="what-guides-our-work"
         heading={ABOUT_PAGE_CONTENT.principlesHeading}
-      >
-        <MarketingRecordList
-          className="sm:grid sm:grid-cols-2 sm:gap-x-12 sm:gap-y-10"
-          records={ABOUT_PRINCIPLES}
-        />
-      </MarketingContentSection>
-      <MarketingContentSection
-        identifier="talk-to-our-team"
-        heading={ABOUT_PAGE_CONTENT.closingHeading}
-        introduction={<p>{ABOUT_PAGE_CONTENT.closingDescription}</p>}
-        actions={
-          <>
-            <ActionLink size="extraLarge" shape="pill">
-              <Link href={SITE_ROUTES.contact}>
-                {ABOUT_PAGE_CONTENT.closingPrimaryAction}
-              </Link>
-            </ActionLink>
-            <ActionLink variant="outline" size="extraLarge" shape="pill">
-              <Link href={CONTACT_TOPIC_DESTINATIONS.partnership}>
-                {ABOUT_PAGE_CONTENT.closingSecondaryAction}
-              </Link>
-            </ActionLink>
-          </>
-        }
+        introduction={ABOUT_PAGE_CONTENT.principlesIntroduction}
       />
+      <ClosingCall identifier="talk-to-our-team" />
     </>
   );
 }

@@ -14,9 +14,15 @@ import { cn } from "@healthalyst/ui/lib/utilities";
  *   the content on wide screens, like the contact page's side column.
  * - With `media`, the heading, introduction and content sit beside the media,
  *   such as a photograph, which takes the narrower column; the text is
- *   centred vertically against the media.
+ *   centred vertically against the media. Below large screens, where they
+ *   stack, the heading and introduction are centred.
  * - `alignment="center"` centres a stacked section's heading, introduction
  *   and actions above its content.
+ * - `tone` sets the surface: `default` (white), `brand` (the brand-colour
+ *   band, light text) or `subtle` (the subtle accent band). A page uses at
+ *   most one of each band.
+ * - `decoration` places a decorative layer, such as
+ *   `MarketingContourPattern`, behind the content.
  *
  * Sections are separated by space only, never by dividing lines.
  */
@@ -28,6 +34,8 @@ export function MarketingContentSection({
   media,
   layout = "stacked",
   alignment = "start",
+  tone = "default",
+  decoration,
   children,
 }: {
   /** Anchor for links to this section; also names its heading. */
@@ -40,31 +48,43 @@ export function MarketingContentSection({
   layout?: "stacked" | "split";
   /** Applies to stacked sections without media. */
   alignment?: "start" | "center";
+  tone?: "default" | "brand" | "subtle";
+  /** A decorative layer behind the content, hidden from assistive technology. */
+  decoration?: ReactNode;
   children?: ReactNode;
 }) {
   const headingIdentifier = `${identifier}-heading`;
   const hasMedia = media !== undefined;
   const isSplit = layout === "split" && !hasMedia;
   const isCentered = alignment === "center" && !isSplit && !hasMedia;
+  const isBrand = tone === "brand";
 
   const opening = (
     <div
       className={cn(
-        !isSplit && !hasMedia && "max-w-[68ch]",
-        isCentered && "mx-auto text-center"
+        !isSplit && !hasMedia && !isCentered && "max-w-[68ch]",
+        /* Centred headings get room for one line; the introduction keeps its own measure. */
+        isCentered && "mx-auto max-w-[56rem] text-center",
+        /* Beside media: centred while stacked on smaller screens, at the start beside it. */
+        hasMedia && "text-center lg:text-start"
       )}
     >
       <h2
         id={headingIdentifier}
-        className="text-balance text-[32px] font-semibold leading-[1.15] tracking-[-0.02em] text-foreground md:text-[40px]"
+        className={cn(
+          "text-balance text-[28px] font-serif font-normal leading-[1.15] tracking-[-0.01em] md:text-[40px]",
+          isBrand ? "text-primary-foreground" : "text-foreground"
+        )}
       >
         {heading}
       </h2>
       {introduction && (
         <div
           className={cn(
-            "flex max-w-[68ch] flex-col gap-4 text-base leading-relaxed text-muted-foreground md:text-[17px]",
-            isCentered && "mx-auto"
+            "flex max-w-[68ch] flex-col gap-4 text-base leading-relaxed [&_p]:font-normal md:text-[17px]",
+            isBrand ? "text-primary-foreground/85" : "text-muted-foreground",
+            isCentered && "mx-auto",
+            hasMedia && "mx-auto lg:mx-0"
           )}
         >
           {introduction}
@@ -73,7 +93,7 @@ export function MarketingContentSection({
       {actions && (
         <div
           className={cn(
-            "mt-8 flex flex-wrap items-center gap-4",
+            "mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4",
             isCentered && "justify-center"
           )}
         >
@@ -87,11 +107,19 @@ export function MarketingContentSection({
     <MarketingSection
       id={identifier}
       aria-labelledby={headingIdentifier}
-      className="bg-card py-12 md:py-20"
+      className={cn(
+        "py-12 md:py-20",
+        tone === "default" && "bg-card",
+        isBrand && "bg-primary text-primary-foreground",
+        tone === "subtle" && "bg-accent-subtle",
+        decoration !== undefined && "relative isolate overflow-hidden"
+      )}
     >
+      {decoration}
       <MarketingContainer
         className={cn(
-          "grid gap-10",
+          "grid grid-cols-1 gap-10",
+          decoration !== undefined && "relative",
           (isSplit || hasMedia) && "lg:grid-cols-12 lg:gap-x-12 xl:gap-x-16",
           isSplit && "lg:items-start",
           hasMedia && "lg:items-center"

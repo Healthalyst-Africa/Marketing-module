@@ -159,8 +159,8 @@ code, repository policies, or branding into it.
 ## HealthAlyst landing page requirements
 
 - Preserve the approved HealthAlyst Africa identity and the website's existing
-  forest, gold, cream, and sand palette. Use Inter as the only typeface for now,
-  as recorded in `DESIGN.md`. Use app theme tokens rather than scattering new
+  forest, gold, cream, and sand palette. Use Young Serif for headings and Inter
+  for all other text, as recorded in `DESIGN.md`. Use app theme tokens rather than scattering new
   brand values across components.
 - Keep product names, audiences, capabilities, and conversion messages consistent
   with approved content. Do not invent customer logos, testimonials, adoption

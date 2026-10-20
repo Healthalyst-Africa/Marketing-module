@@ -1,6 +1,10 @@
 import type { ReactNode } from "react";
 import { MarketingContainer } from "@healthalyst/ui/components/marketing-section";
 
+/**
+ * The site footer: brand, description and address, link groups, and a closing
+ * line.
+ */
 export function MarketingFooter({
   brand,
   description,
@@ -22,8 +26,8 @@ export function MarketingFooter({
   return (
     <footer className="bg-accent-subtle py-12 text-primary md:py-16">
       <MarketingContainer>
-        <div className="mb-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
-          <div>
+        <div className="mb-12 grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
+          <div className="col-span-2 lg:col-span-1">
             {brand}
             <p className="mb-5 mt-6 max-w-[30ch] text-sm leading-[1.8] text-muted-foreground">
               {description}

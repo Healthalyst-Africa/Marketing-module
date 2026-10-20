@@ -10,22 +10,35 @@ import { ChevronDownIcon } from "@healthalyst/icons";
 
 import { cn } from "@healthalyst/ui/lib/utilities";
 
+/**
+ * `viewportPlacement`: `trigger` (default) opens the panel under the menu;
+ * `container` spans the nearest positioned ancestor, such as a header's
+ * container, and centres the panel in it, for wide menus.
+ */
 const NavigationMenu = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Root>
->(({ className, children, ...properties }, elementReference) => (
-  <NavigationMenuPrimitive.Root
-    ref={elementReference}
-    className={cn(
-      "relative z-10 flex max-w-max flex-1 items-center justify-center",
-      className
-    )}
-    {...properties}
-  >
-    {children}
-    <NavigationMenuViewport />
-  </NavigationMenuPrimitive.Root>
-));
+  React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Root> & {
+    viewportPlacement?: "trigger" | "container";
+  }
+>(
+  (
+    { className, children, viewportPlacement = "trigger", ...properties },
+    elementReference
+  ) => (
+    <NavigationMenuPrimitive.Root
+      ref={elementReference}
+      className={cn(
+        "z-10 flex max-w-max flex-1 items-center justify-center",
+        viewportPlacement === "trigger" && "relative",
+        className
+      )}
+      {...properties}
+    >
+      {children}
+      <NavigationMenuViewport placement={viewportPlacement} />
+    </NavigationMenuPrimitive.Root>
+  )
+);
 NavigationMenu.displayName = NavigationMenuPrimitive.Root.displayName;
 
 const NavigationMenuList = React.forwardRef<
@@ -105,9 +118,16 @@ const NavigationMenuLink = NavigationMenuPrimitive.Link;
 
 const NavigationMenuViewport = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Viewport>,
-  React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Viewport>
->(({ className, ...properties }, elementReference) => (
-  <div className={cn("absolute left-0 top-full flex justify-center")}>
+  React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Viewport> & {
+    placement?: "trigger" | "container";
+  }
+>(({ className, placement = "trigger", ...properties }, elementReference) => (
+  <div
+    className={cn(
+      "absolute top-full flex justify-center",
+      placement === "container" ? "inset-x-0" : "left-0"
+    )}
+  >
     <NavigationMenuPrimitive.Viewport
       className={cn(
         "origin-top-center relative mt-1.5 h-[var(--radix-navigation-menu-viewport-height)] w-full overflow-hidden rounded-xl border bg-popover text-popover-foreground shadow data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-90 md:w-[var(--radix-navigation-menu-viewport-width)]",

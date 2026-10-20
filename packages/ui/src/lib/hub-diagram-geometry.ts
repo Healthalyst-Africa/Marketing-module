@@ -35,13 +35,3 @@ export const HUB_NODE_COUNT = HUB_CONNECTOR_PATHS.length;
 /** The hub's box on the wide-screen canvas, as Tailwind position classes. */
 export const HUB_BOX_CLASSES =
   "lg:absolute lg:left-[40.83%] lg:top-[30.36%] lg:size-auto lg:h-[39.29%] lg:w-[18.33%]";
-
-/** The value of `data-active` while the node at each index holds the signal. */
-export const HUB_ACTIVE_NODE_VALUES = [
-  "node0",
-  "node1",
-  "node2",
-  "node3",
-  "node4",
-  "node5",
-] as const;

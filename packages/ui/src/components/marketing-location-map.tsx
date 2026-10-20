@@ -13,9 +13,11 @@ import { cn } from "@healthalyst/ui/lib/utilities";
  * only the page's origin as the referrer, and keeps the surface colour while
  * loading. The address stays readable as text whether or not the map loads.
  *
- * The address column carries a faint field of medical crosses, the motif of
+ * The address column is set on the brand colour with light text, like the
+ * closing band, and carries a faint field of medical crosses, the motif of
  * the brand page header, strongest in its lower corner and fading out behind
- * the text.
+ * the text. Pass an action styled for a brand field (such as `ActionLink`
+ * with `variant="inverse"`).
  */
 export function MarketingLocationMap({
   embedSource,
@@ -44,15 +46,15 @@ export function MarketingLocationMap({
   return (
     <div
       className={cn(
-        "grid overflow-hidden rounded-xl bg-accent-subtle shadow-[0_1px_2px_rgba(15,23,20,0.04),0_4px_16px_rgba(15,23,20,0.06)] lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)]",
+        "grid overflow-hidden rounded-xl bg-primary shadow-[0_1px_2px_rgba(15,23,20,0.04),0_4px_16px_rgba(15,23,20,0.06)] lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)]",
         className
       )}
     >
-      <div className="relative isolate flex flex-col justify-center overflow-hidden p-6 md:p-8">
+      <div className="relative isolate flex flex-col justify-center overflow-hidden bg-primary p-6 text-primary-foreground md:p-8">
         <svg
           aria-hidden="true"
           focusable="false"
-          className="pointer-events-none absolute inset-0 -z-10 size-full text-primary"
+          className="pointer-events-none absolute inset-0 -z-10 size-full text-primary-foreground"
         >
           <defs>
             <pattern
@@ -94,11 +96,11 @@ export function MarketingLocationMap({
             mask={`url(#${fadeMaskIdentifier})`}
           />
         </svg>
-        <MarketingIconBadge icon={<LocationIcon />} />
-        <p className="mt-5 text-lg font-semibold leading-snug tracking-[-0.01em] text-foreground">
+        <MarketingIconBadge icon={<LocationIcon />} tone="inverse" />
+        <p className="mt-5 text-lg font-semibold leading-snug tracking-[-0.01em] text-primary-foreground">
           {name}
         </p>
-        <address className="mt-2 text-[15px] font-light not-italic leading-relaxed text-muted-foreground">
+        <address className="mt-2 text-[15px] font-light not-italic leading-relaxed text-primary-foreground/80">
           {addressLines.map((line) => (
             <span key={line} className="block">
               {line}

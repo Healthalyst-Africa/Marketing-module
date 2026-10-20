@@ -13,13 +13,19 @@ import { cn } from "@healthalyst/ui/lib/utilities";
 export function MarketingArrowLink({
   link,
   stretched = false,
+  tone = "default",
 }: {
   link: ReactElement<{ className?: string; children?: ReactNode }>;
   stretched?: boolean;
+  /** `inverse` for a link on a brand-coloured field. */
+  tone?: "default" | "inverse";
 }) {
   return cloneElement(link, {
     className: cn(
-      "group/action inline-flex min-h-11 items-center gap-2 rounded-sm text-[15px] font-semibold text-foreground underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+      "group/action inline-flex min-h-11 items-center gap-2 rounded-sm text-[15px] font-semibold underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+      tone === "inverse"
+        ? "text-primary-foreground focus-visible:ring-primary-foreground"
+        : "text-foreground",
       stretched && "after:absolute after:inset-0 after:rounded-[inherit]"
     ),
     children: (

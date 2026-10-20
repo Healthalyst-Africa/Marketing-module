@@ -76,9 +76,8 @@ const tailwindConfiguration = {
       },
       fontFamily: {
         sans: ["var(--font-sans)"],
-        // Inter is used throughout for now, so heading utilities that still say
-        // `font-serif` resolve to it until they are renamed in the redesign.
-        serif: ["var(--font-sans)"],
+        // Young Serif for headings; Inter for everything else.
+        serif: ["var(--font-heading)", "Georgia", "serif"],
         mono: ["var(--font-sans)"],
       },
       borderRadius: {

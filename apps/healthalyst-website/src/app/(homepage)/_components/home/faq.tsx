@@ -1,7 +1,13 @@
 import { MarketingFAQ } from "@healthalyst/ui/components/marketing-faq";
-import { FAQ_CONTENT } from "~/data/homepage-content";
+import { HOMEPAGE_FAQ_CONTENT } from "~/data/homepage-page-content";
 import { FAQS } from "~/data/faqs";
 
 export default function FAQ() {
-  return <MarketingFAQ content={FAQ_CONTENT} questions={FAQS} />;
+  return (
+    <MarketingFAQ
+      heading={HOMEPAGE_FAQ_CONTENT.heading}
+      introduction={HOMEPAGE_FAQ_CONTENT.introduction}
+      questions={FAQS}
+    />
+  );
 }

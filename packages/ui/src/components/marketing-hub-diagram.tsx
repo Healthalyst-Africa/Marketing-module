@@ -35,46 +35,27 @@ const NODE_POSITIONS = [
 ] as const;
 
 /*
- * Classes that light a node up while the motion layer marks it active, one
- * set per node so the styles can be generated ahead of time. The 0.7 second
- * delay lets the signal arrive first.
+ * Classes that light every node up while the motion layer marks the signal
+ * as arrived. The 0.7 second delay lets the signal reach the nodes first.
  */
-const ACTIVE_NODE_CLASSES = [
-  "group-data-[active=node0]/hub:border-accent group-data-[active=node0]/hub:shadow-[0_2px_4px_rgba(15,23,20,0.05),0_10px_24px_rgba(15,23,20,0.08)] group-data-[active=node0]/hub:delay-700",
-  "group-data-[active=node1]/hub:border-accent group-data-[active=node1]/hub:shadow-[0_2px_4px_rgba(15,23,20,0.05),0_10px_24px_rgba(15,23,20,0.08)] group-data-[active=node1]/hub:delay-700",
-  "group-data-[active=node2]/hub:border-accent group-data-[active=node2]/hub:shadow-[0_2px_4px_rgba(15,23,20,0.05),0_10px_24px_rgba(15,23,20,0.08)] group-data-[active=node2]/hub:delay-700",
-  "group-data-[active=node3]/hub:border-accent group-data-[active=node3]/hub:shadow-[0_2px_4px_rgba(15,23,20,0.05),0_10px_24px_rgba(15,23,20,0.08)] group-data-[active=node3]/hub:delay-700",
-  "group-data-[active=node4]/hub:border-accent group-data-[active=node4]/hub:shadow-[0_2px_4px_rgba(15,23,20,0.05),0_10px_24px_rgba(15,23,20,0.08)] group-data-[active=node4]/hub:delay-700",
-  "group-data-[active=node5]/hub:border-accent group-data-[active=node5]/hub:shadow-[0_2px_4px_rgba(15,23,20,0.05),0_10px_24px_rgba(15,23,20,0.08)] group-data-[active=node5]/hub:delay-700",
-] as const;
+const ACTIVE_NODE_CLASSES =
+  "group-data-[signal=on]/hub:border-accent group-data-[signal=on]/hub:shadow-[0_2px_4px_rgba(15,23,20,0.05),0_10px_24px_rgba(15,23,20,0.08)] group-data-[signal=on]/hub:delay-700";
 
-const ACTIVE_ICON_CLASSES = [
-  "group-data-[active=node0]/hub:border-accent group-data-[active=node0]/hub:bg-accent/10 group-data-[active=node0]/hub:delay-700",
-  "group-data-[active=node1]/hub:border-accent group-data-[active=node1]/hub:bg-accent/10 group-data-[active=node1]/hub:delay-700",
-  "group-data-[active=node2]/hub:border-accent group-data-[active=node2]/hub:bg-accent/10 group-data-[active=node2]/hub:delay-700",
-  "group-data-[active=node3]/hub:border-accent group-data-[active=node3]/hub:bg-accent/10 group-data-[active=node3]/hub:delay-700",
-  "group-data-[active=node4]/hub:border-accent group-data-[active=node4]/hub:bg-accent/10 group-data-[active=node4]/hub:delay-700",
-  "group-data-[active=node5]/hub:border-accent group-data-[active=node5]/hub:bg-accent/10 group-data-[active=node5]/hub:delay-700",
-] as const;
+const ACTIVE_ICON_CLASSES =
+  "group-data-[signal=on]/hub:border-accent group-data-[signal=on]/hub:bg-accent/10 group-data-[signal=on]/hub:delay-700";
 
-const ACTIVE_CONNECTOR_END_CLASSES = [
-  "group-data-[active=node0]/hub:fill-accent group-data-[active=node0]/hub:delay-700",
-  "group-data-[active=node1]/hub:fill-accent group-data-[active=node1]/hub:delay-700",
-  "group-data-[active=node2]/hub:fill-accent group-data-[active=node2]/hub:delay-700",
-  "group-data-[active=node3]/hub:fill-accent group-data-[active=node3]/hub:delay-700",
-  "group-data-[active=node4]/hub:fill-accent group-data-[active=node4]/hub:delay-700",
-  "group-data-[active=node5]/hub:fill-accent group-data-[active=node5]/hub:delay-700",
-] as const;
+const ACTIVE_CONNECTOR_END_CLASSES =
+  "group-data-[signal=on]/hub:fill-accent group-data-[signal=on]/hub:delay-700";
 
 /**
  * A hub joined to six destinations, three on each side, with a signal that
- * travels from the hub to each destination in turn and lights it up. On
- * narrower screens the hub sits above the destinations, which still light up
- * in turn.
+ * travels from the hub along all six connectors at once and lights every
+ * destination up together. On narrower screens the hub sits above the
+ * destinations, which still light up together.
  *
  * The diagram is rendered on the server and is complete without scripts; a
- * small client layer (`MarketingHubDiagramMotion`) runs the loop. It advances
- * every 1.8 seconds, holds while the pointer or focus is inside, stops while
+ * small client layer (`MarketingHubDiagramMotion`) runs the loop. It pulses
+ * every 2.4 seconds, holds while the pointer or focus is inside, stops while
  * the diagram is off screen, has a pause control (WCAG 2.2.2) and does not
  * run under reduced motion. The connectors are decorative; the destinations
  * are an ordinary list of links.
@@ -129,7 +110,7 @@ export function MarketingHubDiagram({
                 r="4"
                 className={cn(
                   "fill-primary/25 transition-colors duration-500 motion-reduce:transition-none",
-                  ACTIVE_CONNECTOR_END_CLASSES[pathIndex]
+                  ACTIVE_CONNECTOR_END_CLASSES
                 )}
               />
             </g>
@@ -162,13 +143,13 @@ export function MarketingHubDiagram({
               {cloneElement(node.link, {
                 className: cn(
                   "flex w-full items-center gap-3 rounded-full border border-primary/20 bg-card py-2.5 pl-2.5 pr-5 text-left shadow-[0_1px_2px_rgba(15,23,20,0.04)] transition-[border-color,box-shadow] duration-500 ease-out hover:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 motion-reduce:transition-none",
-                  ACTIVE_NODE_CLASSES[nodeIndex]
+                  ACTIVE_NODE_CLASSES
                 ),
                 children: (
                   <>
                     <MarketingIconBadge
                       icon={node.icon}
-                      className={ACTIVE_ICON_CLASSES[nodeIndex]}
+                      className={ACTIVE_ICON_CLASSES}
                     />
                     <span className="flex min-w-0 flex-col">
                       <span className="text-[15px] font-semibold leading-snug text-foreground">
