@@ -1,26 +1,56 @@
 import Image from "next/image";
 import Link from "next/link";
-import { MarketingHero } from "@healthalyst/ui/components/marketing-hero";
-import { HERO_CONTENT } from "~/data/homepage-content";
-import ProductNavigation from "./product-navigation";
+import { ActionLink } from "@healthalyst/ui/components/action-link";
+import { MarketingArrowLink } from "@healthalyst/ui/components/marketing-arrow-link";
+import { MarketingCareNetwork } from "@healthalyst/ui/components/marketing-care-network";
+import { MarketingRotatingHero } from "@healthalyst/ui/components/marketing-rotating-hero";
+import { HOMEPAGE_HERO_CONTENT } from "~/data/homepage-page-content";
+import { SITE_ROUTES } from "~/data/site";
 
 export default function Hero() {
   return (
-    <MarketingHero
-      {...HERO_CONTENT}
-      primaryAction={<Link href="#products">Explore our products →</Link>}
-      secondaryAction={<Link href="#contact">Speak to our team</Link>}
-      image={
-        <Image
-          src="/images/doctor-at-clinic.webp"
-          alt="A Black female doctor in a white coat and stethoscope at her clinic desk."
-          fill
-          preload
-          sizes="(min-width: 1280px) 640px, (min-width: 1024px) 42vw, (min-width: 640px) 480px, calc(100vw - 40px)"
-          className="object-cover object-center"
-        />
+    <MarketingRotatingHero
+      identifier="hero"
+      headingLead={HOMEPAGE_HERO_CONTENT.headingLead}
+      spokenEnding={HOMEPAGE_HERO_CONTENT.spokenEnding}
+      stillWord={HOMEPAGE_HERO_CONTENT.stillWord}
+      decoration={<MarketingCareNetwork showNetwork={false} />}
+      slides={HOMEPAGE_HERO_CONTENT.slides.map((slide, slideIndex) => ({
+        word: slide.word,
+        photograph: (
+          <Image
+            src={slide.source}
+            alt=""
+            fill
+            preload={slideIndex === 0}
+            sizes="100vw"
+            className="object-cover"
+          />
+        ),
+      }))}
+      lede={<p>{HOMEPAGE_HERO_CONTENT.lede}</p>}
+      actions={
+        <>
+          <ActionLink
+            variant="inverse"
+            size="extraLarge"
+            shape="pill"
+            className="w-full sm:w-auto"
+          >
+            <Link href={SITE_ROUTES.contact}>
+              {HOMEPAGE_HERO_CONTENT.primaryAction}
+            </Link>
+          </ActionLink>
+          <MarketingArrowLink
+            tone="inverse"
+            link={
+              <Link href="#products">
+                {HOMEPAGE_HERO_CONTENT.secondaryAction}
+              </Link>
+            }
+          />
+        </>
       }
-      productNavigation={<ProductNavigation />}
     />
   );
 }

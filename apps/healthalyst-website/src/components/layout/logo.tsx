@@ -24,8 +24,8 @@ export function LogoMark() {
 export function LogoLink() {
   return (
     <Link
-      href="/#hero"
-      aria-label="Healthalyst Africa, scroll to top"
+      href="/"
+      aria-label="Healthalyst Africa home"
       className="rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
     >
       <LogoMark />

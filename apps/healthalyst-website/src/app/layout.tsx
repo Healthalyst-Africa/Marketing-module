@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type React from "react";
-import { Source_Sans_3, Source_Serif_4 } from "next/font/google";
+import { Inter, Young_Serif } from "next/font/google";
 import { ThemePreferenceProvider } from "@healthalyst/ui/components/theme-preference-provider";
 import { createThemeInitializationScript } from "@healthalyst/ui/lib/theme-preference";
 import {
@@ -10,17 +10,21 @@ import {
 import "@healthalyst/ui/styles.css";
 import "./globals.css";
 
-const serifFont = Source_Serif_4({
+// Inter sets body text, controls and labels. Its optical-size axis gives
+// larger text the tighter display cut automatically.
+const interFont = Inter({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
-  variable: "--font-serif",
+  axes: ["opsz"],
+  variable: "--font-sans",
   display: "swap",
 });
 
-const sansSerifFont = Source_Sans_3({
+// Young Serif sets page and section headings. It has one weight, already
+// heavy, so headings use `font-normal` to avoid synthesised bold.
+const headingFont = Young_Serif({
   subsets: ["latin"],
-  variable: "--font-sans",
+  weight: "400",
+  variable: "--font-heading",
   display: "swap",
 });
 
@@ -87,7 +91,7 @@ export default function RootLayout({
       data-palette={THEME_PREFERENCE_CONFIGURATION.defaultIdentifier}
       suppressHydrationWarning
       data-scroll-behavior="smooth"
-      className={`${serifFont.variable} ${sansSerifFont.variable}`}
+      className={`${interFont.variable} ${headingFont.variable}`}
     >
       <head>
         <style id="website-palette-tokens">{WEBSITE_THEME_STYLES}</style>
@@ -99,7 +103,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={sansSerifFont.className}>
+      <body className={interFont.className}>
         <ThemePreferenceProvider configuration={THEME_PREFERENCE_CONFIGURATION}>
           {children}
         </ThemePreferenceProvider>

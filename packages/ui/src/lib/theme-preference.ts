@@ -32,7 +32,7 @@ function initializeTheme(configuration: ThemePreferenceConfiguration) {
       selectedIdentifier = savedIdentifier;
     }
   } catch {
-    // Cookies may be unavailable; the original palette remains usable.
+    // Cookies may be unavailable; the default palette remains usable.
   }
   document.documentElement.dataset.palette = selectedIdentifier;
 }

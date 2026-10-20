@@ -32,16 +32,23 @@ function FieldSet({
 function FieldLegend({
   className,
   variant = "legend",
+  tone = "default",
   ...properties
-}: React.ComponentProps<"legend"> & { variant?: "legend" | "label" }) {
+}: React.ComponentProps<"legend"> & {
+  variant?: "legend" | "label";
+  /** `accent` sets the legend in the theme's accent colour. */
+  tone?: "default" | "accent";
+}) {
   return (
     <legend
       data-slot="field-legend"
       data-variant={variant}
+      data-tone={tone}
       className={cn(
         "mb-3 font-medium",
         "data-[variant=legend]:text-base",
         "data-[variant=label]:text-sm",
+        "data-[tone=accent]:text-accent",
         className
       )}
       {...properties}
@@ -157,7 +164,7 @@ function FieldDescription({
     <p
       data-slot="field-description"
       className={cn(
-        "text-muted-foreground text-sm font-normal leading-normal group-has-[[data-orientation=horizontal]]/field:text-balance",
+        "text-muted-foreground text-[13px] font-light leading-normal group-has-[[data-orientation=horizontal]]/field:text-balance",
         "[&:nth-last-child(2)]:-mt-1 last:mt-0 [[data-variant=legend]+&]:-mt-1.5",
         "[&>a:hover]:text-primary [&>a]:underline [&>a]:underline-offset-4",
         className

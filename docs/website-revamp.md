@@ -735,3 +735,1785 @@ the application manifest as the only new dependency.
   storage failure reasons.
 - Not done: no commit, push or deployment. Slices 4, 5, 7 and 8 are unchanged
   and still await instruction.
+
+## Multi-page website — 19 October 2026
+
+The user asked to turn the one-page site into a multi-page site with a proper
+page for every footer destination except individual products, one page at a
+time, following a written design system. Drafted copy is reviewed by the user
+before it ships. This section covers the foundation and the first page,
+`/contact` (the contact half of Slice 4).
+
+### Page order
+
+Contact us → About us → Our approach → Partners → Partnership enquiries →
+Support → Investor relations → Careers → Press and media → Terms and privacy,
+then a homepage revision that links out to the new pages and a cross-route
+review. Each page starts only after the previous one is approved.
+
+### Foundation
+
+- `DESIGN.md` at the repository root records the design direction ("intake and
+  wayfinding"), colour roles, type scale, spacing, shapes, components, imagery
+  and copy rules. It is a proposal for the product designer.
+- Source Serif 4 now loads as a variable font with its optical-size axis, so
+  large headings use the display cut. No new family or dependency.
+- Header and footer are shared by every route in the `(homepage)` route group.
+  The group keeps its name because this session could not move files on the
+  developer's machine; renaming it to `(site)` with `git mv` is a safe
+  follow-up. Its layout no longer sets a canonical address; each page sets
+  its own.
+- `SITE_ROUTES`, `FOOTER_COMPANY_LINKS` and `FOOTER_CONNECT_LINKS` in
+  `src/data/site.ts` are the route registry. A footer link without a
+  destination renders as text. Until their pages ship, About us and Our
+  approach point to `/#about`, and Partners, Partnership enquiries, Investor
+  relations and Support point to `/contact`.
+- Navigation and footer labels use sentence case. Section links use
+  `/#identifier` so they work from every page. The current page is marked with
+  `aria-current="page"`, weight and an accent underline.
+- The logo links to `/` with the name "Healthalyst Africa home". A space
+  between the wordmark and subtitle makes the visible name part of the
+  accessible name.
+- New shared compositions in `@healthalyst/ui`: `breadcrumb` (shadcn
+  primitive), `marketing-page-header`, `marketing-task-layout`,
+  `marketing-sequence`, `marketing-record-list`, `marketing-figure` and
+  `marketing-closing-band`. The shadcn CLI could not reach the registry from
+  this session's sandbox, so the breadcrumb source was read from the official
+  `new-york` registry entry and adapted to the naming rules (and the upstream
+  `BreadcrumbElipssis` display name spelling corrected). Running
+  `pnpm dlx shadcn@latest add breadcrumb --cwd apps/healthalyst-website --dry-run`
+  locally will confirm it matches.
+- `ProductDetails` and `MarketingProcess` no longer hard-code `#contact`; the
+  application supplies the destination.
+
+### Contact page
+
+- Route: `src/app/(homepage)/contact/page.tsx`; copy in
+  `src/data/contact-page-content.ts`.
+- Layout: page header with trail, then the enquiry form beside "What happens
+  next", "Who we work with" and "Partnerships and investment". On phones the
+  short next-steps list comes first, then the form, then the rest.
+- The form keeps the same eight fields, limits, endpoint and server
+  validation. It now has visible persistent labels, an "Optional" marker,
+  descriptions where they help, and three fieldsets: About you, Your
+  institution, Your enquiry.
+- "Enquire about {product}" links open `/contact?product={name}` with that
+  product preselected. Unknown or repeated values are ignored. Reading the
+  query makes `/contact` render on request rather than statically.
+- The homepage `#contact` section is now an invitation band that links to
+  `/contact`; the anchor still works. Hero, process and about links point to
+  `/contact`.
+- Photograph: the documented Pexels image `clinician-tablet.webp`, shown on
+  wide screens only beside the next steps.
+
+### Drafted copy awaiting approval
+
+| Location                    | Draft                                                                                                                                      | Basis                                      |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------ |
+| Contact page heading        | Tell us about your institution                                                                                                             | New                                        |
+| What happens next           | We reply within two business days; We arrange a discovery consultation; We recommend a way forward                                         | FAQ answer and existing response-time copy |
+| Response time               | "Our team aims to respond within two business days" (previously "We respond to all enquiries within two business days")                    | Matches the server's existing message      |
+| Partnerships and investment | Use the form and choose General Partnership / Investment Enquiry as the product of interest                                                | Existing form options                      |
+| Form labels                 | First name, Last name, Email address, Phone number (Optional), Organisation or institution, Institution type, Product of interest, Message | Sentence case of existing labels           |
+| Field guidance              | "Not sure yet? Choose Full Product Suite…"; "…Please do not include patient information."                                                  | New; supports the no-patient-data rule     |
+| Actions and messages        | Send enquiry; Sending enquiry…; Enquiry sent. Our team aims to respond within two business days.; Your enquiry was not sent…               | New wording, same behaviour                |
+| Homepage invitation action  | Start an enquiry                                                                                                                           | New                                        |
+
+### Evidence
+
+- `pnpm check-format`, `pnpm lint`, `pnpm check-types` and `pnpm test` pass:
+  33 tests in seven files, including new tests for grouped legends, the
+  optional marker, field descriptions, product preselection, the sent,
+  rejected-field and network-failure journeys, the contact destination helper
+  and the homepage invitation.
+- `pnpm build` passes with Google Fonts replaced by a local mock
+  (`NEXT_FONT_GOOGLE_MOCKED_RESPONSES`), because the sandbox cannot reach
+  Google Fonts. A build on a networked machine has not been run.
+- Browser (Chromium, development server): 1440, 720, 390 and 320 pixels wide
+  with no horizontal overflow; product link from the homepage preselected the
+  product; empty submit focused the first required field; a submission
+  without a database returned `503` and showed the recoverable message with
+  input kept and focus on the alert; the mobile menu opened and Escape
+  returned focus to its trigger; first Tab reaches the skip link; tab order
+  runs header, trail, then form; focus rings visible; no touch target under
+  44 pixels; no console errors or warnings.
+- axe-core (WCAG 2.0–2.2 A/AA and best practice): no violations on `/contact`
+  at 1440 and 390 or on `/` at 1440, after fixing the logo name mismatch.
+- Not verified: a successful live submission (no database in the sandbox),
+  screen reader output, or a production deployment. No commit, push or
+  deployment.
+
+### Open items
+
+- Image provenance: `doctor-at-clinic.webp` (homepage hero) and
+  `clinical-team.webp` (homepage about section) have no recorded source in
+  `docs/website-assets.md`. Record or replace them before release.
+- Default palette: `THEME_PREFERENCE_CONFIGURATION.defaultIdentifier` is
+  `green-coral`, while `AGENTS.md` names forest and gold as the default. The
+  product designer should confirm which is intended.
+- Remaining pages need licensed photography. The sandbox cannot download
+  images; candidates will be proposed per page for the user to approve.
+
+## Reference study and typography — 19 October 2026
+
+The user judged the first contact page too generic and asked for five
+professional health websites to study before more pages are built, and for
+Inter to be used throughout.
+
+- `docs/design-case-studies.md` records the study of Abridge, Flatiron
+  Health, Commure, Helium Health and Hinge Health, the patterns they share and
+  what they imply for HealthAlyst. The contact page and `DESIGN.md` will be
+  revised against it once the user agrees the direction.
+- Inter replaces Source Serif 4 and Source Sans 3. It loads through
+  `next/font/google` with its optical-size axis as `--font-sans`; the Tailwind
+  `serif` family now resolves to the same variable, so older components keep
+  working until they are reworked. At the user's instruction, `AGENTS.md`
+  now names Inter as the only typeface for now.
+- Evidence: format, lint, type check and 33 tests pass; the production build
+  passes with Google Fonts replaced by a local Inter mock (the sandbox cannot
+  reach Google Fonts); `/` and `/contact` render in Inter at 1440 pixels with
+  no console messages.
+
+## Contact page and header rebuild — 19 October 2026
+
+The user approved rebuilding the contact page and the shared header using the
+reference study. `DESIGN.md` now records the resulting direction.
+
+### What changed
+
+- **Header** (`packages/ui/src/components/marketing-navigation.tsx`): sticky,
+  64 px on phones and 72 px from tablet up. On routes listed in
+  `BRAND_HEADER_ROUTES` it starts in the brand colour and turns white once the
+  page scrolls past 8 px. Items: a Solutions menu, How we work, About and one
+  "Contact us" button. "Partner with us" was removed from the header because it
+  led to the same page.
+- **Solutions menu**: the shadcn navigation menu (`navigation-menu.tsx`, Radix
+  `@radix-ui/react-navigation-menu` 1.4.1, added to `packages/ui`). Six
+  institution types, each naming its product with a one-line description, plus
+  "Talk to our team". Choosing one opens that product on the homepage. The
+  shadcn CLI could not reach the registry from the sandbox, so the source was
+  written from the official `new-york` component and adapted to the naming
+  rules; `pnpm dlx shadcn@latest add navigation-menu --cwd apps/healthalyst-website --dry-run`
+  will confirm it locally.
+- **Contact page**: forest-green page header with the plain heading "Contact
+  us"; the form panel rises into it; "Other ways to reach us" (partnership and
+  investment links that open the form with the topic chosen) and "What happens
+  next" sit beside it on desktop and below it on smaller screens. No decorative
+  photograph.
+- **Form** (`marketing-contact.tsx`): routing questions first (Your
+  institution, Your enquiry, Your details); a spinner while sending; a
+  confirmation panel that replaces the form, takes focus and offers "Send
+  another enquiry". Field names, limits, endpoint and server validation are
+  unchanged.
+- **Presets**: `?product=<name>` and `?enquiry=partnership|investment` preset
+  the form (`readContactEnquiryPreset`). Footer links for Partners, Partnership
+  enquiries and Investor relations now use these presets.
+- **Contact details**: `CONTACT_DETAILS` in `contact-page-content.ts` holds
+  email, phone and office address. It is empty, so nothing is shown; each item
+  appears once the company supplies it.
+- Institution names are now in sentence case. The unused scroll-reveal code
+  was removed from the shared package. Shared figures use a 12 px radius.
+
+### Drafted copy awaiting approval
+
+| Location               | Draft                                                                                                                                                                         |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Page header            | "Contact us" / "Tell us about your institution and what you need. Our team aims to respond within two business days."                                                         |
+| Form                   | "Send an enquiry" / "It takes about two minutes."                                                                                                                             |
+| Topic question         | "What would you like to discuss?" / "Choose a product, or Full Product Suite if you are not sure yet."                                                                        |
+| Confirmation           | "Enquiry sent" / "Thank you. Our team aims to respond within two business days." / "Send another enquiry"                                                                     |
+| Other ways to reach us | Partnerships: "Technology, implementation and development partners working in African healthcare." Investors: "Funds and investors who would like to speak with the company." |
+| Solutions menu         | "{Product} for {existing description}" and "Not sure which product fits your institution? Talk to our team"                                                                   |
+
+### Evidence
+
+- `pnpm install --frozen-lockfile`, `pnpm check-format`, `pnpm lint`,
+  `pnpm check-types` and `pnpm test` (36 tests) pass. `pnpm build` passes with
+  the local font mock.
+- Browser (Chromium): 1440, 768, 390 and 320 pixels wide with no horizontal
+  overflow and no target under 44 pixels. Header turns white on scroll. The
+  Solutions menu opens with Enter, Tab enters it, Escape closes it with
+  `aria-expanded="false"` and focus back on the trigger; choosing "Pharmacies"
+  opened PharmaDesk on the homepage. "Start a partnership enquiry" preset
+  "General Partnership". Stubbed endpoint responses confirmed the sent panel
+  (focus on "Enquiry sent", form back after "Send another enquiry") and a
+  rejected email (focus on the field, `aria-invalid="true"`). Tab order: skip
+  link, logo, menu, contact button, trail, form, side links.
+- axe-core: no violations on `/contact` or `/`. With the Solutions menu open it
+  reports `aria-hidden-focus` on Radix's internal focus-proxy element, a known
+  pattern of that primitive.
+- Contrast (default palette): white on brand 8.1:1, 80% white on brand
+  5.9:1, secondary text on white 7.7:1.
+- Not verified: a real submission to Neon, a screen reader, or a production
+  deployment.
+
+### Follow-ups
+
+- `pnpm install` is needed locally for the new Radix dependency. The lockfile
+  also re-resolved one existing Vitest peer entry.
+- Unused files that this session cannot delete:
+  `apps/healthalyst-website/src/hooks/use-reveal.ts`. Remove with `git rm`.
+
+## Shared components aligned with HealthSchedule — 19 October 2026
+
+The contact form and header used shadcn primitives underneath but restyled
+them at the call site: a shared class string on every field, and six buttons
+rebuilt with `variant="unstyled"`. The primitives also came from two shadcn
+generations with different focus rings. The fix follows the practices of the
+`healthalyst-frontend` monorepo (HealthSchedule).
+
+### Practices adopted
+
+- Primitives carry the product's defaults, and call sites choose variants and
+  properties. Call sites pass layout classes only.
+- `ActionButton` is the only renderer of the shadcn `Button` for actions, with
+  shared loading, busy, disabled and icon behaviour. This site adds
+  `ActionLink` for navigation that looks like a button.
+- Icons come from the `@healthalyst/icons` workspace package with
+  purpose-based names; only that package imports Lucide.
+- Forms sit in a shadcn `Card`.
+
+Not copied: HealthSchedule's mixed focus rings, and its use of `accent` (coral)
+for hover states.
+
+### What changed
+
+| Area            | Change                                                                                                                                                                                                                                                   |
+| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Icons           | New `packages/icons`. Every icon import in `packages/ui` and the website goes through it; `lucide-react` moved there. `next.config.mjs` transpiles it.                                                                                                   |
+| Form controls   | `Input`, `Textarea` and `NativeSelect` share `lib/form-control-variants.ts`: one surface, hover, 2 px offset focus ring, rejected and disabled treatment. `Input` and `NativeSelect` take `controlSize` (`small`, `default` 44 px, `large` 48 px).       |
+| Button          | New variants `inverse` and `inverseOutline`, sizes `extraLarge` and `largeIcon`, and a `shape` variant (`pill`). `outline` and `ghost` hover with the `secondary` tint instead of coral. Busy buttons stay at 80% opacity so the label remains readable. |
+| Wrappers        | New `ActionButton` (ported from HealthSchedule, with the spinner stopped under reduced motion) and `ActionLink`. Every composition now uses them; nothing outside them imports `button`.                                                                 |
+| Navigation menu | `navigationMenuTriggerStyle` has a `tone` variant (`default`, `inverse`); plain links use it through `NavigationMenuLink`. The long override strings in the header are gone.                                                                             |
+| Enquiry form    | The panel is a `Card`; controls use `controlSize="large"` with no class overrides; Send and "Send another enquiry" are `ActionButton`s; labels, legends and descriptions use the field primitives' own type styles.                                      |
+| Header          | Contact is an `ActionLink` (`inverse` or `default`, `large`, `pill`); the phone menu trigger is an `ActionButton` (`inverseOutline` or `outline`, `largeIcon`, `pill`).                                                                                  |
+| Homepage        | Hero, product details, process, about, product navigation and the closing band moved to `ActionButton` or `ActionLink`. The closing band button is now `inverse` (white), matching the header on brand fields.                                           |
+| Rules           | `AGENTS.md`, `packages/ui/README.md`, `packages/README.md`, the website README and `DESIGN.md` record the rules and variant names.                                                                                                                       |
+
+### Visible differences
+
+A computed-style comparison of every link, button and control on `/` and
+`/contact` at 1440 and 390 pixels, before and after, plus side-by-side
+screenshots of both pages, show these visible changes (other differences, such
+as input padding inside a fixed height, do not change what is drawn):
+
+- Field labels are 14 px instead of 15 px and group legends are medium weight,
+  because they now use the field primitives' styles (seen in the screenshots;
+  the form is 14 to 20 px shorter).
+- The phone menu trigger on white has a control-outline border (`#748B80`)
+  instead of the pale rule colour.
+- "Send another enquiry" has a control-outline border and foreground text
+  instead of a brand-green outline.
+- Homepage buttons and button-styled links are semibold. The hero and product
+  enquiry buttons are 15 px. The closing band button is white instead of pale
+  green.
+
+### Defect found and fixed
+
+On phones, the "Contact us" button at the foot of the slide-out menu shrank to
+24 px when the menu content overflowed. It now keeps its 48 px height. This
+predates the refactor.
+
+### Evidence
+
+- `pnpm install --frozen-lockfile`, `pnpm check-format`, `pnpm lint`,
+  `pnpm check-types` and `pnpm test` (37 tests) pass. `pnpm build` passes with
+  the local font mock. One new test covers the busy state: while the enquiry
+  sends, the button reads "Sending enquiry…" and is disabled with
+  `aria-busy="true"`.
+- Browser (Chromium):
+  - Submit hover is brand at 90%. While sending, the spinner shows and opacity
+    is 0.8.
+  - In the sent state, focus lands on "Enquiry sent", and "Send another
+    enquiry" brings the form back.
+  - A rejected email moves focus to the field, which has
+    `aria-invalid="true"`.
+  - The Solutions menu opens with Enter and closes with Escape, returning focus
+    to the trigger. Choosing "Pharmacies" selects PharmaDesk.
+  - The phone menu opens and closes after a link is chosen, and its contact
+    button is 48 px tall.
+  - The control panel renders without errors, and nothing overflows
+    horizontally.
+- axe-core: no violations on `/contact` at 1440 and 390 or on `/`. The known
+  Radix focus proxy `aria-hidden-focus` appears only while the menu is open.
+- Not verified: a screen reader, a real submission to Neon, or a production
+  deployment.
+
+### Remaining
+
+- Restyling classes still passed to `ActionLink` and `ActionButton` in the
+  homepage compositions (hero secondary link, about, process, product
+  navigation) and the palette preview go when the homepage is reworked.
+- `apps/healthalyst-website/src/components/ui/{accordion,button,input,select,textarea}.tsx`
+  are unused wrappers in the old style, and `button.tsx` still uses
+  `variant="unstyled"`. This session cannot delete files; remove them with
+  `git rm`.
+- Proposed next, awaiting approval: move the field types and a
+  `DynamicFormFields` renderer into `packages/ui`, move the enquiry submission
+  into a website feature folder with a Zod schema, and adopt the
+  `features/`, `infrastructure/` and `shared/` structure.
+
+## Completion pass — 19 October 2026
+
+A review of the uncommitted work found one incomplete edit and finished the
+clean-up that earlier sessions could not do.
+
+- **Defect fixed:** `marketing-contact.tsx` rendered `SuccessIcon` in the sent
+  confirmation without importing it, so type checking, the build and the
+  sent-state tests failed. It now imports the icon from `@healthalyst/icons`.
+- **Removed:** the unused wrappers
+  `apps/healthalyst-website/src/components/ui/{accordion,button,input,select,textarea}.tsx`
+  (including the last `variant="unstyled"` call site) and
+  `apps/healthalyst-website/src/hooks/use-reveal.ts`. Nothing imported them.
+  The website README no longer lists them.
+- **Registry check:** `shadcn add breadcrumb --diff` and
+  `shadcn add navigation-menu --diff` against the official registry show only
+  the expected local changes: descriptive names, icons from
+  `@healthalyst/icons`, the corrected `BreadcrumbEllipsis` display name, the
+  navigation menu's `"use client"` boundary and its `tone` variant and
+  restyled trigger.
+
+### Evidence
+
+- `pnpm install --frozen-lockfile`, `pnpm check-format`, `pnpm lint`,
+  `pnpm check-types` and `pnpm test` (37 tests in seven files) pass.
+- `pnpm build` passes with Google Fonts fetched over the network; no font
+  mock was used. `/contact` and `/api/contact` render on request; `/`,
+  `/control-panel` and the not-found page are static.
+- Not verified: a browser run after this pass, a real submission to Neon, a
+  screen reader, or a production deployment. No commit, push or deployment.
+
+### Contact page adjustments
+
+At the user's request:
+
+- **Columns swapped.** On wide screens the enquiry form now sits in the right
+  column and "Other ways to reach us" and "What happens next" in the left.
+  `MarketingTaskLayout` places them with grid columns, so the form stays
+  first in reading and focus order and still comes first on phones.
+- **Breadcrumb removed.** `MarketingPageHeader` no longer renders a trail;
+  its `trail` and `currentPageLabel` properties and the `MarketingTrailStep`
+  type are gone, and the heading starts 48 px (phones) or 80 px (tablet up)
+  below the site header. Inner pages are one level deep, so the logo and the
+  header navigation lead back. The shadcn `breadcrumb` primitive stays in
+  `packages/ui`, unused. `DESIGN.md` records both changes.
+- Evidence: format, lint, type check and 37 tests pass. In the browser at
+  1440, 1024 and 375 pixels: form on the right from 1024 up and first on
+  phones, no breadcrumb, one `h1`, no horizontal overflow, no console errors.
+
+### Still open
+
+- Restyling classes passed to `ActionLink` and `ActionButton` in the homepage
+  compositions and the palette preview, to be replaced when the homepage is
+  reworked.
+- Renaming the `(homepage)` route group to `(site)`.
+- Image provenance for `doctor-at-clinic.webp` and `clinical-team.webp`, the
+  default palette question, and approval of the drafted copy above.
+- Next page in the agreed order: About us.
+
+## Shared select, form field renderer and manual testing — 19 October 2026
+
+The contact form's selects used the browser-native `NativeSelect`, so their
+open list was the operating system's menu rather than a shadcn component, and
+each control was placed by hand inside the form. This completes the change
+proposed under "Remaining" above, without the folder restructure or Zod
+schema.
+
+### What changed
+
+| Area               | Change                                                                                                                                                                                                                                                                                                                 |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Select primitive   | `select.tsx` installed with `shadcn add select` (new-york, `@radix-ui/react-select` 2.4.1) and adapted: descriptive names, icons from `@healthalyst/icons` (new `SelectedIcon` and `ChevronUpIcon`), the shared form control surface and `controlSize`, 44 px options highlighted with the `secondary` tint.           |
+| Field definitions  | `packages/ui/src/lib/form-definition.ts`: `FormFieldDefinition` with a `kind` of `text`, `email`, `tel`, `textarea` or `select`, and `FormFieldGroup`. The website's `ContactEnquiryField` builds on it; `type`, `multiline` and `optionPrompt` became `kind` and `placeholder`.                                       |
+| Field renderer     | `packages/ui/src/components/dynamic-form-fields.tsx` renders the fieldsets, labels, guidance, controls and error messages from the definition, following HealthSchedule's `DynamicFormFields`. The enquiry form uses it.                                                                                               |
+| Validation in page | The form sets `noValidate` and checks the fields before sending (`lib/form-field-validation.ts`). Messages appear below each field and focus moves to the first one, with no browser pop-ups. A field's message clears when it changes. Required fields carry the server's existing messages, so wording is unchanged. |
+| Focus              | Focus now goes to the visible control by its identifier. Radix keeps a hidden native select in the form, which `form.elements.namedItem` would return.                                                                                                                                                                 |
+| Removed            | `native-select.tsx`, no longer used.                                                                                                                                                                                                                                                                                   |
+
+### Manual testing only
+
+At the user's instruction, automated tests are not used for now; the
+maintainer tests the website manually.
+
+- Deleted all seven test files: the enquiry form, homepage invitation, route
+  handler, storage, throttle, validation and contact destination tests.
+- `pnpm test-all` (root and website) no longer runs `pnpm test`, so
+  continuous integration, which runs `pnpm test-all`, runs no tests. The
+  pre-push hook still runs only `pnpm build`.
+- Vitest, Testing Library and `packages/test-utilities` stay installed,
+  unused, for later.
+- `AGENTS.md`, `CONTRIBUTING.md`, the root, website, packages and
+  test-utilities READMEs record the rule.
+
+### Evidence
+
+- `pnpm test-all` passes: formatting, lint, type checks and the production
+  build. No tests and no browser checks were run; the maintainer will test the
+  form manually.
+- Worth checking by hand: choosing from both selects with mouse and keyboard;
+  sending with fields empty (messages under each field, focus on the first,
+  no browser pop-up); a product link such as "Enquire about LabConnect"
+  preselecting the product; the sent and failure states.
+
+## Rounded form controls — 19 October 2026
+
+The user found the form fields' corners too sharp. The website sets the theme
+radius `--radius` to 0.25 rem, so `rounded-md` on the controls drew 2 px
+corners.
+
+- Inputs, text areas and select triggers have 6 px corners, set once in
+  `FORM_CONTROL_CLASS_NAME` (`packages/ui/src/lib/form-control-variants.ts`)
+  rather than from the theme radius. A first try at 10 px was too round for
+  the user; 6 px matches the inputs in the Healthalyst Africa Figma file. The
+  focus ring follows the corners.
+- The select's open list has 8 px corners and its options 4 px.
+- `DESIGN.md` lists 6 px for inputs, selects and text areas.
+- Open: other elements that use `rounded-sm`, `rounded-md` or `rounded-lg`
+  (alerts, tabs, menu items, non-pill buttons, focus outlines on links) still
+  render at 0 to 4 px because of the 0.25 rem theme radius, smaller than
+  `DESIGN.md` lists. Raising `--radius` in `globals.css` would change all of
+  them together and needs a decision.
+- Evidence: `pnpm test-all` (format, lint, type checks, build). No tests or
+  browser checks were run.
+
+## Gold accent, no divider lines — 19 October 2026
+
+The user asked for the brand gold to be used properly, starting with the
+contact page, because green dominated. The gold was taken from the
+Healthalyst Africa Figma file
+(`kHA7dAre3U7zB3AwlywmHI`, "Design system" page, swatch "Secondary"):
+**`#C8A062`**, read from a lossless capture of the swatch because the file's
+inspect panel needs a Figma sign-in. Only the gold was taken; the file's green
+(`#1B3323`) was not.
+
+### Palette
+
+- New default palette "Green and gold" (`green-gold`) in
+  `design-palettes.ts`: the existing green, cream and neutrals with `accent`
+  `#C8A062` and a pale gold `#E4D0B1` for gold text on green. "Green and
+  coral" and the other palettes stay in the control panel. A browser that
+  chose another palette in the control panel keeps it until it is reset.
+- Contrast: dark text on gold 6.2:1; pale gold on green 5.4:1; gold on white
+  only 2.4:1, so gold is never used for text, focus rings or thin lines on
+  light surfaces. The footer's link focus outline used the accent (coral,
+  2.2:1) and now uses the focus ring colour.
+
+### Where gold appears
+
+| Place                        | Use                                                                                                                                 |
+| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Contact form                 | "Send enquiry" stays the app green; a gold version was tried and rejected by the user, and the `accent` button variant was removed  |
+| What happens next            | Step numbers in gold circles with dark numerals                                                                                     |
+| Other ways to reach us       | Link arrows in gold; link text in ink instead of green                                                                              |
+| Enquiry sent                 | Confirmation icon in gold; form and confirmation headings in ink instead of green                                                   |
+| Footer (all pages)           | Subtle gold background `#FFFCF5` (`accent-subtle`), sampled from the Figma file's step cards, at the user's request                 |
+| Homepage (through the token) | Elements already using the accent token (process and catalogue focus rings, the about quotation bar) now show gold instead of coral |
+
+The green contact page header (hero band), the green site header above it and
+the white section below are unchanged. A first attempt moved the contact page
+onto the cream background; the user rejected it and it was reverted: white
+sections and green hero bands are not to be changed.
+
+A first footer tint, the gold at 15% (about `#F3EADA`), did not match the
+Figma file. The file's subtle gold is the step-card fill on the "Staff filled"
+frame (node `50-9558`), read from the prototype view at actual size:
+`#FFFCF5`. It is now the `accent-subtle` token (with pale tints for the other
+palettes and a neutral default in `packages/ui/src/styles.css`). The step
+cards also use the gold `#C8A062` for numbered circles and the progress bar,
+which matches the accent.
+
+### Horizontal lines removed
+
+At the user's instruction, no horizontal divider lines are added without
+explicit approval, and the existing generic ones were removed: between form
+groups and above the send row, between record list rows, under the page
+header and site header, in the Solutions menu and phone menu, at the top of
+the footer and above its bottom bar, between FAQ and other accordion items,
+under homepage process steps, around product details and capabilities, in the
+hero and statistics band, about-section pillars, and the control panel header
+and separator. Spacing now separates these items. Kept on purpose: the
+underline that marks the selected product tab, link underlines, and vertical
+lines (statistics, sequence connector, quotation bar).
+
+### Open
+
+- `not-found.tsx` shows "404" as 11 px gold text on cream (2.3:1) and an
+  older hand-styled button; fix when that page is reworked.
+- Remaining pages and the homepage bands get gold accents as they are
+  reworked.
+
+### Evidence
+
+`pnpm test-all` (format, lint, type checks, build). No tests or browser checks
+were run; the maintainer will review the pages manually.
+
+## Contact hero as a card — 19 October 2026
+
+At the user's request the contact page's green hero is a card rather than a
+full-width band, below a white site header.
+
+- `MarketingPageHeader` takes `shape`: `band` (default, full width) or `card`.
+  A card sits inside external padding on the white surface (12 px on phones,
+  20 px from tablet up) and has 16 px corners. The contact page uses
+  `tone="brand"` with `shape="card"`; the green, the text and the form panel
+  rising into it are unchanged.
+- The site header is white on the contact page too and sits outside the card
+  (`BRAND_HEADER_ROUTES` is now empty). A version that put the navigation
+  inside the green card was tried and reverted at the user's request.
+- Evidence: `pnpm test-all` (format, lint, type checks, build). No tests were
+  run.
+
+## Quieter enquiry form — 19 October 2026
+
+At the user's request:
+
+- Form group legends are "Institution", "Enquiry" and "Details" (previously
+  "Your institution", "Your enquiry", "Your details").
+- Field borders are softer: inputs, text areas and select triggers draw the
+  control outline at 50% (about `#BAC5C0`) and at full strength on hover
+  (`FORM_CONTROL_CLASS_NAME`). Outline buttons keep the full-strength outline.
+- Accessibility: the softened border is about 1.8:1 against white, below the
+  3:1 that WCAG 2.2 success criterion 1.4.11 asks of the boundary that
+  identifies a field. Each field keeps a visible label directly above it, a
+  darker border on hover, a 2 px focus ring and a red border when rejected.
+  The lightest border that meets 3:1 is about `#85998F`, if strict AA
+  conformance is required.
+- Evidence: `pnpm test-all` (format, lint, type checks, build). No tests were
+  run.
+
+## Step circles on the subtle gold — 19 October 2026
+
+At the user's request the "What happens next" step circles use the footer's
+background, `accent-subtle` (`#FFFCF5`), instead of the solid gold. A gold
+outline (`border-accent`) keeps the circles visible on white; numerals are
+ink. Changed in `packages/ui/src/components/marketing-sequence.tsx`.
+Evidence: `pnpm test-all` (format, lint, type checks, build). No tests were
+run.
+
+## Field borders lighter again — 19 October 2026
+
+At the user's request field borders went from 50% to 35% of the control
+outline: about `#CED6D3`, 1.5:1 against white, still full strength on hover.
+The accessibility note under "Quieter enquiry form" applies with this lower
+figure. Evidence: `pnpm test-all` (format, lint, type checks, build). No tests
+were run.
+
+## Placeholders and first form group — 19 October 2026
+
+At the user's request:
+
+- Placeholders in inputs, text areas and the closed select are 14 px and
+  lighter: the secondary text colour at 60% (about `#8C9B95`), set in
+  `FORM_CONTROL_CLASS_NAME` and the select trigger. Typed values stay 16 px.
+  At 2.9:1 against white they are below the 4.5:1 WCAG asks of text; 80%
+  (about `#667971`, 4.6:1) is the lightest that meets it.
+- "Organisation or institution" now comes before "Institution type", and that
+  first group has no heading. `FormFieldGroup.legend` is optional; a group
+  without one is still a `fieldset`, so it is disabled while sending.
+- Evidence: `pnpm test-all` (format, lint, type checks, build). No tests were
+  run.
+
+## Lighter running text — 19 October 2026
+
+The user found supporting text too heavy (it was already regular, 400). All
+paragraphs and description-list descriptions (`p`, `dd`) are now light (300)
+through a base rule in `apps/healthalyst-website/src/app/globals.css`. Inter
+loads as a variable font, so no new font file is needed. Elements with a weight
+utility (headings, labels, links, `font-medium` lines) are unchanged. The field
+guidance text (`FieldDescription` in `packages/ui`) set its own regular
+weight and is now light too.
+`DESIGN.md` lists 300 for lede, body and small text. Evidence: `pnpm test-all`
+(format, lint, type checks, build). No tests were run.
+
+## Smaller field descriptions — 19 October 2026
+
+At the user's request field descriptions (the guidance between a label and its
+control, `FieldDescription` in `packages/ui/src/components/field.tsx`) are 13
+px instead of 14 px, still light. Labels stay 14 px medium. Evidence:
+`pnpm test-all` (format, lint, type checks, build). No tests were run.
+
+## Shorter form opening — 19 October 2026
+
+At the user's request:
+
+- The line "It takes about two minutes." under "Send an enquiry" is removed
+  (and its entry in `CONTACT_FORM_CONTENT`).
+- The message guidance, "Tell us about your institution and what you want to
+  achieve. Please do not include patient information.", is now the message
+  box's placeholder instead of a description above it.
+- Note: a placeholder disappears once the visitor starts typing, so the
+  request not to include patient information is no longer visible while they
+  write. The server still accepts only the defined fields.
+- Evidence: `pnpm test-all` (format, lint, type checks, build). No tests were
+  run.
+
+## Gold form group titles — 19 October 2026
+
+At the user's request the enquiry form's group titles ("Enquiry", "Details")
+use the accent colour, gold `#C8A062`. `FieldLegend` has a new `tone` variant
+(`default` or `accent`); `DynamicFormFields` takes `legendTone`, and the
+enquiry form sets it to `accent`.
+
+Accessibility: gold text reaches about 2.4:1 on white, below the 4.5:1 WCAG
+asks of 16 px text, and `DESIGN.md` had kept gold off text for that reason. A
+darker gold such as `#8C6A35` (about 5.0:1) would keep the titles gold-toned
+and readable if strict AA is needed. Evidence: `pnpm test-all` (format, lint,
+type checks, build). No tests were run.
+
+## Form group titles removed — 19 October 2026
+
+At the user's request the "Enquiry" and "Details" titles are removed, so no
+form group has a legend. The enquiry form no longer sets `legendTone`; the
+`FieldLegend` `tone` variant remains available.
+
+## Gold stepper line — 19 October 2026
+
+At the user's request the vertical line joining the "What happens next"
+steps uses the accent gold (`bg-accent`) instead of the edge colour.
+The line is drawn as a 1 px left border, like the circle outline, so it
+snaps to whole pixels and matches the outline's weight.
+
+## About us page — 19 October 2026
+
+The second page in the agreed order, built from the reference study
+(`docs/design-case-studies.md`) and in the contact page's style.
+
+### What the study suggested, and what was used
+
+| Reference pattern                                                    | On this page                                                                                 |
+| -------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| Brand-colour page header with a plain heading (Flatiron, Helium)     | The green header card from the contact page, heading "About us"                              |
+| "What we do" beside a photograph (Flatiron)                          | Approved about-section copy beside the one photograph with a recorded licence                |
+| Products grouped by who uses them (Helium, Commure)                  | "Who we build for": six institution types, each with its product and an enquiry link         |
+| A genuine workflow sequence (Abridge)                                | "How we work with institutions": the four approved implementation stages in the gold stepper |
+| Mission and values (Helium)                                          | "What guides our work": the four approved pillars                                            |
+| Closing band repeating the main action (Hinge)                       | "Talk to our team" with "Contact us" and "Start a partnership enquiry"                       |
+| Leadership, partners and investors, news (Abridge, Flatiron, Helium) | Left out: no approved names, partners, coverage or headshots exist yet                       |
+
+### Build
+
+- Route `src/app/(homepage)/about/page.tsx`, copy in
+  `src/data/about-page-content.ts`; paragraphs reuse `homepage-content.tsx`,
+  `PILLARS` and `STEPS` (pillar titles shown in sentence case).
+- New shared composition `marketing-content-section` in `packages/ui`.
+- `SITE_ROUTES.about` added. The header "About" link opens `/about` and is
+  marked as the current page there; `NavigationLink` now carries a
+  `destination`. Footer "About us" opens `/about`; "Our approach" opens
+  `/about#how-we-work` until its own page ships.
+- Photograph: `clinician-tablet.webp` (Pexels, recorded in
+  `docs/website-assets.md`), with alternative text that describes the photo
+  without implying it shows company staff.
+
+### Drafted copy awaiting approval
+
+| Location         | Draft                                                                                                                                          |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| Page header lede | We build the digital infrastructure of African healthcare: purpose-built products for the institutions that deliver care across the continent. |
+| Section headings | What we do; Who we build for; How we work with institutions; What guides our work; Talk to our team                                            |
+| Product rows     | "{Product} for {existing description}." and "Enquire about {Product}"                                                                          |
+| Closing actions  | Contact us; Start a partnership enquiry                                                                                                        |
+
+### Claims to confirm
+
+- "Institution-grade security" says the platforms comply "with international
+  health data protection standards". This is existing homepage copy, but no
+  certification or assessment is recorded. An accountable company owner
+  should confirm it or it should be reworded.
+
+### Content the company needs to supply for a complete About page
+
+Leadership names, roles and headshots; partners, pilots or investors who
+agree to be named; the company's story (founding year, location); photographs
+of the team; press coverage.
+
+### Evidence
+
+- `pnpm test-all` (format, lint, type checks, build).
+- Browser (development server), a load check only: `/about` at desktop and
+  375 px wide renders with one `h1` and ordered headings, the header marks
+  "About" as current, no horizontal overflow, links at least 44 px tall, no
+  console errors. No tests were run.
+
+## Office address in the footer — 19 October 2026
+
+The user supplied the office address: 11 Adenubi Close, off Majekodunmi
+Street, off Allen Avenue, Ikeja, Lagos, Nigeria. It is
+`COMPANY_OFFICE_ADDRESS` in `src/data/site.ts` and appears in the footer's
+first column, under the description, as an `<address>` headed "Office"
+(`MarketingFooter` takes an optional `address`). The contact page's
+`CONTACT_DETAILS.officeAddress` is still empty, so the contact page does not
+show it yet. Evidence: `pnpm test-all` (format, lint, type checks, build). No
+tests were run.
+
+## Solutions menu card — 19 October 2026
+
+At the user's request:
+
+- The Solutions dropdown card has 12 px corners (`rounded-xl` on the
+  navigation menu viewport in `navigation-menu.tsx`); it drew `rounded-md`,
+  which the website's 0.25 rem theme radius made 2 px. Its items have 8 px
+  corners.
+- A 1 px rule (`border-border`) separates the menu's closing line, "Not sure
+  which product fits your institution? Talk to our team", from the grid. This
+  divider was explicitly requested; no other lines were added.
+- Evidence: `pnpm test-all` (format, lint, type checks, build). No tests were
+  run.
+
+## Animated hero pattern — 19 October 2026
+
+The user found the green hero cards too plain and asked for subtle animated
+patterns that represent a healthcare system.
+
+### Research
+
+- From the reference study: Flatiron's hero illustrates its own data network
+  (a dot map); Helium's generic dotted globe and Commure's glowing arc read as
+  decoration, not meaning.
+- A quick web search found mostly generic "node mesh" hero backgrounds
+  ([Framer NeuroMesh](https://www.framer.com/marketplace/components/neuralmesh/),
+  [Synaptic Pro](https://www.framer.com/community/marketplace/components/synaptic-pro/)).
+  The useful idea is a sparse set of distinct care points with signals moving
+  between them, which matches HealthAlyst's "one connected healthcare
+  ecosystem" positioning.
+- Accessibility guidance
+  ([accessible SVG animation](https://noti.st/cariefisher/MKSNhs/present),
+  [reduced motion](https://blog.openreplay.com/prefers-reduced-motion-accessible-animation/)):
+  honour `prefers-reduced-motion`, prefer gentle opacity and slow movement,
+  and give looping motion longer than five seconds a pause control (WCAG
+  2.2.2).
+
+### What was built
+
+- `packages/ui/src/components/marketing-care-network.tsx`: inline SVG, no
+  animation library. A field of small medical crosses masked to fade in from
+  the right; six rounded-square facility nodes with crosses joined by curved
+  spokes to a gold hub, with dashed curved links between neighbours; gold
+  signals travel along the spokes (SMIL `animateMotion`), the hub's ring
+  expands and fades, and alternate facilities breathe.
+- `MarketingPageHeader` has a `decoration` slot (the card clips it). About
+  uses `<MarketingCareNetwork />`; Contact uses
+  `<MarketingCareNetwork reserveLowerSpace />` so the network stays above the
+  overlapping form.
+- Pause control: an `ActionButton` with the new `inverseGhost` variant and
+  `PauseIcon` / `PlayIcon` (added to `@healthalyst/icons`), labelled "Pause
+  background animation" / "Play background animation", in the card's top
+  right corner. It pauses the SVG's animations.
+- Reduced motion: animated elements and the pause control are hidden, leaving
+  the static network. Phones show only the static crosses.
+- The green background and the white sections are unchanged.
+
+### Evidence
+
+- `pnpm test-all` (format, lint, type checks, build).
+- Browser (development server), a load check only: `/about` and `/contact` at
+  desktop show the pattern to the right of the text and, on contact, above the
+  form; the pause control stopped the animation clock and resumed it, its
+  label switching between pause and play; at 375 px the network and control
+  are hidden, with no horizontal overflow; no console errors. Reduced motion
+  was not emulated in this browser. No tests were run.
+
+## About page: actions under "What we do" — 19 October 2026
+
+At the user's request "What we do" ends with two actions: "Explore our
+products" (green, opens the homepage product suite at `/#products`) and "See
+how we work" (outline, jumps to the page's own "How we work with
+institutions" section). Both labels are drafts awaiting approval. Evidence:
+`pnpm test-all` (format, lint, type checks, build). No tests were run.
+
+## About page: institution cards — 19 October 2026
+
+At the user's request "Who we build for" is a grid of cards on the light
+accent colour: `MarketingCardGrid` (new, `packages/ui`) with the subtle gold
+fill `accent-subtle` (`#FFFCF5`), a soft gold edge (`border-accent/25`) and 12
+px corners, three columns on desktop, two on tablets, one on phones. The
+arrow-link styling moved into `MarketingArrowLink`, used by both cards and
+record lists. Cards take an optional 4:3 illustration.
+
+### Illustration source
+
+[unDraw](https://undraw.co/) is the proposed source: its
+[licence](https://undraw.co/license) allows commercial use on websites with
+no attribution and allows modification; it forbids redistributing the
+illustrations in packs, rebuilding unDraw and using them to train AI. Its
+main colour can be set before download, so the set can match the brand.
+Considered and set aside: DrawKit (MIT, health packs, but a less consistent
+match for six institution types), Manypixels, and GetIllustrations (paid).
+unDraw has no dental illustration.
+
+Proposed mapping, awaiting the user's approval to download:
+
+| Card                                 | unDraw illustration |
+| ------------------------------------ | ------------------- |
+| Hospitals and clinics                | Medical care        |
+| Laboratories                         | Scientist           |
+| Pharmacies                           | Doctor's Orders     |
+| Dental practices                     | Doctor              |
+| Imaging centres                      | Medical research    |
+| Equipment suppliers and institutions | Logistics           |
+
+## About page: fading step showcase — 19 October 2026
+
+At the user's request "How we work with institutions" shows the four stages
+one at a time with a fade, instead of the stepper.
+
+- New `MarketingStepShowcase` (`packages/ui`), built on the shared Tabs:
+  `TabsList`, `TabsTrigger` and `TabsContent` gained semantic variants
+  (`steps`, `step`, `crossfade`); the default variant keeps the homepage tabs
+  unchanged.
+- The four steps (approved `STEPS` tags) are tabs on the left; the panel on
+  the right shows "Step n of 4", the stage headline and the full stage
+  description from `STEPS`, and crossfades over 500 ms. It advances every 6 s,
+  holds while the pointer or focus is inside, stops as soon as the visitor
+  clicks or presses a key on the steps, and has a "Pause steps" / "Play
+  steps" control (WCAG 2.2.2). Under reduced motion it neither advances nor
+  fades and the control is hidden. Arrow keys move between steps.
+- Inactive panels are `visibility: hidden`, so only the shown panel can be
+  focused or read.
+- Panels take an optional 16:10 illustration. Proposed unDraw picks,
+  awaiting approval to download: File Searching (discovery and scoping),
+  Master plan (design and architecture), Device Sync (build and
+  integration), Product iteration (launch and continuous improvement).
+- Evidence: `pnpm test-all`. Browser load check: it advanced from step 1 to
+  step 2 after six seconds with only the active panel visible; clicking
+  "Build & integration" selected it, it stayed there seven seconds later and
+  the control read "Play steps". No tests were run.
+
+## About page: illustrations in place — 20 October 2026
+
+The ten unDraw illustrations proposed above for the institution cards and the
+implementation steps are now in the page, as React components in
+`packages/icons/src/illustrations` (new export
+`@healthalyst/icons/illustrations`). `MarketingCardGrid` and
+`MarketingStepShowcase` colour them with the primary green and set
+`--illustration-accent` to the theme gold. The "Doctor" illustration (Dental
+practices card) still had unDraw's light skin tones and pale hair; they now
+use the deeper tone and dark hair like the other nine. Sources, licence and
+placements are recorded in `docs/website-assets.md`.
+
+Evidence: `pnpm test-all` (format, lint, type checks, build). Browser
+(development server), a load check only: `/about` on desktop shows all six
+card illustrations and the step illustration; at 375 px there is no
+horizontal overflow, one `h1` and ordered headings; no console errors. No
+tests were run.
+
+## About page: even illustration frames — 20 October 2026
+
+The user found the institution cards inconsistent in size. The unDraw art
+ranges from 0.63:1 (Pharmacies, tall) to 1.97:1 (Supply, wide), and the
+frames did not constrain it: the SVG's `size-full` resolved against an auto
+height, so the tall illustration stretched its card. In `MarketingCardGrid`
+(4:3) and `MarketingStepShowcase` (16:10) the illustration now sits in an
+absolutely positioned box inset 24 px (32 px on wider screens for steps)
+inside a frame on the page background with 8 px corners, and is fitted to
+it. Evidence: browser on the development server, all six cards 459 px tall
+at desktop and 423 px at 375 px, no horizontal overflow, no console errors;
+`pnpm test-all`. No tests were run.
+
+## About page: illustrations matched to institutions — 20 October 2026
+
+The user found three institution cards with the wrong illustration.
+
+- "Medical care" (nurses beside a jar of medicines) reads as a pharmacy and
+  "Doctor's Orders" (a doctor writing on a chart) as a hospital, so they were
+  swapped, and their components renamed for what they show:
+  `MedicationDispensingIllustration` (Pharmacies) and
+  `ClinicalChartingIllustration` (Hospitals and clinics).
+- "Doctor" (a general examination with a stethoscope) does not represent
+  dental practices. unDraw has no dental illustration (searches for
+  "dentist" and "teeth" return nothing). It stays on the Dental card until a
+  replacement is chosen.
+
+At the user's choice the Dental card now has `DentalCareIllustration`, adapted
+from unDraw's "Medical research" (the licence allows modification): the
+clinician with a tablet is kept without the stethoscope, in dark scrubs and a
+surgical mask so the figure differs from the Imaging card's, and the X-ray
+board is replaced with a dental chair, an overhead lamp, an instrument tray
+and a tooth sign drawn for this site in the same flat style and colours. The
+unused "Doctor" illustration was removed. Evidence: `pnpm test-all`; browser
+on the development server, all six cards the same height, no console errors.
+No tests were run.
+
+## About page: card border removed — 20 October 2026
+
+At the user's request the institution cards (`MarketingCardGrid`) no longer
+have the soft gold border; they keep the subtle gold fill and 12 px corners
+and, at the user's request, have a subtle shadow instead
+(`0 1px 2px` at 4% and `0 4px 16px` at 6% of the ink colour), a lighter
+version of the form panel's shadow.
+The step showcase panel is unchanged. Evidence: `pnpm test-all`; browser on
+the development server. No tests were run.
+
+## Section heading size — 20 October 2026
+
+The user found the About page's section headings ("What we do", "Who we build
+for") too small for sub-headings. They used Heading 2 (28 px), the step meant
+for panel headings such as the contact form's. A new "Section" step, 40 px on
+desktop and 32 px on phones (line height 1.15, weight 600, −0.02em), now sets
+`MarketingContentSection` headings, between the 64 px page heading and 20 px
+card headings and in line with the homepage's 36–48 px section headings. The
+introduction sits 20 px below. Panel headings keep 28 px. Evidence:
+`pnpm test-all`; browser on the development server. No tests were run.
+
+At the user's request the "Who we build for" heading and introduction are
+centred over the cards: `MarketingContentSection` gained
+`alignment="center"` (stacked sections without media), which centres the
+heading, introduction and actions. The other sections keep start alignment.
+
+At the user's request the illustration frames have visible rounded corners:
+they asked for `rounded-lg`, which the website's 0.25 rem theme radius made
+4 px, so they now use `rounded-[8px]`, as `DESIGN.md` records and as the
+Solutions menu items do. Evidence: `pnpm test-all`; browser on the
+development server. No tests were run.
+
+## About page: card micro-interactions — 20 October 2026
+
+At the user's request the institution cards respond to the pointer and the
+"Enquire about …" link stays hidden until the card is hovered, fading in
+smoothly.
+
+- `MarketingCardGrid`: on hover or focus within, the card lifts 4 px with a
+  deeper shadow (300 ms, ease-out) and the illustration scales to 104%
+  (500 ms) inside its clipped frame. The link fades in from transparent
+  (300 ms); it does not move, because a transform on its wrapper would
+  confine the stretched link to the wrapper.
+- Accessibility: the link is hidden only on devices that can hover
+  (`@media (hover: hover)`), so touch visitors always see it; keyboard focus
+  reveals it (`focus-within`); it keeps its space while hidden, so nothing
+  shifts. Under reduced motion there is no movement or transition.
+- `MarketingArrowLink` gained `stretched`, which extends the link over the
+  card, so the whole card is clickable and its accessible name is still the
+  link text. Record lists are unchanged.
+
+## About page: "What we do" centred vertically — 20 October 2026
+
+At the user's request the "What we do" text is centred vertically against
+the photograph on wide screens: `MarketingContentSection` aligns sections
+with `media` to the centre (`lg:items-center`); split sections stay top
+aligned. Evidence: `pnpm test-all`; browser on the development server. No
+tests were run.
+
+## Contact page: office map — 20 October 2026
+
+The user asked for a Google map of the office address directly above the
+footer on the contact page, and chose a lazily loaded map (no click needed)
+and Google's keyless embed (no API key).
+
+### Build
+
+- New shared composition `marketing-location-map` (`packages/ui`): an address
+  column and the map frame in one card; new `LocationIcon` in
+  `@healthalyst/icons` (lucide `MapPin`).
+- Contact page: a last section, "Visit our office", using
+  `MarketingContentSection`, so it sits directly above the footer.
+- Data: `COMPANY_OFFICE_ADDRESS.mapQuery` ("11 Adenubi Close, Ikeja, Lagos,
+  Nigeria") in `src/data/site.ts`, and `CONTACT_OFFICE_MAP` in
+  `src/data/contact-page-content.ts`, which builds the embed address
+  (`maps.google.com/maps?q=…&z=16&hl=en&output=embed`) and the directions
+  link (Google's documented Maps URLs, `google.com/maps/dir/?api=1&destination=…`).
+- The frame has a title naming the place, `loading="lazy"` and
+  `referrerPolicy="strict-origin-when-cross-origin"`. "Get directions" opens
+  in a new tab and says so to screen readers. The address is real text, so it
+  is readable if the map fails to load.
+- A first version floated the address card over the map's top left corner;
+  it covered Google's own place box, so the card became a column beside the
+  map instead.
+
+### Privacy
+
+Once it loads, the Google map sets Google cookies and loads Google's scripts
+in the visitor's browser. The site has no privacy notice or cookie banner
+yet. An accountable company owner should decide whether a notice should
+mention Google Maps, or whether the map should become click-to-load.
+
+### To confirm
+
+- Google labels the pinned place "11 Adenubi Cl, behind St. Leo's Catholic
+  Church, off Toyin Street", while the site's address says "off Majekodunmi
+  Street, off Allen Avenue". Zoomed in, the pin sits on Adenubi Close beside
+  Majekodunmi Street, so it appears right; someone who knows the office
+  should still confirm it.
+- Drafts awaiting approval: the heading "Visit our office", the introduction
+  "Our office is in Ikeja, Lagos." and "Get directions". If visits need an
+  appointment, the introduction should say so.
+
+### Evidence
+
+`pnpm test-all` (format, lint, type checks, build). Browser on the
+development server: desktop shows the address column beside the map with
+the pin in Ikeja and Google's place box visible; at 375 px the address comes
+first, then the map, with no horizontal overflow; the section is the last in
+`main`, directly before the footer; headings are in order; the directions
+link is 48 px tall and named "Get directions (opens in a new tab)"; no
+console errors. No tests were run.
+
+At the user's request the address column's type is smaller (name 18 px,
+address 15 px light) and it carries a pattern: a faint field of green medical
+crosses, the page header's motif, at 20% opacity on a 28 px grid, masked by a
+radial fade from the lower right corner so the area behind the text stays
+calm. Decorative and hidden from assistive technology. Evidence:
+`pnpm test-all`; browser on the development server, no console errors. No
+tests were run.
+
+At the user's request there is no added space between a section heading and
+its introduction (first 20 px, then 12 px, now none) in every
+`MarketingContentSection` (About and Contact pages); only the lines' own
+leading separates them. Evidence:
+`pnpm test-all`; browser on the development server. No tests were run.
+
+## About page: settings in the institution illustrations — 20 October 2026
+
+At the user's request each institution card's illustration shows a
+recognisable setting behind or around the figures, drawn for this site in
+the same flat style and colours (green main colour, gold accents, unDraw's
+greys):
+
+| Card                  | Scenery added                                                                          |
+| --------------------- | -------------------------------------------------------------------------------------- |
+| Hospitals and clinics | Ward bed, drip stand, scheduling board; canvas widened to 1240 × 880                   |
+| Laboratories          | Lab bench with microscope, beaker and flask; shelf of reagent bottles; molecule poster |
+| Pharmacies            | Dispensary shelves of medicines under a pharmacy cross                                 |
+| Imaging centres       | Brain scan and chest X-ray in place of the abstract films; CT scanner                  |
+| Equipment suppliers   | Warehouse racking with stock; canvas extended upwards                                  |
+| Dental practices      | Unchanged (already has its chair, lamp, tray and tooth sign)                           |
+
+The widened canvases match the 4:3 frame, so the figures keep their size.
+Sources and changes are recorded in `docs/website-assets.md`. Evidence:
+`pnpm test-all`; browser on the development server, each card checked. No
+tests were run.
+
+The user found the scenery too noisy and asked for it to be really subtle,
+keeping the emphasis on the important elements. The added scenery is now
+drawn at 14% opacity (one `<g opacity="0.14">` per illustration; first 28%, made subtler at the user's request); the lab
+bench, which stands in front of the scientist, stays opaque in pale greys
+(`#ededed`, `#f3f3f3`, `#f8f8f8`) so her coat does not show through, and the
+instruments on it are faded. Full strength is kept for the figures, the
+original unDraw objects (pill jar, trolley and boxes, held flask) and the
+brain scan and chest X-ray, which carry the Imaging card's meaning. Dental
+practices is unchanged: its chair is the card's main subject. Evidence:
+`pnpm test-all`; browser on the development server. No tests were run.
+
+The user then asked for fewer elements and better balance, so each card keeps
+only one or two quiet background pieces: Hospitals and clinics loses the drip
+stand (bed and scheduling board stay); Laboratories loses the molecule poster
+and the beaker and flask (bench, microscope and bottle shelf stay); Pharmacies
+loses the pharmacy cross (shelves stay); Equipment suppliers keeps the racking
+with half the boxes; Imaging centres keeps the scanner. The added scenery is
+at 14% opacity (from 28%) and the lab bench in paler greys (`#ededed`,
+`#f3f3f3`, `#f8f8f8`). Evidence: `pnpm test-all`; browser on the development
+server, no console errors. No tests were run.
+
+At the user's request the Equipment suppliers illustration has no added
+background: the racking is removed and its original 800 × 406 canvas
+restored. Evidence: `pnpm test-all`; browser on the development server. No
+tests were run.
+
+At the user's request the Equipment suppliers illustration has no added
+background: the racking is removed and its original 800 × 406 canvas
+restored. Evidence: `pnpm test-all`; browser on the development server. No
+tests were run.
+
+At the user's request the potted plant beside the clinician is removed from
+the Imaging centres illustration (the Dental illustration, adapted from the
+same drawing, keeps its plant). Evidence: `pnpm test-all`; browser on the
+development server. No tests were run.
+
+At the user's request the dental chair is subtle: the chair, overhead lamp
+and instrument tray are drawn at 14% opacity like the other cards' scenery;
+the tooth sign stays at full strength as the card's dental cue. Evidence:
+`pnpm test-all`; browser on the development server. No tests were run.
+
+The user found the Pharmacies illustration too crowded and asked for a
+better one. unDraw has no pharmacist illustration (its "pharmacy" and
+"medicine" results are "Doctor's Orders", already on the Hospitals card, a
+medical representative and a pair of doctors), so "Medical care" is
+simplified instead: the second figure is removed, leaving one pharmacist
+beside the medicine jar with the faint dispensary shelves behind, and the
+canvas is recentred (`viewBox="288 0 570 618.1"`). Evidence:
+`pnpm test-all`; browser on the development server, no console errors. No
+tests were run.
+
+## About page: "How we work" reframed for health organisations — 20 October 2026
+
+The user found the section misleading: it read like a software agency's
+process ("before writing a line of code", "we architect platforms",
+"offline-first", "unstructured supplementary service data and short message
+service fallback"), while HealthAlyst builds products for health
+organisations and helps them manage and automate their workflows.
+
+The About page no longer uses the shared `STEPS`; it has its own
+`ABOUT_APPROACH_STEPS` in `src/data/about-page-content.ts`. Drafted copy,
+awaiting approval, limited to facts the site already states:
+
+| Step                            | Headline                                      | Description (summary)                                                                           |
+| ------------------------------- | --------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Understand your workflows       | We learn how your organisation works          | Time with clinical, administrative and management teams; where paperwork and repeats slow staff |
+| Fit the product to your setting | Set up around your services and your teams    | Configured for services, roles and approvals, including facilities with limited connectivity    |
+| Connect and automate            | Information moves without being entered twice | Products connected to each other and existing systems; the LabConnect and PharmaDesk examples   |
+| Train, launch and support       | Alongside your staff from launch onwards      | Staff training, launch support, continued improvement                                           |
+
+- Heading: "How we work with health organisations". Introduction: "We start
+  from how your organisation delivers care, then shape our products around
+  your teams and the work they do every day." Step list label: "How we work
+  with you".
+- Still open: the step illustrations are software-themed (unDraw "File
+  Searching", "Master plan", "Device Sync", "Product iteration"), and the
+  homepage "How we work" section still uses the original `STEPS` wording.
+
+Evidence: `pnpm test-all`; browser on the development server. No tests were
+run.
+
+## About page: hub diagram replaces the cards and the steps — 20 October 2026
+
+The user wanted no cards, illustrations or steppers in this part of the
+page, but a looping animated sequence like the sector diagram on
+MyCover.ai's homepage (a hub joined by connector lines to labelled pills),
+and chose to replace both "Who we build for" and "How we work" with one
+section. Our own design, not a copy: the reference was studied from the
+user's screenshot.
+
+### Build
+
+- New shared composition `marketing-hub-diagram` (`packages/ui`), rendered
+  on the server and complete without scripts, with a small client layer,
+  `marketing-hub-diagram-motion`, that marks the active node through
+  `data-active` (the diagram's classes light it up) and draws the signal, the
+  hub's pulse and the pause control. Shared geometry is in
+  `src/lib/hub-diagram-geometry.ts`; two keyframes are in
+  `packages/ui/src/styles.css` (`marketing-hub-signal`,
+  `marketing-hub-pulse`). Behaviour as recorded in `DESIGN.md`.
+- A first version was one client component receiving the product icons as
+  properties. It ran on the development server but the production build
+  failed to prerender `/about` ("Element type is invalid … got: undefined"):
+  icons passed from the server into the client component were missing from
+  the client bundle. Splitting the server markup from the client motion layer
+  fixed it.
+- About page: "Who we build for" (centred heading and introduction) now
+  holds the diagram, with the Healthalyst logo (`LogoMark`) in the hub and
+  the six `INSTITUTIONS` as pills, each with its product icon and a link to
+  that product's enquiry (accessible name, for example "Hospitals and clinics
+  HealthSchedule: enquire about HealthSchedule"). Under it, one sentence sums
+  up the four ways of working; it carries `id="how-we-work"`, so "See how we
+  work" and the footer's "Our approach" still land there.
+- Removed from the About page: the institution cards and their
+  illustrations, the step showcase and `ABOUT_APPROACH_STEPS`. The shared
+  components `marketing-card-grid` and `marketing-step-showcase`, the Tabs
+  variants and the illustrations in `@healthalyst/icons/illustrations` are
+  no longer used anywhere; they are kept until the user decides whether to
+  remove them.
+
+### Drafted copy awaiting approval
+
+- "We work with each organisation in four stages: we learn how your teams
+  work, set the product up around your services and roles, connect it to the
+  systems you already use so information is not entered twice, and train and
+  support your staff from launch onwards."
+- List name: "Institutions we build for"; control: "Pause animation" / "Play
+  animation".
+
+### Evidence
+
+`pnpm test-all`. Browser on the development server: at desktop width one
+pill lights at a time and advances every 1.8 s, about 0.7 s after its signal
+leaves the hub, and the hub's pulse ring sits exactly over the hub; "Pause
+animation" held the loop for 3.7 s and switched to "Play animation"; the six
+links open `/contact?product=…#enquiry-form`; at 375 px the hub sits above
+one column of pills (62–81 px tall), with no horizontal overflow and headings
+in order; no console errors after the edit. Reduced motion was not emulated.
+No tests were run.
+
+## Icons, illustrations and the MyCover Genius study — 20 October 2026
+
+The user asked for icons like MyCover Genius's products menu everywhere,
+for that site to be studied as the guide to section layout and arrangement
+(not its design, colours or copy), for every unDraw illustration to be
+removed as outdated, and for real, openly licensed photographs (not AI) to
+be used instead.
+
+- **Study:** `docs/design-case-studies.md`, section 6: their homepage
+  section by section with the layout idea and our equivalent, their products
+  menu, their imagery (commercial-style stock served through Cloudinary with
+  metadata stripped, so their source cannot be identified or reused) and
+  openly licensed sources for ours.
+- **Icons:** new `MarketingIconBadge` (`packages/ui`), applied to the
+  Solutions menu (desktop and phone; menu items take an optional `icon`), the
+  About hub diagram (gold ring when active), the homepage product catalogue
+  and product panel, and the office map card. Product icons now come from one
+  map, `src/components/product-icons.tsx`.
+- **Removed:** `packages/icons/src/illustrations` (all unDraw-based art and
+  the adapted dental scene) and its `@healthalyst/icons/illustrations`
+  export; `public/images/healthcare-collaboration.webp` (AI-generated, not
+  displayed). `docs/website-assets.md` records both removals.
+- **Not yet done:** choosing and downloading replacement photographs, which
+  needs the user's approval per file. `doctor-at-clinic.webp` (homepage
+  hero) and `clinical-team.webp` (homepage about) still have no recorded
+  source and should be replaced. The shared `marketing-card-grid` and
+  `marketing-step-showcase` are unused.
+
+Evidence: `pnpm test-all`; browser on the development server: the Solutions
+menu, the About diagram and the homepage product panel show the ringed icons;
+no console errors. No tests were run.
+
+## Homepage rebuilt from the refactor plan — 20 October 2026
+
+Built the homepage in the order approved in `docs/website-refactor-plan.md`
+(section 4), after committing earlier work (8dc88c2). Arrangement and motion
+are recorded in `DESIGN.md` ("Homepage"); type sizes and surfaces match the
+About and Contact pages, as the user asked.
+
+### Sections and shared components
+
+| #   | Section                      | Component (packages/ui)                                                    |
+| --- | ---------------------------- | -------------------------------------------------------------------------- |
+| 1   | Hero                         | `marketing-photo-hero`, `marketing-text-rotator`, `marketing-motion-pause` |
+| 2   | Built for                    | `marketing-chip-row`                                                       |
+| 3   | Why HealthAlyst              | `marketing-benefit-showcase` (shared Accordion)                            |
+| 4   | Our product suite            | `marketing-product-suite` (Tabs `pills` / `inversePill`)                   |
+| 5   | One connected ecosystem      | `marketing-hub-diagram` (existing)                                         |
+| 6   | How we work with you         | `marketing-numbered-steps`, `marketing-reveal`                             |
+| 7   | Built for African conditions | `marketing-feature-carousel`, `carousel` (shadcn on Embla)                 |
+| 8   | Statement                    | `marketing-statement`                                                      |
+| 9   | Frequently asked questions   | `marketing-faq` (restyled)                                                 |
+| 10  | Talk to our team             | `marketing-closing-band` (photograph and second action)                    |
+
+Also: `MarketingContentSection` gained `tone` (`brand`, `subtle`);
+`MarketingArrowLink` gained `tone="inverse"`; `MarketingCareNetwork` gained
+`showNetwork={false}` (cross pattern only, used where text is centred) and
+follows a shared pause provider; new icons in `@healthalyst/icons`
+(`OfflineIcon`, `InteroperabilityIcon`, `SecurityIcon`, `PartnershipIcon`,
+`DiscoveryIcon`, `ConfigurationIcon`, `IntegrationIcon`, `TrainingIcon`,
+`LowBandwidthIcon`, `TextMessageIcon`, `MultilingualIcon`,
+`FacilityScaleIcon`, `CapabilityIcon`, `PreviousIcon`).
+
+### Carousel install
+
+`pnpm dlx shadcn@latest add carousel --dry-run` would have overwritten the
+customised `button.tsx`, so only `carousel.tsx` was taken from the registry
+and adapted by hand (naming rule: `options`, `carouselReference`,
+`CarouselController`; icons from `@healthalyst/icons`; controls through
+`ActionButton`; `reInit` listener cleaned up). `embla-carousel-react` ^8.6.0
+is declared in `packages/ui`. The feature carousel uses
+`containScroll: "keepSnaps"` so each chip maps to one card.
+
+### Removed
+
+The statistics bar (unverifiable figures), and with it `STATISTICS` and the
+`Statistic` type; the old homepage sections (`what-we-build`, `products-dive`,
+`about`, `statistics-bar`, `product-navigation`, `section-heading`, the
+homepage `product-icons`); the shared `marketing-hero`, `marketing-about`,
+`marketing-process`, `product-catalogue`, `product-details`,
+`marketing-card-grid`, `marketing-step-showcase`, `section-heading` and
+`MarketingIntroduction`; the Tabs `steps`, `step` and `crossfade` variants;
+`STEPS` and the `Step` type (the four stages now live in
+`src/data/approach-stages.ts`); unused homepage content blocks.
+`doctor-at-clinic.webp` and `clinical-team.webp` are no longer displayed.
+
+### Decisions taken while building
+
+- The hero shows only the static cross pattern: the animated network ran
+  behind the centred heading and link. A pause control top right covers the
+  rotating word (WCAG 2.2.2).
+- No gold progress line in "How we work" (lines need the user's approval);
+  the steps rise in order instead.
+- Content that animates in stays visible before scripts run
+  (`MarketingReveal` hides only once mounted).
+- Gold is not used for text on white (contrast); the statement's second
+  sentence is brand green.
+- Sections whose cards hold product icons are client components, so the icons
+  reach the client bundle (the earlier prerender failure).
+
+### Drafted copy awaiting approval
+
+All new headings, ledes and labels in `src/data/homepage-page-content.ts`,
+the product groupings, the operating-condition card sentences and the four
+stage descriptions in `src/data/approach-stages.ts`. The security pillar
+omits the unconfirmed compliance claim.
+
+### Photographs
+
+The four approved Pexels photographs are used (hero, benefits, closing band).
+`doctors-discussing.webp` appears twice (benefits and closing band) and
+`doctors-reviewing-tablet.webp` twice (hero and benefits); one or two more
+photographs would remove the repeats.
+
+### Evidence
+
+`pnpm test-all` (format, lint, type checks, build; `/` now prerenders as
+static). Browser on the development server at desktop width, checked through
+the page because the browser pane was hidden: one `h1` and ordered headings;
+nine images loaded, all with alternative text except the decorative logo
+mark; every link reaches `/contact`, a product enquiry, the partnership
+enquiry or `#products`; no horizontal overflow; carousel chips, cards and
+controls stay in step; the Built for chips, the product tabs and the header
+Solutions menu select the right group and product; controls at least 44 px;
+no console errors in a fresh tab. Phone width and reduced motion were not
+verified in this run. No tests were run.
+
+## Homepage hero: rotating backgrounds instead of photo cards — 20 October 2026
+
+The user found the three-photograph card row under the hero too close to
+MyCover Genius's hero and asked for something unique: the photograph should
+change with the rotating word (pharmacies, a pharmacy; hospitals, a
+hospital).
+
+- New `MarketingRotatingHero` (`packages/ui`, client) owns the timing: one
+  index drives both the word (`MarketingTextRotator` now takes
+  `activeIndex`) and six stacked background photographs that crossfade
+  (1.2 s) with a slow zoom (7 s), every 3.6 s, under a radial brand wash.
+  One pause control covers both; reduced motion keeps the first photograph
+  and "African healthcare" still. `MarketingPhotoHero` was removed.
+- The word now leaves in 0.2 s before the next arrives (they overlapped).
+- Photographs: four more Pexels photographs, approved by the user
+  (hospital corridor, a Lagos dental clinic, an X-ray room, a stock
+  warehouse cropped below its retailer signs), plus 16:9 crops of the
+  laboratory and Lagos pharmacy photographs. Recorded in
+  `docs/website-assets.md`; the unused portrait crops were deleted.
+
+Evidence: `pnpm test-all`; browser on the development server: the word and
+the photograph change together through all six (sampled hospitals,
+laboratories, pharmacies, imaging centres, medical suppliers), the text stays
+readable over each, no overlap between words, at 375 px the hero is 645 px
+tall with long words wrapping inside a fixed-height slot, the pause control
+is 44 px, no horizontal overflow. Reduced motion was not emulated. No tests
+were run.
+
+## Why HealthAlyst: arch duotone instead of a bright photo and floating card — 20 October 2026
+
+The user found the photograph too bright (poor contrast) and the floating
+"In practice" card another MyCover Genius copy, and asked for something
+unique (and called the new hero fantastic).
+
+- `MarketingBenefitShowcase` now shows an arch-topped photograph on a soft
+  gold arch offset behind it, with a duotone treatment (desaturated,
+  darkened, brand-green multiply and bottom gradient), and the open pillar's
+  outlined "01 / 04" number and title inside the arch, rising in on change.
+- The facts moved into the open accordion item as outlined chips; the
+  floating card and its `factsLabel` were removed. The photographs are now
+  decorative (`alt=""`); the list carries the content.
+
+Evidence: `pnpm test-all`; browser on the development server: the photograph,
+number and title change with the open item (01 to 04 checked), text inside
+the arch is white on the dark gradient, the arch sits above the list at
+375 px with no horizontal overflow. No tests were run.
+
+## Why HealthAlyst: scroll story — 20 October 2026
+
+The user disliked the arch shape and the chips (too retro) and chose the
+scroll story from three directions offered (scroll story, expanding panels,
+bento grid).
+
+- New `MarketingScrollStory` (`packages/ui`, client) replaces
+  `MarketingBenefitShowcase`: a pinned photograph panel beside the four
+  pillars; the pillar crossing the middle of the view (an
+  `IntersectionObserver` with a 10% band at the centre) is active, its
+  photograph crossfades in and the others dim. Nothing dims before scripts
+  run; phones show each photograph above its pillar.
+- No accordion, chips, tint or shapes. The pillar facts were removed from
+  the data; the descriptions carry them.
+- The bright pharmacy photograph that the user flagged no longer appears
+  here: "African infrastructure first" uses the Lagos dental clinic
+  (`hero-dental.webp`); `lagos-pharmacy.webp` was deleted.
+
+Evidence: `pnpm test-all`; browser at 1280 × 800: the panel stays pinned and
+changes with the active pillar (01 dental clinic, 03 clinician with tablet);
+at 375 px photographs sit above each pillar, all at full opacity, no
+horizontal overflow. No tests were run.
+
+At the user's request (the text scrolled away while only the photograph
+stayed pinned, and the spacing around each pillar was wasteful) the scroll
+story became a pinned stage: the photograph, the active pillar's text and a
+list of all four pillars stay in view while the section scrolls, and the
+scroll position chooses the pillar (60% of the window per pillar). The list
+items are `ActionButton`s that scroll to a pillar and carry
+`aria-current="step"`. Evidence: `pnpm test-all`; browser at 1280 × 800:
+01 at 10% and 03 at 60% of the section, both photograph and text in view,
+choosing 04 and then 02 in the list moved to them, list buttons 44 px. The
+pillar photographs are still the earlier ones; replacements that show each
+pillar await the user's approval. No tests were run.
+
+Clarified by the user: the section's own heading and introduction should
+start the pinned area, not sit above it with a gap. `MarketingScrollStory`
+now takes `headingIdentifier`, `heading` and `introduction` and renders the
+section's `h2` at the top of the pinned stage (and above the stacked
+chapters on phones); "Why HealthAlyst" uses `MarketingSection` directly so
+there is one heading. Evidence: `pnpm test-all`; browser at 1280 × 800: the
+heading, photograph, active pillar and list are all in view at 5% (01) and
+85% (04) of the section; one `h2`; at 375 px the heading sits above the
+stacked pillars, no horizontal overflow. No tests were run.
+
+The user preferred the chapters to scroll rather than swap in place, and
+asked to remove the index list and the numbers ("generic"). Final
+behaviour: the section heading and introduction are pinned under the site
+header, the photograph is pinned below them, and the four pillars scroll past
+on the right, the one at the middle of the view active (photograph
+crossfades, others dim). `listLabel` and the "01 / 04" numbers were removed.
+Evidence: `pnpm test-all`; browser at 1280 × 800: heading and photograph
+stay in view while the pillars scroll, the photograph changes with the
+active pillar (03 checked), the previous pillar dims under the heading. No
+tests were run.
+
+The user found the scrolling version poor: neighbouring pillars were
+visible, the dimming too weak, the spacing too large and the continuity not
+smooth. The scroll story now pins the heading, the photograph and a text
+window of the photograph's height; the pillars glide through the window in
+step with the scroll (transform set each animation frame, no transition),
+the window clips and fades its edges so only one pillar is seen, and the
+next photograph fades in over the current one in a narrow band midway. No
+numbers or list. Evidence: `pnpm test-all`; browser at 1280 × 800: one pillar
+in view at rest (01, 02, 03, 04 checked across the scroll), the stage
+releases into the product suite at the end. No tests were run.
+
+The user still found too much space between pillars: each pillar was a full
+window tall, so it had to travel the whole photograph height. Each pillar now
+has a 300 px slot centred against the photograph, the window fades out from
+30% of its height towards each edge, and the scroll rests on each pillar (the
+first and last 30% between two) and glides eased between them. Evidence:
+`pnpm test-all`; browser at 1280 × 800: the text offset holds at −190 px from
+30% to 44% of the section and moves 150 px per half step between, one pillar
+in view at rest, the next arriving right behind the last. No tests were run.
+
+The user found the rest-and-glide motion no longer smooth and the photograph
+too big. The rest easing was removed; the shown position now follows the
+scroll through per-frame smoothing (14% of the remaining distance a frame,
+none under reduced motion), and the active chapter re-renders only when it
+changes. The photograph is 5 of 12 columns and up to 440 px tall (from
+6 columns and 520 px); the text window matches, fully visible between 22%
+and 78% of its height. Evidence: `pnpm test-all`; browser at 1280 × 800:
+after a scroll jump the text offset eased 70, 28, −8, −39 … to −230 over
+the following frames; photograph 456 × 440. No tests were run.
+
+At the user's request only the centred pillar is in full colour, with its
+title in the accent gold to see how it looks; incoming and outgoing pillars
+are grey. Each slot carries a `--story-focus` value (1 at the centre, 0 half
+a pillar away), set each frame, and its title, description and icon mix
+from grey to full colour with it (`color-mix` and a grayscale filter).
+Contrast: the gold title on white is about 2.4:1, below the 3:1 minimum for
+large text (WCAG 1.4.3); a darker gold would be needed to keep it.
+Evidence: `pnpm test-all`; browser at 1280 × 800: at rest the centred title
+computes to the gold, the others to grey at 45%; midway both neighbours are
+grey. No tests were run.
+
+At the user's request the photograph has a pattern behind it so it does not
+look plain: the brand's medical-cross field (the motif of the green headers)
+offset behind its lower left corner and fading out, drifting 10 px per
+pillar with the scroll for depth (not under reduced motion), and a small
+cluster of gold crosses at the upper right. Decorative and hidden from
+assistive technology. Evidence: `pnpm test-all`; browser at 1280 × 800. No
+tests were run.
+
+At the user's request the pattern is mirrored: the cross field now sits
+behind the photograph's lower right corner and the gold crosses at its upper
+left.
+
+At the user's request the Solutions menu follows the layout of the MyCover
+Genius products menu (layout only, in HealthAlyst colours): a wide panel
+centred under the header with a heading, three need-based columns of ringed
+icon items and a photograph column with "Talk to our team". `NavigationMenu`
+gained `viewportPlacement="container"`; menu `items` and `footer` were
+replaced by `groups` and `feature`. The menu groups are `SOLUTION_GROUPS` in
+`data/site.ts`, shared with the homepage product suite. Column rules were
+left out under the no-lines rule. Evidence: `pnpm test-all`; browser at
+1280 × 800: panel 1120 px wide and centred, three columns and the feature;
+at 375 × 812 the slide-out menu lists the three groups under level-three
+headings. No tests were run.
+
+At the user's request the "Why HealthAlyst" heading uses the accent gold, like
+the active pillar title (the same 2.4:1 contrast caveat applies), and the
+Solutions menu heading has 40 px of space above its columns (from 24 px).
+
+At the user's request headings are serif and body text sans-serif, like the
+MyCover Genius pairing of Maitree and Metropolis but with different
+typefaces. The user chose Young Serif from six candidates (Source Serif 4 was
+rejected) for page, section and panel headings and the statement; Inter
+remains for everything else. Young Serif has one heavy weight, so headings
+use `font-normal`. Descriptions under page and section headings are now
+medium (500). Evidence: `pnpm test-all`; browser at the homepage: the "Why
+HealthAlyst" heading computes to Young Serif 400 and the loaded face is
+available; its description computes to weight 500. No tests were run.
+
+At the user's request text weight has three tiers. Running text stays light
+(300), the `p` and `dd` default in `globals.css`. Descriptions under page and
+section headings are medium (500), like the "Built for the institutions that
+deliver care" label: ledes and section introductions set it on their
+paragraphs (`[&_p]:font-medium` where a wrapper holds them), and the FAQ,
+closing band, Contact panels and not-found page set it directly. Descriptions
+under item titles, such as the "Why HealthAlyst" pillars, are regular (400).
+
+At the user's request the "Why HealthAlyst" heading is back to the foreground
+colour, and the pinned stage no longer centres its content vertically, which
+left loose space above the heading. The stage starts its content 40 px from
+the top and the section adds 40 px on large screens, so the heading sits
+80 px below the section's top edge like the product suite's. Evidence:
+browser at 1280 × 800: 96 px from the institution row to the heading; when
+pinned the heading is 40 px under the header and the photograph ends at
+666 px of 800.
+
+At the user's request the space below the story is trimmed: the pinned stage
+no longer takes the full viewport height, so it ends with its photograph and
+only the section's 80 px bottom padding follows. Progress now counts from
+where the stage pins under the header. Evidence: browser at 1280 × 800: stage
+594 px tall; 80 px from the photograph to the section's end; the first
+pillar is in focus as pinning starts and the last as it ends.
+
+At the user's request the empty band under the pinned story is gone: the
+stage is again exactly one viewport tall below the header, and the photograph
+and text window grow into the space between the section opening and the
+stage's 40 px bottom padding, up to 520 px tall, centred when capped. The
+section's large-screen bottom padding is 40 px so the gap after the story
+stays about 80 px. Evidence: browser at 1280 × 800: photograph 456 × 520,
+47 px between it and the opening and 47 px below it while pinned, 87 px to
+the section's end afterwards; at 1920 × 1080 the photograph stays at 520 px
+with 187 px above and below.
+
+At the user's request the ecosystem diagram's signal runs along all six
+connectors at once: every 2.4 seconds the hub pulses, six signals travel
+together and all six destinations light up together for about a second
+before fading. The motion layer now sets `data-signal` (`on` or `off`)
+instead of naming one active node, and the per-node class lists and
+`HUB_ACTIVE_NODE_VALUES` were removed. Pause, hold on pointer or focus,
+off-screen stop and reduced motion are unchanged. Evidence: browser at
+1280 × 800: six signal paths animate per pulse and all six destination
+borders compute to the accent while the signal is on.
+
+At the user's request animation controls are shown only in development:
+`SHOW_MOTION_CONTROLS` in `packages/ui/src/lib/motion-controls.ts`
+(`NODE_ENV === "development"`) gates the hero pause button
+(`MarketingMotionPauseButton`), the ecosystem diagram's pause button and the
+care-network pattern's button. Production loops the hero rotation, the
+ecosystem pulse and the pattern without a control. **Accessibility gap,
+accepted by the user on 20 October 2026:** this does not meet WCAG 2.2.2
+(pause, stop, hide) at level AA, which `AGENTS.md` targets; holding on
+pointer or focus and reduced motion still apply. The compliant alternative
+offered was to stop each loop after about 5 seconds in production. To read
+`NODE_ENV`, `packages/ui` now declares `@types/node` (22.20.5, the version
+the website already resolves) and lists `node` in its compiler types.
+Evidence: `pnpm test-all`; the production prerender of `/` and `/about`
+contains no pause or play button; the development server still renders both
+"Pause animation" controls on the homepage.
+
+At the user's request every description under a heading is regular (400);
+medium (500) was distracting. Ledes, section introductions and the FAQ,
+closing band, Contact panel and not-found descriptions now use
+`font-normal` (`[&_p]:font-normal` where a wrapper holds the paragraphs).
+Running text stays light (300) and the "Built for the institutions that
+deliver care" label stays medium.
+
+At the user's request the block under the ecosystem diagram moves up into
+the canvas's spare space below the last row of products: on large screens
+the development-only pause control sits 21 px under the products and the
+example paragraph 16 px under it (about 85 px under the products in
+production, where the control is hidden), down from 129 px.
+
+At the user's request centred section headings have room for one line: in
+`MarketingContentSection` the opening of a centred section is up to 56 rem
+wide instead of 68 characters, while the introduction keeps its 68-character
+measure. Left-aligned and split sections are unchanged. Evidence: browser at
+1280 × 800: "Built for African operating conditions" and every other centred
+homepage heading set on one line.
+
+At the user's request the "Built for African operating conditions" band is
+no longer plain cream: a faint topographic field (`MarketingContourPattern`,
+new in `packages/ui`) sits behind it, thin gold contour rings rising from the
+top-right and bottom-left corners and fading out towards the middle so the
+heading, chips and cards stay clear. It is a static, decorative SVG (hidden
+from assistive technology, no motion). `MarketingContentSection` gained a
+`decoration` slot that layers it behind the content. Evidence:
+`pnpm test-all`; browser at 1280 × 800 (19 rings, visible at the corners)
+and 375 × 812 (no horizontal overflow).
+
+At the user's request the homepage "How we work with you" section is hidden
+for now: `page.tsx` no longer renders it, and `how-we-work.tsx`, its copy and
+`data/approach-stages.ts` stay in place to bring it back. The header's "How
+we work" link pointed at that section (`/#how-we-work`), so it now goes to
+the About page's how-we-work passage (`/about#how-we-work`) until the
+section returns. Evidence: `pnpm test-all`; browser: the homepage has no
+`#how-we-work` element and the header link's address is
+`/about#how-we-work`.
+
+At the user's request the homepage statement became testimonials, keeping
+its single bold-text design: `MarketingTestimonials` (new in `packages/ui`,
+replacing `MarketingStatement`, which was removed with the website's
+`statement.tsx` and `HOMEPAGE_STATEMENT_CONTENT`) shows one quotation at a
+time with a floating avatar overlapping its end slightly, the attribution,
+and previous and next buttons. **No testimonials are approved yet.** The
+user asked for generic testimonies; under the content rules
+(`AGENTS.md`: do not invent testimonials) the three entries in
+`HOMEPAGE_TESTIMONIALS` are labelled samples with `isApproved: false`. They
+render only in development, each marked "Sample testimonial"; production
+publishes only approved entries, so the section is absent there until an
+accountable company owner supplies real, permissioned quotes (quote, name,
+role, institution, and optionally a portrait). Evidence: `pnpm test-all`;
+browser at 1280 × 800: the avatar overlaps the closing quotation mark, next
+and previous change the quote; at 375 × 812 no horizontal overflow; the
+production prerender of `/` contains no testimonial.
+
+At the user's request the samples use dummy names (Adaeze Okafor, Kwame
+Mensah, Fatima Bello) with generic institutions, and the "Sample testimonial"
+tag is gone. They are still `isApproved: false`, so they remain
+development-only; production shows no testimonial until approved ones exist.
+
+At the user's request the testimonial avatars use stock portraits: face
+crops of two licensed photographs already in the project and one Pexels
+photograph downloaded with the user's approval (recorded in
+`docs/website-assets.md`). They are decorative (`alt=""`; the name beside
+each identifies the person) and, with the dummy testimonials, appear only in
+development. Evidence: `pnpm test-all`; browser at 1280 × 800: each of the
+three avatars loads and overlaps its quotation's end.
+
+At the user's request the About page reuses the homepage's sections instead
+of its own: "What guides our work" is now the same pinned scroll story as
+"Why HealthAlyst", and "Talk to our team" is the same green closing band.
+Both are website compositions in `src/components`: `PrinciplesStory`
+(`principles-story.tsx`; takes the anchor, heading and introduction) and
+`ClosingCall` (`closing-call.tsx`; takes the anchor). Their content moved to
+shared data: `PRINCIPLES` in `data/principles.ts` (formerly
+`HOMEPAGE_BENEFITS`) and `CLOSING_CALL_CONTENT` in `data/closing-content.ts`
+(formerly `HOMEPAGE_CLOSING_CONTENT`). The homepage's `why-healthalyst.tsx`
+and `contact.tsx` were removed; the homepage keeps its `#why-healthalyst`
+and `#contact` anchors and the About page its `#what-guides-our-work` and
+`#talk-to-our-team` anchors. The About page's record list of principles and
+its plain closing section are gone, and its principles now leave out the
+unconfirmed compliance claim, as the homepage does. The About page has no
+"Meet the team" section; "Talk to our team" was taken to be the one meant.
+Evidence: `pnpm test-all`; browser at 1280 × 800: the About page story shows
+four chapters with photographs, the band's links reach `/contact` and the
+partnership enquiry, the `#how-we-work` anchor remains, and a fresh load of
+the homepage logs no errors.
+
+At the user's request the About page header was reworked, inspired by the
+homepage hero without copying it. After two rejected attempts (a
+full-bleed crossfading photograph backdrop, then a photograph window rising
+from the band's edge, both removed), the user chose a centred statement: the
+green card keeps the faint cross pattern, the node-network animation is
+gone, and the heading and lede are centred with a short line below them,
+"Built for" and a gold word cycling through the six institution types
+(`MarketingTextRotator`; the full list is in visually hidden text, and under
+reduced motion it reads "every institution that delivers care").
+`MarketingPageHeader` gained `alignment` (`start` or `center`, without
+media) and `tagline` (a short line below the lede). The header sits in a
+`MarketingMotionPauseProvider` with the development-only pause control.
+Evidence: `pnpm test-all`; browser at 1280 × 800 (centred, no gap after
+"Built for") and 375 × 812 (no horizontal overflow).
+
+At the user's request the Contact page header's node-network animation is
+removed: `MarketingCareNetwork showNetwork={false}` keeps only the faint
+cross pattern, as on the About page, and its pause control goes with the
+animation. Evidence: `pnpm test-all`; browser: the header card holds only
+the pattern and no animation control.
+
+At the user's request the office map's address panel matches the green
+"Talk to our team" band: `MarketingLocationMap` sets the panel on the brand
+colour with light text, an inverse icon ring and a light cross field, and
+the Contact page's "Get directions" uses `ActionLink variant="inverse"` (the
+band's white button). Evidence: `pnpm test-all`; browser at 1280 × 800.
+
+At the user's request the "What happens next" stepper (`MarketingSequence`)
+joins its numbers with a dotted gold line (2 px) instead of a solid one.
+
+At the user's request the footer carries the logo as a very faint
+watermark: `MarketingFooter` gained a `watermark` slot that sets a large
+image behind the content at the lower right, bleeding off the edges, at 6%
+opacity (decorative, hidden from assistive technology). The website passes
+the logo's H mark as a transparent WebP (`logo-watermark.webp`, recorded in
+`docs/website-assets.md`). Evidence: `pnpm test-all`; browser at 1280 × 800:
+the mark sits behind the Company and Connect columns and the closing line,
+with the links unaffected.
+
+The user found the solid watermark not aesthetic enough, so it became line
+art: first the whole H mark in outline, whose straight edges read as
+divider lines through the link columns, then only the outline of the Africa
+cut-out and growth arrow (`logo-africa-outline.webp`). At the user's request
+("very distracting") it is now at 14% opacity, fading out towards the
+content. Evidence: `pnpm test-all`; browser at 1280 × 800.
+
+The footer watermark was removed: in a footer this dense with links it
+crossed text wherever it sat, and the user found it too distracting. The
+`watermark` slot and `logo-africa-outline.webp` were removed; the footer is
+plain subtle gold again.
+
+At the user's request the homepage was reworked for phones after an audit at
+375 × 812 (and checked at 768 × 1024 and 1280 × 800):
+
+- Display headings (hero and page headers) now run from 32 px on phones to
+  the same size as before on desktop (`clamp(2rem, 1.25rem + 3.2vw, 4rem)`),
+  so the hero heading is 3 lines instead of 5; section headings are 28 px on
+  phones (from 32 px); "Why HealthAlyst" pillar titles 24 px (from 28 px);
+  the testimonial quote 26 px (from 32 px) with its avatar centred below the
+  quote instead of over it.
+- The "Built for African operating conditions" section was 801 px wide: its
+  carousel track widened the grid column. `MarketingContentSection` now sets
+  a single `minmax(0, 1fr)` column, so content cannot widen the section.
+- Horizontally scrolling rows are not shown on phones, at the user's
+  request: the "Built for the institutions that deliver care" chip row is
+  hidden below tablets (the hero names the institutions); the condition
+  chips above the carousel are hidden on phones (its arrows and swipe
+  remain); the product suite drops its group tabs on phones and lists all
+  six products instead (`MarketingProductSuite`; tabs from tablets up).
+- Buttons sit deliberately: the hero's primary action is full width on
+  phones with the text link centred below; the closing band's two actions
+  stack full width with tighter card padding, so neither wraps.
+- The footer's Products and Company groups sit side by side on phones.
+
+Evidence: `pnpm test-all`; browser at 375 × 812: no horizontal overflow and
+no horizontally scrolling rows on the page, hero heading 32 px in 3 lines,
+all six product cards listed, carousel arrows present, both closing actions
+48 px tall on one line each; at 768 × 1024 the tabs and chips return; at
+1280 × 800 the hero heading is 61 px in 2 lines and the testimonial 56 px,
+as before.
+
+At the user's request the About page's calls to action were fixed on
+phones: `MarketingContentSection` and `MarketingPageHeader` now stack their
+actions full width on phones (side by side from small tablets), so "Explore
+our products" and "See how we work" no longer sit at two ragged widths. On
+the Contact page "Get directions" is full width on phones, like "Send
+enquiry". Evidence: `pnpm test-all`; browser at 375 × 812: both About
+actions 335 px wide and 48 px tall, the closing band's actions 287 px wide
+on one line each, no horizontal overflow on either page.
+
+At the user's request the phone menu follows the type rules: its sheet
+title "Menu" is a heading, so it is now Young Serif at its single weight
+(24 px, `font-normal`) instead of semibold Inter, and its product items match
+the desktop Solutions menu (titles 15 px semibold, descriptions 13 px
+regular with relaxed leading, from 16 px semibold and 14 px). Evidence:
+`pnpm test-all`; browser at 375 × 812 with the sheet open: "Menu" computes to
+Young Serif 400 24 px.
+
+Three more phone fixes at the user's request:
+
+- Sections beside media (`MarketingContentSection` with `media`, such as
+  the About page's "What we do") centre their heading and introduction below
+  large screens, where the text stacks above the photograph; beside it they
+  stay aligned to the start.
+- The logo lockup (`BrandLockup`) is smaller on phones: a 33 × 36 px mark
+  and a 16 px name (from 44 × 48 px and 20 px), full size from tablets up.
+  It applies to the header and the footer.
+- The sheet's close control is no longer shadcn's square button: it is the
+  site's round outline icon button (`ActionButton`, `largeIcon`, `pill`) in
+  exactly the menu trigger's place, so the menu opens and closes from one
+  spot, with the focus ring shown only for keyboard focus.
+
+Evidence: `pnpm test-all`; browser at 375 × 812: "What we do" heading and
+paragraphs computed as centred; the close button's box matches the trigger's
+(311, 10, 44 px), round, focused without a visible ring on opening.
+
+At the user's request the product suite is a carousel on phones instead of
+a stacked list: one card at a time (the shared Embla `Carousel`), swipe or
+the inverse previous and next buttons, and a polite live "2 of 6" position
+line. The carousel and the tabs share the page's selected product: swiping
+selects the product shown, and choosing a product elsewhere (such as the
+phone menu) scrolls the carousel to it. The carousel's options are fixed at
+first render, because new options restart Embla and made every change jump
+instead of slide. Tablets and up keep the group tabs. Evidence:
+`pnpm test-all`; browser at 375 × 812: next and previous step through the
+products with the position line and highlight following; "Imaging centres"
+in the menu lands on ImagingHub, "5 of 6"; after next the track eases from
+0 through −78, −144, −216 … to −349 px rather than jumping; no horizontal
+overflow.
+
+At the user's request the "Why HealthAlyst" story (homepage and About page)
+uses photographs chosen for each pillar instead of reused ones: a community
+outreach in Kaduna for African infrastructure first, two clinicians on
+connected devices for interoperability, a nurse at a records workstation for
+security, and a health educator with a large group for partnership. Sources
+and the one caveat are in `docs/website-assets.md`. Evidence:
+`pnpm test-all`; browser at 1280 × 800: each chapter shows its photograph
+with the subject in frame.
