@@ -58,8 +58,8 @@ Dedicated visual components built from the primitives. Private helpers of one co
   technology)
 - `@healthalyst/ui/components/marketing-motion-pause` (one pause state and
   control shared by a section's moving parts)
-- `@healthalyst/ui/components/marketing-chip-row` (a caption over linked
-  chips that scroll sideways on phones)
+- `@healthalyst/ui/components/marketing-illustrated-link-row` (a caption over
+  linked cards, each an illustration above its label)
 - `@healthalyst/ui/components/marketing-scroll-story` (a pinned heading,
   photograph and clipped text window; the chapters glide through the window
   with the scroll and the photograph follows; renders the section's `h2`)
@@ -96,6 +96,23 @@ Decorative SVG artwork, hidden from assistive technology. Use these as focal or 
 - `@healthalyst/ui/illustrations/contour-pattern-illustration`
 - `@healthalyst/ui/illustrations/care-network-illustration` (decorative hero pattern
   for `MarketingPageHeader`'s `decoration` slot)
+- `@healthalyst/ui/illustrations/hospital-illustration`,
+  `laboratory-illustration`, `pharmacy-illustration`, `dental-illustration`,
+  `imaging-illustration` and `medical-supply-illustration`: one for each
+  institution type, drawn on a 144 px canvas in the GitLab SVGs style with a
+  background disc. Show them at 48 px or larger. Their colours come from
+  theme tokens in `illustration-colours.ts`, which also keeps the MIT notice;
+  a container can set `--illustration-base` to recolour the disc.
+
+GitLab's own catalogue has no healthcare artwork, so institution
+illustrations are drawn here in its style: flat geometry, white surfaces and
+one brand fill, with broken lines. Fills are whole shapes without strokes; the
+2 px dark outline is a separate open path that stops 6–8 units short of
+closing, usually on a straight edge near a corner. Circles become arcs with a
+small gap, a loose arc floats beside the object, and secondary detail uses the
+pale `detail` stroke. The raw GitLab download, when present, is a
+local reference in the untracked `.illustration-library/` folder; never commit
+or import it, and never copy GitLab's logo or any third-party brand logo.
 
 ### Types, forms, configuration and utilities
 

@@ -37,7 +37,8 @@ export function BrandLockup({
 }: {
   mark: ReactNode;
   name: string;
-  subtitle: string;
+  /** Smaller line under the name; omit it to show the name alone. */
+  subtitle?: string;
 }) {
   return (
     <span className="inline-flex items-center gap-2.5 md:gap-3">
@@ -47,10 +48,15 @@ export function BrandLockup({
       <span className="flex flex-col gap-0.5 md:gap-1">
         <span className="font-sans text-base font-semibold leading-none tracking-[-0.03em] md:text-xl md:tracking-[-0.04em]">
           {name}
-        </span>{" "}
-        <span className="text-[11px] leading-none tracking-[0.05em] md:text-xs">
-          {subtitle}
         </span>
+        {subtitle ? (
+          <>
+            {" "}
+            <span className="text-[11px] leading-none tracking-[0.05em] md:text-xs">
+              {subtitle}
+            </span>
+          </>
+        ) : null}
       </span>
     </span>
   );

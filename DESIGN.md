@@ -222,9 +222,11 @@ white sections, one green band, one cream band).
    motion the first photograph and "African healthcare" stay still. This
    replaced a three-photograph card row that copied MyCover Genius too
    closely (the user's call).
-2. **Built for** (`MarketingChipRow`): a caption and six institution chips
-   with ringed icons, wrapping on wide screens, scrolling sideways on phones;
-   each opens its product in the suite.
+2. **Built for** (`MarketingIllustratedLinkRow`): a caption and six
+   institution cards, each a 72 px GitLab-style illustration above its label,
+   three a row on tablets and one row on wide screens (hidden on phones); the
+   illustration's disc takes a gold tint on hover and focus, and each card
+   opens its product in the suite.
 3. **Why HealthAlyst** (`MarketingScrollStory`): on wide screens the
    section heading, a photograph (5 of 12 columns, up to 440 px tall, 16 px
    corners) and a text window of the same height (columns 7 to 12) stay

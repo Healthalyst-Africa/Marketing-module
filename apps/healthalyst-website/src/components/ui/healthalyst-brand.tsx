@@ -16,7 +16,6 @@ export function LogoMark() {
         />
       }
       name="Healthalyst"
-      subtitle="Africa"
     />
   );
 }
