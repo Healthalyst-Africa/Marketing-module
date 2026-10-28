@@ -9,7 +9,7 @@ import {
   CarouselNext,
   CarouselPrevious,
   type CarouselController,
-} from "@healthalyst/ui/components/carousel";
+} from "@healthalyst/ui/primitives/carousel";
 import { MarketingArrowLink } from "@healthalyst/ui/components/marketing-arrow-link";
 import { MarketingIconBadge } from "@healthalyst/ui/components/marketing-icon-badge";
 import {
@@ -17,7 +17,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@healthalyst/ui/components/tabs";
+} from "@healthalyst/ui/primitives/tabs";
 import { cn } from "@healthalyst/ui/lib/utilities";
 
 /** A product shown in the suite. */

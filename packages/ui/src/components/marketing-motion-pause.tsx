@@ -3,7 +3,7 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
 import { PauseIcon, PlayIcon } from "@healthalyst/icons";
 import { ActionButton } from "@healthalyst/ui/components/action-button";
-import { SHOW_MOTION_CONTROLS } from "@healthalyst/ui/lib/motion-controls";
+import { SHOW_MOTION_CONTROLS } from "@healthalyst/ui/config/motion-controls";
 import { cn } from "@healthalyst/ui/lib/utilities";
 
 interface MarketingMotionPauseValue {

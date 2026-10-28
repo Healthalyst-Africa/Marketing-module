@@ -46,8 +46,11 @@ code, repository policies, or branding into it.
 ## Non-negotiable shared shadcn rules
 
 - Use shadcn components as the standard foundation for interactive interface
-  primitives. All installed primitives belong in `packages/ui/src/components`,
-  even when only one application currently uses them.
+  primitives. All installed primitives belong in `packages/ui/src/primitives`,
+  even when only one application currently uses them. Dedicated HealthAlyst
+  compositions built from them belong in `packages/ui/src/components`, and
+  decorative SVG artwork in `packages/ui/src/illustrations`. Applications
+  consume compositions and illustrations, never primitives directly.
 - Every new or reworked reusable visual component, including page compositions,
   navigation, form layouts and presentation controls, belongs in `packages/ui`
   and is consumed through `@healthalyst/ui` exports. Compose the shared shadcn
@@ -109,20 +112,42 @@ code, repository policies, or branding into it.
 
 ## Repository structure and tooling
 
-| Location                                  | Responsibility                                                         |
-| ----------------------------------------- | ---------------------------------------------------------------------- |
-| `apps/healthalyst-website/src/app`        | Next.js routes, layouts, metadata, route-local landing page sections   |
-| `apps/healthalyst-website/src/components` | Website compositions and branded wrappers                              |
-| `apps/healthalyst-website/src/data`       | Approved marketing content and product definitions                     |
-| `apps/healthalyst-website/src/hooks`      | Website-specific client hooks                                          |
-| `apps/healthalyst-website/src/store`      | Existing shared client state                                           |
-| `apps/healthalyst-website/src/types`      | Website domain types                                                   |
-| `apps/healthalyst-website/public`         | Files served directly by public paths                                  |
-| `packages/ui`                             | Shared shadcn primitives, neutral tokens, reusable interface utilities |
-| `packages/icons`                          | Shared icon API with purpose-based names; owns the icon vendor         |
-| `packages/eslint-config`                  | Shared lint configuration                                              |
-| `packages/typescript-config`              | Shared strict compiler configuration                                   |
-| `packages/test-utilities`                 | Shared testing setup, unused while testing is manual                   |
+| Location                                     | Responsibility                                                                 |
+| -------------------------------------------- | ------------------------------------------------------------------------------ |
+| `apps/healthalyst-website/src/app`           | Thin Next.js routes, layouts, metadata and server handlers                     |
+| `apps/healthalyst-website/src/features`      | Owned pages and workflows with their components, config, types and utilities   |
+| `apps/healthalyst-website/src/config`        | App-wide routes, company details and theme palettes                            |
+| `apps/healthalyst-website/src/shared`        | App-local content and behaviour used by more than one feature                  |
+| `apps/healthalyst-website/src/components/ui` | Thin branded wrappers, such as the HealthAlyst brand mark                      |
+| `apps/healthalyst-website/public`            | Files served directly by public paths                                          |
+| `packages/ui`                                | Shared shadcn primitives, compositions, illustrations, neutral tokens, helpers |
+| `packages/icons`                             | Shared icon API with purpose-based names; owns the icon vendor                 |
+| `packages/eslint-config`                     | Shared lint configuration                                                      |
+| `packages/typescript-config`                 | Shared strict compiler configuration                                           |
+| `packages/test-utilities`                    | Shared testing setup, unused while testing is manual                           |
+
+Inside the website, each feature holds only the folders it needs:
+
+```text
+src/features/<feature>/
+  components/   Render the page or workflow; the route renders its page component
+  config/       Copy, options, limits and presentation maps owned by the feature
+  services/     Server requests and storage (for example the enquiry database)
+  types/        Domain and request types
+  utilities/    Pure transformations and validation owned by the feature
+```
+
+Features are `homepage`, `about`, `contact-enquiry` and `site-navigation`.
+`shared/products` owns the product catalogue, institutions, product icons and
+the product selection store; `shared/contact` builds contact page addresses;
+`shared/page-sections` holds sections reused by several pages. Keep route
+files thin, put configuration beside its owner rather than in a global
+constants file, and do not use `lib` as a catch-all folder.
+
+`packages/ui/src` follows the same split as the frontend repository:
+`primitives` (shadcn registry code), `components` (compositions; private
+helpers of one composition live in a folder named after it), `illustrations`
+(decorative SVG artwork), `types`, `forms`, `config`, `hooks` and `lib`.
 
 - Read manifests rather than assuming versions. The current stack uses Next.js
   App Router, React, TypeScript, Tailwind 3, pnpm workspaces, and Turborepo.

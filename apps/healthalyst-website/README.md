@@ -29,23 +29,21 @@ Run `pnpm test-all` before declaring a change done.
 
 `src/` is the application. Put new code in the matching layer:
 
-| Path                              | Holds                                                                           |
-| --------------------------------- | ------------------------------------------------------------------------------- |
-| `src/app/`                        | App Router routes (`page.tsx`, `layout.tsx`, `not-found.tsx`)                   |
-| `src/app/api/contact/`            | Route handler that validates and stores contact enquiries                       |
-| `db/`                             | SQL applied by hand to the enquiry database                                     |
-| `src/app/(homepage)/_components/` | Route-local components for the marketing page (header, footer, `home/`)         |
-| `src/components/ui/`              | Branded wrappers composing `@healthalyst/ui` (none at present)                  |
-| `src/components/layout/`          | Shared layout pieces (`logo.tsx`)                                               |
-| `src/hooks/`                      | Website-specific client hooks (none at present)                                 |
-| `src/lib/`                        | Shared helpers (`utilities.ts` → the `cn()` class merger)                       |
-| `src/store/`                      | Global state: Context + `useReducer` (`ProductsContext`, `Actions`, `Reducers`) |
-| `src/utilities/`                  | Utilities (`scroll.ts`)                                                         |
-| `src/types/`, `src/data/`         | Shared types and static content (products, steps, FAQs, site copy)              |
-| `public/`                         | Static assets served from the root                                              |
+| Path                      | Holds                                                                                        |
+| ------------------------- | -------------------------------------------------------------------------------------------- |
+| `src/app/`                | Thin App Router routes (`page.tsx`, `layout.tsx`, `not-found.tsx`)                           |
+| `src/app/api/contact/`    | Route handler that validates and stores contact enquiries                                    |
+| `src/features/<feature>/` | A page or workflow: `components/`, `config/`, `services/`, `types/`, `utilities/`            |
+| `src/shared/<domain>/`    | Content and behaviour used by more than one feature (`products`, `contact`, `page-sections`) |
+| `src/config/`             | App-wide routes, company office details and theme palettes                                   |
+| `src/components/ui/`      | Branded wrappers composing `@healthalyst/ui` (`healthalyst-brand.tsx`)                       |
+| `db/`                     | SQL applied by hand to the enquiry database                                                  |
+| `public/`                 | Static assets served from the root                                                           |
 
-Route-local components stay next to their route under `_components/`; components reused
-across routes belong in `src/components/`.
+Features: `homepage`, `about`, `contact-enquiry` and `site-navigation` (header
+and footer). Route files only set metadata and render the feature's page
+component. Code used by one feature stays inside it; move it to `src/shared/`
+when a second feature needs it.
 
 All brand-neutral shadcn primitives belong in `packages/ui`, including components currently used by only this application. New shadcn
 components are routed there through `components.json`; keep brand-specific variants in
@@ -54,9 +52,9 @@ this app.
 ## Conventions
 
 - **Imports:** use the `~/` alias (maps to `src/`).
-- **State:** global state lives in `src/store` as Context + `useReducer`. Don't add Redux
-  or Zustand.
-- **Styling:** Tailwind, merged with the `cn()` helper from `src/lib/utilities.ts`. Prefer
+- **State:** product selection lives in `src/shared/products/store` as Context +
+  `useReducer`. Don't add Redux or Zustand.
+- **Styling:** Tailwind, merged with the `cn()` helper from `@healthalyst/ui/lib/utilities`. Prefer
   classes over inline `style` objects.
 - **Design tokens:** brand colours are `forest`, `gold`, `cream`, `sand`, `ink` and
   `muted` in `tailwind.config.ts`; the typeface is Inter for headings, interface and

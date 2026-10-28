@@ -19,7 +19,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
-} from "@healthalyst/ui/components/navigation-menu";
+} from "@healthalyst/ui/primitives/navigation-menu";
 import {
   Sheet,
   SheetContent,
@@ -27,7 +27,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@healthalyst/ui/components/sheet";
+} from "@healthalyst/ui/primitives/sheet";
 import { cn } from "@healthalyst/ui/lib/utilities";
 import { MarketingIconBadge } from "@healthalyst/ui/components/marketing-icon-badge";
 

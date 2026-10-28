@@ -5,7 +5,7 @@ import type { VariantProps as VariantProperties } from "class-variance-authority
 import {
   Button as ShadcnButton,
   type buttonVariants,
-} from "@healthalyst/ui/components/button";
+} from "@healthalyst/ui/primitives/button";
 
 type ActionLinkProperties = VariantProperties<typeof buttonVariants> & {
   /**

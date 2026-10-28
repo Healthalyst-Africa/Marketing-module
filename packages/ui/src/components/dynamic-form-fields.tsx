@@ -7,20 +7,20 @@ import {
   FieldLabel,
   FieldLegend,
   FieldSet,
-} from "@healthalyst/ui/components/field";
-import { Input } from "@healthalyst/ui/components/input";
+} from "@healthalyst/ui/primitives/field";
+import { Input } from "@healthalyst/ui/primitives/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@healthalyst/ui/components/select";
-import { Textarea } from "@healthalyst/ui/components/textarea";
+} from "@healthalyst/ui/primitives/select";
+import { Textarea } from "@healthalyst/ui/primitives/textarea";
 import type {
   FormFieldDefinition,
   FormFieldGroup,
-} from "@healthalyst/ui/lib/form-definition";
+} from "@healthalyst/ui/types/form-definition";
 import { cn } from "@healthalyst/ui/lib/utilities";
 
 /** Identifier of a field's visible control, used by its label, messages and focus. */

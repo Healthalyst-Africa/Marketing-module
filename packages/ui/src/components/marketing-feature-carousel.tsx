@@ -9,7 +9,7 @@ import {
   CarouselNext,
   CarouselPrevious,
   type CarouselController,
-} from "@healthalyst/ui/components/carousel";
+} from "@healthalyst/ui/primitives/carousel";
 import { MarketingIconBadge } from "@healthalyst/ui/components/marketing-icon-badge";
 import { cn } from "@healthalyst/ui/lib/utilities";
 

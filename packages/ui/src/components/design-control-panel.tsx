@@ -9,7 +9,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@healthalyst/ui/components/card";
+} from "@healthalyst/ui/primitives/card";
 import { ColorSwatch } from "@healthalyst/ui/components/color-swatch";
 import {
   DesignPreview,
@@ -24,20 +24,20 @@ import {
   FieldDescription,
   FieldGroup,
   FieldLabel,
-} from "@healthalyst/ui/components/field";
-import { Input } from "@healthalyst/ui/components/input";
-import { Textarea } from "@healthalyst/ui/components/textarea";
+} from "@healthalyst/ui/primitives/field";
+import { Input } from "@healthalyst/ui/primitives/input";
+import { Textarea } from "@healthalyst/ui/primitives/textarea";
 import {
   Alert,
   AlertDescription,
   AlertTitle,
-} from "@healthalyst/ui/components/alert";
+} from "@healthalyst/ui/primitives/alert";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@healthalyst/ui/components/accordion";
+} from "@healthalyst/ui/primitives/accordion";
 import { useThemePreference } from "@healthalyst/ui/components/theme-preference-provider";
 
 export function DesignControlPanel({

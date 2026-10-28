@@ -4,7 +4,7 @@ This file records the design decisions every page follows. It complements
 `AGENTS.md` (engineering rules), `docs/design-case-studies.md` (the reference
 study behind these decisions) and `docs/website-revamp.md` (delivery record).
 Colour values are defaults: the application supplies them as semantic theme
-tokens in `apps/healthalyst-website/src/data/design-palettes.ts`, and
+tokens in `apps/healthalyst-website/src/config/design-palettes.ts`, and
 components use the token names, never raw values.
 
 Status: proposal for the product designer's review. Recording it here does not
@@ -253,7 +253,7 @@ white sections, one green band, one cream band).
    cards each: 64 px ringed icon, tagline, name, summary, gold-tick
    capabilities, enquiry link and a faint oversized icon in the corner; the
    selected product has a gold ring. The header menu and the chips select a
-   product through `ProductsContext`.
+   product through `ProductsProvider`.
 5. **One connected ecosystem**: the hub diagram with the six products and
    the approved LabConnect and PharmaDesk example under it.
 6. **How we work with you** (`MarketingNumberedSteps`): four columns of
@@ -379,7 +379,7 @@ lines anywhere unless the user explicitly approves one.
   touch screens it is always shown, and keyboard focus always reveals it.
 - Every transition is removed under `prefers-reduced-motion: reduce`, and the
   sending spinner stops.
-- **Hero pattern.** Green page header cards carry `MarketingCareNetwork`: a
+- **Hero pattern.** Green page header cards carry `CareNetworkIllustration`: a
   faint field of medical crosses (8–9% white) fading in from the right, and on
   tablet and desktop a network of six facilities joined to a gold hub (the
   shared record), with gold signals moving along the links over 6.5–10 s, the

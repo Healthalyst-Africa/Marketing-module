@@ -1,12 +1,12 @@
 import { cloneElement, type ReactElement, type ReactNode } from "react";
 import { MarketingIconBadge } from "@healthalyst/ui/components/marketing-icon-badge";
-import { MarketingHubDiagramMotion } from "@healthalyst/ui/components/marketing-hub-diagram-motion";
+import { MarketingHubDiagramMotion } from "./marketing-hub-diagram/marketing-hub-diagram-motion";
 import {
   HUB_BOX_CLASSES,
   HUB_CANVAS_VIEW_BOX,
   HUB_CONNECTOR_ENDS,
   HUB_CONNECTOR_PATHS,
-} from "@healthalyst/ui/lib/hub-diagram-geometry";
+} from "./marketing-hub-diagram/hub-diagram-geometry";
 import { cn } from "@healthalyst/ui/lib/utilities";
 
 /** One destination around the hub: an icon, a title, a detail and a link. */

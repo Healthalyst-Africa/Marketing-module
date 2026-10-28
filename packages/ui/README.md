@@ -8,40 +8,48 @@ application content and semantic theme values.
 
 ## Public imports
 
+### Primitives (`src/primitives`)
+
+shadcn registry primitives. Applications never import them; compositions in `components` do.
+
+- `@healthalyst/ui/primitives/button` (consumed only by `ActionButton` and `ActionLink`)
+- `@healthalyst/ui/primitives/input`
+- `@healthalyst/ui/primitives/textarea`
+- `@healthalyst/ui/primitives/accordion`
+- `@healthalyst/ui/primitives/select`
+- `@healthalyst/ui/primitives/card`
+- `@healthalyst/ui/primitives/radio-group`
+- `@healthalyst/ui/primitives/field`
+- `@healthalyst/ui/primitives/label`
+- `@healthalyst/ui/primitives/separator`
+- `@healthalyst/ui/primitives/alert`
+- `@healthalyst/ui/primitives/tabs` (variants: `default`; `pills` list with
+  `inversePill` triggers for brand-coloured bands)
+- `@healthalyst/ui/primitives/carousel` (shadcn carousel on Embla, adapted to
+  the naming rule and `ActionButton` controls)
+- `@healthalyst/ui/primitives/sheet`
+- `@healthalyst/ui/primitives/breadcrumb`
+- `@healthalyst/ui/primitives/navigation-menu`
+
+### Compositions (`src/components`)
+
+Dedicated visual components built from the primitives. Private helpers of one composition live in a folder named after it, such as `components/marketing-hub-diagram/`.
+
 - `@healthalyst/ui/components/action-button`
 - `@healthalyst/ui/components/action-link`
-- `@healthalyst/ui/components/button` (consumed only by the two components above)
-- `@healthalyst/ui/components/input`
-- `@healthalyst/ui/components/textarea`
-- `@healthalyst/ui/components/accordion`
-- `@healthalyst/ui/components/select`
 - `@healthalyst/ui/components/dynamic-form-fields`
-- `@healthalyst/ui/components/card`
-- `@healthalyst/ui/components/radio-group`
-- `@healthalyst/ui/components/field`
-- `@healthalyst/ui/components/label`
-- `@healthalyst/ui/components/separator`
-- `@healthalyst/ui/components/alert`
 - `@healthalyst/ui/components/color-swatch`
 - `@healthalyst/ui/components/palette-selector`
 - `@healthalyst/ui/components/design-preview`
 - `@healthalyst/ui/components/design-control-panel`
 - `@healthalyst/ui/components/theme-preference-provider`
-- `@healthalyst/ui/components/tabs` (variants: `default`; `pills` list with
-  `inversePill` triggers for brand-coloured bands)
-- `@healthalyst/ui/components/carousel` (shadcn carousel on Embla, adapted to
-  the naming rule and `ActionButton` controls)
-- `@healthalyst/ui/components/sheet`
 - `@healthalyst/ui/components/marketing-section`
 - `@healthalyst/ui/components/marketing-navigation`
 - `@healthalyst/ui/components/marketing-faq`
 - `@healthalyst/ui/components/marketing-contact`
 - `@healthalyst/ui/components/marketing-footer`
-- `@healthalyst/ui/components/breadcrumb`
-- `@healthalyst/ui/components/navigation-menu`
 - `@healthalyst/ui/components/marketing-page-header`
 - `@healthalyst/ui/components/marketing-content-section`
-- `@healthalyst/ui/components/marketing-contour-pattern`
 - `@healthalyst/ui/components/marketing-rotating-hero` (homepage hero: a
   rotating audience word with a matching background photograph that
   crossfades behind a brand wash)
@@ -75,22 +83,34 @@ application content and semantic theme values.
   markup with the client layer `marketing-hub-diagram-motion`)
 - `@healthalyst/ui/components/marketing-location-map` (an address card beside
   an embedded map, loaded lazily)
-- `@healthalyst/ui/components/marketing-care-network` (decorative hero pattern
-  for `MarketingPageHeader`'s `decoration` slot)
 - `@healthalyst/ui/components/marketing-task-layout`
 - `@healthalyst/ui/components/marketing-sequence`
 - `@healthalyst/ui/components/marketing-record-list`
 - `@healthalyst/ui/components/marketing-figure`
 - `@healthalyst/ui/components/marketing-closing-band`
+
+### Illustrations (`src/illustrations`)
+
+Decorative SVG artwork, hidden from assistive technology. Use these as focal or background pictures, never as interface icons.
+
+- `@healthalyst/ui/illustrations/contour-pattern-illustration`
+- `@healthalyst/ui/illustrations/care-network-illustration` (decorative hero pattern
+  for `MarketingPageHeader`'s `decoration` slot)
+
+### Types, forms, configuration and utilities
+
 - `@healthalyst/ui/lib/theme-preference`
 - `@healthalyst/ui/lib/form-control-variants` holds the surface, focus and
   height variants shared by the input, text area and select trigger.
-- `@healthalyst/ui/lib/form-definition` describes form fields and their groups
+- `@healthalyst/ui/types/form-definition` describes form fields and their groups
   for `DynamicFormFields`.
-- `@healthalyst/ui/lib/form-field-validation` checks defined fields against
+- `@healthalyst/ui/forms/form-field-validation` checks defined fields against
   their controls and returns a message for each one that fails.
 - `@healthalyst/ui/lib/utilities` exports the approved `cn` helper.
 - `@healthalyst/ui/styles.css` provides neutral theme variables.
+- `@healthalyst/ui/forms/marketing-enquiry` records the request and response
+  contract shared by `MarketingEnquiryForm` and the website endpoint.
+- `@healthalyst/ui/config/motion-controls` exports `SHOW_MOTION_CONTROLS`.
 
 The input, textarea, and accordion sources were installed from the official
 `new-york` shadcn registry for Tailwind 3. The breadcrumb and navigation menu sources
@@ -228,10 +248,10 @@ owns the field definitions, server validation, storage and copy.
 
 Pause and play controls (`MarketingMotionPauseButton`, the hub diagram's
 pause button and the care network's button) render only when
-`SHOW_MOTION_CONTROLS` from `@healthalyst/ui/lib/motion-controls` is true,
+`SHOW_MOTION_CONTROLS` from `@healthalyst/ui/config/motion-controls` is true,
 which is in development. Production builds show no animation control; see
 `docs/website-revamp.md` for the accessibility trade-off.
 
-`MarketingContourPattern` is a faint topographic field for plain bands. Pass
+`ContourPatternIllustration` is a faint topographic field for plain bands. Pass
 it to `MarketingContentSection` through `decoration` with a text colour
 class, such as `text-accent`; it is decorative and static.
