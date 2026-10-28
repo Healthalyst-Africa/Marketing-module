@@ -78,3 +78,25 @@
     translate: 0 0;
   }
 }
+
+/*
+ * The full-width navigation panel rolls down to its content height when it
+ * opens and rolls back up when it closes; Radix supplies the height.
+ */
+@keyframes navigation-menu-roll-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-navigation-menu-viewport-height);
+  }
+}
+
+@keyframes navigation-menu-roll-up {
+  from {
+    height: var(--radix-navigation-menu-viewport-height);
+  }
+  to {
+    height: 0;
+  }
+}

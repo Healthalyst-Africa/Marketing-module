@@ -4,6 +4,7 @@ import Link from "next/link";
 import { MarketingContentSection } from "@healthalyst/ui/components/marketing-content-section";
 import { MarketingProductSuite } from "@healthalyst/ui/components/marketing-product-suite";
 import { PRODUCT_ICONS_BY_NAME } from "~/shared/products/config/product-icons";
+import { PRODUCT_ILLUSTRATIONS_BY_NAME } from "~/shared/products/config/product-illustrations";
 import {
   HOMEPAGE_PRODUCT_GROUPS,
   HOMEPAGE_PRODUCT_SUITE_CONTENT,
@@ -38,6 +39,7 @@ export default function ProductSuite() {
           summary: product.supportingHeadline,
           capabilities: product.capabilities,
           icon: PRODUCT_ICONS_BY_NAME[product.name],
+          illustration: PRODUCT_ILLUSTRATIONS_BY_NAME[product.name],
           action: (
             <Link href={createContactDestination(product.name)}>
               Enquire about {product.name}

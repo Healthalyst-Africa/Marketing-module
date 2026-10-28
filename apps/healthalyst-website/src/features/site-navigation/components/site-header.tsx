@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { MarketingNavigation } from "@healthalyst/ui/components/marketing-navigation";
 import { LogoLink } from "~/components/ui/healthalyst-brand";
-import { PRODUCT_ICONS_BY_NAME } from "~/shared/products/config/product-icons";
+import { PRODUCT_ILLUSTRATIONS_BY_NAME } from "~/shared/products/config/product-illustrations";
 import { PRODUCTS } from "~/shared/products/config/products";
 import {
   BRAND_HEADER_ROUTES,
@@ -47,7 +47,8 @@ export default function SiteHeader() {
               {
                 title: institution.name,
                 description: `${institution.product} for ${institution.description}`,
-                icon: PRODUCT_ICONS_BY_NAME[institution.product],
+                illustration:
+                  PRODUCT_ILLUSTRATIONS_BY_NAME[institution.product],
                 link: (
                   <Link
                     href={`${SITE_ROUTES.home}#products`}

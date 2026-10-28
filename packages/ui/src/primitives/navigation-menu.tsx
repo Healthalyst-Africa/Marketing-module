@@ -13,12 +13,16 @@ import { cn } from "@healthalyst/ui/lib/utilities";
 /**
  * `viewportPlacement`: `trigger` (default) opens the panel under the menu;
  * `container` spans the nearest positioned ancestor, such as a header's
- * container, and centres the panel in it, for wide menus.
+ * container, and centres the panel in it, for wide menus; `screen` spans the
+ * nearest positioned ancestor edge to edge, such as a full-width header, as
+ * a flush panel under it. Its content should fill the width (`md:w-full`).
  */
+type NavigationMenuViewportPlacement = "trigger" | "container" | "screen";
+
 const NavigationMenu = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Root> & {
-    viewportPlacement?: "trigger" | "container";
+    viewportPlacement?: NavigationMenuViewportPlacement;
   }
 >(
   (
@@ -99,14 +103,23 @@ const NavigationMenuTrigger = React.forwardRef<
 ));
 NavigationMenuTrigger.displayName = NavigationMenuPrimitive.Trigger.displayName;
 
+/**
+ * `switchMotion`: `slide` (default) fades and slides content sideways when
+ * the visitor moves between menus; `none` keeps it still, for panels whose
+ * only movement is the viewport's height.
+ */
 const NavigationMenuContent = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Content>
->(({ className, ...properties }, elementReference) => (
+  React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Content> & {
+    switchMotion?: "slide" | "none";
+  }
+>(({ className, switchMotion = "slide", ...properties }, elementReference) => (
   <NavigationMenuPrimitive.Content
     ref={elementReference}
     className={cn(
-      "left-0 top-0 w-full data-[motion^=from-]:animate-in data-[motion^=to-]:animate-out data-[motion^=from-]:fade-in data-[motion^=to-]:fade-out data-[motion=from-end]:slide-in-from-right-52 data-[motion=from-start]:slide-in-from-left-52 data-[motion=to-end]:slide-out-to-right-52 data-[motion=to-start]:slide-out-to-left-52 md:absolute md:w-auto",
+      "left-0 top-0 w-full md:absolute md:w-auto",
+      switchMotion === "slide" &&
+        "data-[motion^=from-]:animate-in data-[motion^=to-]:animate-out data-[motion^=from-]:fade-in data-[motion^=to-]:fade-out data-[motion=from-end]:slide-in-from-right-52 data-[motion=from-start]:slide-in-from-left-52 data-[motion=to-end]:slide-out-to-right-52 data-[motion=to-start]:slide-out-to-left-52",
       className
     )}
     {...properties}
@@ -119,18 +132,22 @@ const NavigationMenuLink = NavigationMenuPrimitive.Link;
 const NavigationMenuViewport = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Viewport>,
   React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Viewport> & {
-    placement?: "trigger" | "container";
+    placement?: NavigationMenuViewportPlacement;
   }
 >(({ className, placement = "trigger", ...properties }, elementReference) => (
   <div
     className={cn(
       "absolute top-full flex justify-center",
-      placement === "container" ? "inset-x-0" : "left-0"
+      placement === "trigger" ? "left-0" : "inset-x-0"
     )}
   >
     <NavigationMenuPrimitive.Viewport
       className={cn(
-        "origin-top-center relative mt-1.5 h-[var(--radix-navigation-menu-viewport-height)] w-full overflow-hidden rounded-xl border bg-popover text-popover-foreground shadow data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-90 md:w-[var(--radix-navigation-menu-viewport-width)]",
+        "relative h-[var(--radix-navigation-menu-viewport-height)] w-full overflow-hidden border bg-popover text-popover-foreground",
+        placement === "screen"
+          ? // Only the height moves: down from the header to open, back up to close.
+            "border-x-0 shadow-md data-[state=open]:animate-[navigation-menu-roll-down_320ms_cubic-bezier(0.22,1,0.36,1)] data-[state=closed]:animate-[navigation-menu-roll-up_260ms_cubic-bezier(0.4,0,0.2,1)] motion-reduce:animate-none md:w-full"
+          : "origin-top-center mt-1.5 rounded-xl shadow data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-90 md:w-[var(--radix-navigation-menu-viewport-width)]",
         className
       )}
       ref={elementReference}

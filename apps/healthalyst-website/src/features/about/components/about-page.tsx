@@ -18,6 +18,7 @@ import { INSTITUTIONS } from "~/shared/products/config/institutions";
 import { SITE_ROUTES } from "~/config/routes";
 import { LogoMark } from "~/components/ui/healthalyst-brand";
 import { PRODUCT_ICONS_BY_NAME } from "~/shared/products/config/product-icons";
+import { PRODUCT_ILLUSTRATIONS_BY_NAME } from "~/shared/products/config/product-illustrations";
 import { createContactDestination } from "~/shared/contact/utilities/create-contact-destination";
 
 export default function AboutPage() {
@@ -99,6 +100,7 @@ export default function AboutPage() {
             title: institution.name,
             detail: institution.product,
             icon: PRODUCT_ICONS_BY_NAME[institution.product],
+            illustration: PRODUCT_ILLUSTRATIONS_BY_NAME[institution.product],
             accessibleSuffix: `: enquire about ${institution.product}`,
             link: <Link href={createContactDestination(institution.product)} />,
           }))}

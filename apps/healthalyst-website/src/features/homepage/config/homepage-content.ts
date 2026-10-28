@@ -70,7 +70,6 @@ export const HOMEPAGE_CONDITIONS_CONTENT = {
   introduction:
     "Our platforms are designed from first principles for African operating conditions. These are foundations, not optional features.",
   carouselLabel: "Operating conditions our products are built for",
-  chipsLabel: "Choose an operating condition",
 } as const;
 
 /**

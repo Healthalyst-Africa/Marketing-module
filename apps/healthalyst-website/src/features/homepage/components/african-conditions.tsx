@@ -9,6 +9,11 @@ import {
 } from "@healthalyst/icons";
 import { MarketingContentSection } from "@healthalyst/ui/components/marketing-content-section";
 import { ContourPatternIllustration } from "@healthalyst/ui/illustrations/contour-pattern-illustration";
+import { FacilityScaleIllustration } from "@healthalyst/ui/illustrations/facility-scale-illustration";
+import { LowBandwidthIllustration } from "@healthalyst/ui/illustrations/low-bandwidth-illustration";
+import { MultilingualIllustration } from "@healthalyst/ui/illustrations/multilingual-illustration";
+import { OfflineIllustration } from "@healthalyst/ui/illustrations/offline-illustration";
+import { TextMessageIllustration } from "@healthalyst/ui/illustrations/text-message-illustration";
 import { MarketingFeatureCarousel } from "@healthalyst/ui/components/marketing-feature-carousel";
 import {
   HOMEPAGE_CONDITIONS,
@@ -24,6 +29,15 @@ const CONDITION_ICONS = [
   <FacilityScaleIcon key="scale" />,
 ];
 
+/** One illustration per condition, in order. */
+const CONDITION_ILLUSTRATIONS = [
+  <OfflineIllustration key="offline" />,
+  <LowBandwidthIllustration key="low-bandwidth" />,
+  <TextMessageIllustration key="text-message" />,
+  <MultilingualIllustration key="multilingual" />,
+  <FacilityScaleIllustration key="scale" />,
+];
+
 export default function AfricanConditions() {
   return (
     <MarketingContentSection
@@ -36,11 +50,11 @@ export default function AfricanConditions() {
     >
       <MarketingFeatureCarousel
         carouselLabel={HOMEPAGE_CONDITIONS_CONTENT.carouselLabel}
-        chipsLabel={HOMEPAGE_CONDITIONS_CONTENT.chipsLabel}
         features={HOMEPAGE_CONDITIONS.map((condition, conditionIndex) => ({
           title: condition.title,
           description: condition.description,
           icon: CONDITION_ICONS[conditionIndex],
+          illustration: CONDITION_ILLUSTRATIONS[conditionIndex],
         }))}
       />
     </MarketingContentSection>

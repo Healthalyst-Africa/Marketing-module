@@ -44,7 +44,9 @@ Dedicated visual components built from the primitives. Private helpers of one co
 - `@healthalyst/ui/components/design-control-panel`
 - `@healthalyst/ui/components/theme-preference-provider`
 - `@healthalyst/ui/components/marketing-section`
-- `@healthalyst/ui/components/marketing-navigation`
+- `@healthalyst/ui/components/marketing-navigation` (sticky header; the
+  Solutions panel spans the screen and rolls down to open and up to close;
+  menu items take an `illustration`, shown at 48 px, or an `icon`)
 - `@healthalyst/ui/components/marketing-faq`
 - `@healthalyst/ui/components/marketing-contact`
 - `@healthalyst/ui/components/marketing-footer`
@@ -64,13 +66,15 @@ Dedicated visual components built from the primitives. Private helpers of one co
   photograph and clipped text window; the chapters glide through the window
   with the scroll and the photograph follows; renders the section's `h2`)
 - `@healthalyst/ui/components/marketing-product-suite` (pill tabs by need over
-  product cards on a brand band)
+  product cards on a brand band; a product with an `illustration` shows it
+  at 80 px in place of the ringed icon)
 - `@healthalyst/ui/components/marketing-numbered-steps` (outlined numerals and
   ringed icons that rise in order)
 - `@healthalyst/ui/components/marketing-reveal` (marks content revealed when it
   scrolls into view; visible before scripts run)
-- `@healthalyst/ui/components/marketing-feature-carousel` (chips that jump a
-  carousel of feature cards)
+- `@healthalyst/ui/components/marketing-feature-carousel` (a carousel of
+  feature cards with previous and next controls; a feature with an `illustration` shows it at
+  80 px in place of the ringed icon)
 - `@healthalyst/ui/components/marketing-testimonials` (one oversized
   quotation at a time whose words light up as it scrolls, with a floating
   avatar, attribution and previous and next buttons)
@@ -80,7 +84,8 @@ Dedicated visual components built from the primitives. Private helpers of one co
   treatment for product, feature and contact icons: a thin ring, no fill)
 - `@healthalyst/ui/components/marketing-hub-diagram` (a hub joined to six
   linked destinations, with a looping signal and a pause control; server
-  markup with the client layer `marketing-hub-diagram-motion`)
+  markup with the client layer `marketing-hub-diagram-motion`; a node with an
+  `illustration` shows it at 48 px, and its disc turns gold with the signal)
 - `@healthalyst/ui/components/marketing-location-map` (an address card beside
   an embedded map, loaded lazily)
 - `@healthalyst/ui/components/marketing-task-layout`
@@ -103,6 +108,10 @@ Decorative SVG artwork, hidden from assistive technology. Use these as focal or 
   background disc. Show them at 48 px or larger. Their colours come from
   theme tokens in `illustration-colours.ts`, which also keeps the MIT notice;
   a container can set `--illustration-base` to recolour the disc.
+- `@healthalyst/ui/illustrations/offline-illustration`,
+  `low-bandwidth-illustration`, `text-message-illustration`,
+  `multilingual-illustration` and `facility-scale-illustration`: the same
+  style, one for each operating condition the products are built for.
 
 GitLab's own catalogue has no healthcare artwork, so institution
 illustrations are drawn here in its style: flat geometry, white surfaces and

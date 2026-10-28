@@ -16,6 +16,11 @@ export interface MarketingHubNode {
   detail: string;
   icon: ReactNode;
   /**
+   * Optional illustration from `@healthalyst/ui/illustrations`, shown at
+   * 48 px in place of the ringed icon.
+   */
+  illustration?: ReactNode;
+  /**
    * The link the node opens, such as a Next.js `Link`. Its own children are
    * replaced by the node's content; `accessibleSuffix` adds text that only
    * screen readers hear after the title and detail.
@@ -43,6 +48,10 @@ const ACTIVE_NODE_CLASSES =
 
 const ACTIVE_ICON_CLASSES =
   "group-data-[signal=on]/hub:border-accent group-data-[signal=on]/hub:bg-accent/10 group-data-[signal=on]/hub:delay-700";
+
+/* The illustration's disc takes the accent tint, as the icon ring does. */
+const ACTIVE_ILLUSTRATION_CLASSES =
+  "group-data-[signal=on]/hub:[--illustration-base:color-mix(in_srgb,hsl(var(--accent))_28%,hsl(var(--card)))]";
 
 const ACTIVE_CONNECTOR_END_CLASSES =
   "group-data-[signal=on]/hub:fill-accent group-data-[signal=on]/hub:delay-700";
@@ -142,15 +151,28 @@ export function MarketingHubDiagram({
             >
               {cloneElement(node.link, {
                 className: cn(
-                  "flex w-full items-center gap-3 rounded-full border border-primary/20 bg-card py-2.5 pl-2.5 pr-5 text-left shadow-[0_1px_2px_rgba(15,23,20,0.04)] transition-[border-color,box-shadow] duration-500 ease-out hover:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 motion-reduce:transition-none",
+                  "flex w-full items-center gap-3 rounded-full border border-primary/20 bg-card pr-5 text-left shadow-[0_1px_2px_rgba(15,23,20,0.04)] transition-[border-color,box-shadow] duration-500 ease-out hover:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 motion-reduce:transition-none",
+                  node.illustration ? "py-2 pl-2" : "py-2.5 pl-2.5",
                   ACTIVE_NODE_CLASSES
                 ),
                 children: (
                   <>
-                    <MarketingIconBadge
-                      icon={node.icon}
-                      className={ACTIVE_ICON_CLASSES}
-                    />
+                    {node.illustration ? (
+                      <span
+                        aria-hidden="true"
+                        className={cn(
+                          "block size-12 shrink-0",
+                          ACTIVE_ILLUSTRATION_CLASSES
+                        )}
+                      >
+                        {node.illustration}
+                      </span>
+                    ) : (
+                      <MarketingIconBadge
+                        icon={node.icon}
+                        className={ACTIVE_ICON_CLASSES}
+                      />
+                    )}
                     <span className="flex min-w-0 flex-col">
                       <span className="text-[15px] font-semibold leading-snug text-foreground">
                         {node.title}

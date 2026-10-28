@@ -26,6 +26,11 @@ export interface MarketingSuiteProduct {
   summary: string;
   capabilities: readonly string[];
   icon: ReactNode;
+  /**
+   * Optional illustration from `@healthalyst/ui/illustrations`, shown at
+   * 80 px at the top of the card in place of the ringed icon.
+   */
+  illustration?: ReactNode;
   /** A link element whose text names where it goes. */
   action: ReactElement<{ className?: string; children?: ReactNode }>;
 }
@@ -39,7 +44,7 @@ export interface MarketingSuiteGroup {
 
 /**
  * Products grouped by need, for a brand-coloured band: pill tabs over cards.
- * Each card has a large ringed icon, the product's name, summary and
+ * Each card has an illustration (or a large ringed icon), the product's name, summary and
  * capabilities, and a link; a faint oversized icon marks its corner. On
  * phones there are no tabs: the products form a carousel showing one card at
  * a time, with previous and next buttons and the card's position; swiping
@@ -133,7 +138,13 @@ export function MarketingProductSuite({
         >
           {product.icon}
         </span>
-        <MarketingIconBadge icon={product.icon} size="large" />
+        {product.illustration ? (
+          <span aria-hidden="true" className="block size-20 shrink-0">
+            {product.illustration}
+          </span>
+        ) : (
+          <MarketingIconBadge icon={product.icon} size="large" />
+        )}
         <h3 className="mt-6 text-2xl font-semibold tracking-[-0.01em] text-foreground">
           {product.name}
         </h3>

@@ -263,9 +263,9 @@ white sections, one green band, one cream band).
    view; one "Start a conversation" pill. (No progress line: lines need the
    user's approval.)
 7. **Built for African operating conditions** (`MarketingFeatureCarousel`,
-   cream band): chips that select a card in an Embla carousel of five
-   feature cards (ringed 64 px icon, title, sentence), previous and next
-   controls, arrow keys; the selected card has a gold ring.
+   cream band): an Embla carousel of five feature cards (80 px
+   illustration, title, sentence) with previous and next controls and
+   arrow keys; the selected card has a gold ring.
 8. **Testimonials** (`MarketingTestimonials`), at the user's request in
    place of the statement and in its design: one quotation at a time in
    Young Serif at up to 56 px, gold quotation marks, its words lighting up in

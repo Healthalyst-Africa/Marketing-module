@@ -3,6 +3,7 @@ import { MarketingContentSection } from "@healthalyst/ui/components/marketing-co
 import { MarketingHubDiagram } from "@healthalyst/ui/components/marketing-hub-diagram";
 import { LogoMark } from "~/components/ui/healthalyst-brand";
 import { PRODUCT_ICONS_BY_NAME } from "~/shared/products/config/product-icons";
+import { PRODUCT_ILLUSTRATIONS_BY_NAME } from "~/shared/products/config/product-illustrations";
 import { HOMEPAGE_ECOSYSTEM_CONTENT } from "~/features/homepage/config/homepage-content";
 import { PRODUCTS } from "~/shared/products/config/products";
 import { createContactDestination } from "~/shared/contact/utilities/create-contact-destination";
@@ -22,6 +23,7 @@ export default function Ecosystem() {
           title: product.name,
           detail: product.tagline,
           icon: PRODUCT_ICONS_BY_NAME[product.name],
+          illustration: PRODUCT_ILLUSTRATIONS_BY_NAME[product.name],
           accessibleSuffix: `: enquire about ${product.name}`,
           link: <Link href={createContactDestination(product.name)} />,
         }))}
