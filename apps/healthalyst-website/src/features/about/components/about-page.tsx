@@ -13,6 +13,7 @@ import {
 } from "@healthalyst/ui/components/marketing-motion-pause";
 import { ABOUT_PAGE_CONTENT } from "~/features/about/config/about-page-content";
 import { ClosingCall } from "~/shared/page-sections/components/closing-call";
+import Leadership from "~/features/about/components/leadership";
 import Testimonials from "~/shared/page-sections/components/testimonials";
 import { INSTITUTIONS } from "~/shared/products/config/institutions";
 import {
@@ -116,6 +117,7 @@ export default function AboutPage() {
           {ABOUT_PAGE_CONTENT.approachSummary}
         </p>
       </MarketingContentSection>
+      <Leadership />
       <Testimonials />
       <ClosingCall identifier="talk-to-our-team" />
     </>
