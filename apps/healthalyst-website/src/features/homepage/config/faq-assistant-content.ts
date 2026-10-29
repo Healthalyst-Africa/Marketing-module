@@ -7,6 +7,8 @@ export const FAQ_ASSISTANT_CONTENT = {
   label: "Ask a question about Healthalyst Africa",
   placeholder:
     "Not satisfied? Ask me anything about Healthalyst, I’d be happy to help.",
+  /** The placeholder on phones, short enough for one line. */
+  compactPlaceholder: "Ask me anything about Healthalyst",
   submitLabel: "Send question",
   submittingLabel: "Finding an answer…",
   notice:
