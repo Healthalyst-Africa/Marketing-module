@@ -13,6 +13,7 @@ import {
   recordContactEnquiryAttempt,
 } from "~/features/contact-enquiry/utilities/contact-enquiry-throttle";
 import { validateContactEnquirySubmission } from "~/features/contact-enquiry/utilities/contact-enquiry-validation";
+import { readClientAddress } from "~/shared/requests/utilities/read-client-address";
 
 /**
  * Stores contact enquiries from the marketing form in Neon, then sends a
@@ -44,23 +45,6 @@ function createSubmissionResponse(
   headers?: Record<string, string>
 ): Response {
   return Response.json(submissionResponse, { status: statusCode, headers });
-}
-
-/** First forwarded address, or a shared local label when there is no proxy. */
-function readClientAddress(request: Request): string {
-  const forwardedAddresses = request.headers.get("x-forwarded-for");
-
-  if (forwardedAddresses) {
-    const firstForwardedAddress = forwardedAddresses.split(",")[0];
-
-    if (firstForwardedAddress) {
-      return firstForwardedAddress.trim();
-    }
-  }
-
-  const directClientAddress = request.headers.get("x-real-ip");
-
-  return directClientAddress?.trim() || "local-connection";
 }
 
 /**

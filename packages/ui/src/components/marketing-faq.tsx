@@ -13,16 +13,19 @@ import {
 /**
  * Frequently asked questions in two columns: the heading and a line on the
  * left, the questions as an accordion on the right. The heading follows the
- * content sections' 40 / 32 px scale.
+ * content sections' 40 / 32 px scale. `assistant`, such as a
+ * `MarketingQuestionAssistant`, sits under the last question.
  */
 export function MarketingFAQ({
   heading,
   introduction,
   questions,
+  assistant,
 }: {
   heading: ReactNode;
   introduction?: string;
   questions: readonly { question: string; answer: string }[];
+  assistant?: ReactNode;
 }) {
   return (
     <MarketingSection
@@ -44,18 +47,21 @@ export function MarketingFAQ({
             </p>
           )}
         </div>
-        <Accordion type="single" collapsible className="lg:col-span-7">
-          {questions.map((question, index) => (
-            <AccordionItem key={question.question} value={String(index)}>
-              <AccordionTrigger className="gap-5 py-6 text-left text-base font-medium leading-relaxed text-primary">
-                {question.question}
-              </AccordionTrigger>
-              <AccordionContent className="max-w-[65ch] pb-6 text-base leading-[1.8] text-muted-foreground">
-                {question.answer}
-              </AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
+        <div className="lg:col-span-7">
+          <Accordion type="single" collapsible>
+            {questions.map((question, index) => (
+              <AccordionItem key={question.question} value={String(index)}>
+                <AccordionTrigger className="gap-5 py-6 text-left text-base font-medium leading-relaxed text-primary">
+                  {question.question}
+                </AccordionTrigger>
+                <AccordionContent className="max-w-[65ch] pb-6 text-base leading-[1.8] text-muted-foreground">
+                  {question.answer}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+          {assistant}
+        </div>
       </MarketingContainer>
     </MarketingSection>
   );

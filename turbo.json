@@ -6,7 +6,9 @@
     "NEXT_PUBLIC_SITE_URL",
     "DATABASE_URL",
     "RESEND_API_KEY",
-    "RESEND_FROM_EMAIL"
+    "RESEND_FROM_EMAIL",
+    "GOOGLE_GENERATIVE_AI_API_KEY",
+    "GEMINI_MODEL"
   ],
   "tasks": {
     "build": {

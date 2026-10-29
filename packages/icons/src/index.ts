@@ -19,6 +19,7 @@ export {
   FlaskConical as LaboratoryIcon,
   GraduationCap as TrainingIcon,
   Handshake as PartnershipIcon,
+  Info as InformationIcon,
   Languages as MultilingualIcon,
   LoaderCircle as LoaderIcon,
   Mail as EmailIcon,
