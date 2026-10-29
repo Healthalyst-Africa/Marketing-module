@@ -18,7 +18,7 @@ import {
   ORGANIZATION_APP_ROUTES,
 } from "~/config/organization-app";
 import { SITE_ROUTES } from "~/config/routes";
-import { scrollToSamePageSection } from "~/features/site-navigation/utilities/scroll-to-same-page-section";
+import { scrollToSamePageSection } from "~/shared/navigation/utilities/scroll-to-same-page-section";
 import { SOLUTION_GROUPS } from "~/shared/products/config/solution-groups";
 import { useProducts } from "~/shared/products/store/products-provider";
 

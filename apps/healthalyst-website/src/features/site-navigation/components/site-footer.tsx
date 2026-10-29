@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { MarketingFooter } from "@healthalyst/ui/components/marketing-footer";
 import { ContourPatternIllustration } from "@healthalyst/ui/illustrations/contour-pattern-illustration";
 import { LogoMark } from "~/components/ui/healthalyst-brand";
@@ -12,6 +13,7 @@ import {
 import { SITE_ROUTES } from "~/config/routes";
 import { PRODUCTS } from "~/shared/products/config/products";
 import { useProducts } from "~/shared/products/store/products-provider";
+import { scrollToSamePageSection } from "~/shared/navigation/utilities/scroll-to-same-page-section";
 import type { SiteLink } from "~/features/site-navigation/types/site-navigation";
 
 function renderSiteLink(siteLink: SiteLink) {
@@ -35,6 +37,7 @@ function renderSiteLink(siteLink: SiteLink) {
 
 export default function SiteFooter() {
   const { selectProduct } = useProducts();
+  const currentPath = usePathname();
   const currentYear = new Date().getFullYear();
   return (
     <MarketingFooter
@@ -53,7 +56,14 @@ export default function SiteFooter() {
             <Link
               key={product.name}
               href={`${SITE_ROUTES.home}#products`}
-              onClick={() => selectProduct(index)}
+              onClick={(clickEvent) => {
+                selectProduct(index);
+                scrollToSamePageSection(
+                  clickEvent,
+                  `${SITE_ROUTES.home}#products`,
+                  currentPath
+                );
+              }}
             >
               {product.name}
             </Link>

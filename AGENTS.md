@@ -142,7 +142,8 @@ Features are `homepage`, `about`, `contact-enquiry` and `site-navigation`.
 the product selection store; `shared/contact` builds contact page addresses;
 `shared/page-sections` holds sections reused by several pages;
 `shared/requests` holds the per-address throttle and client-address reader
-shared by the server routes. Keep route
+shared by the server routes; `shared/navigation` makes links to a section of
+the current page scroll every time. Keep route
 files thin, put configuration beside its owner rather than in a global
 constants file, and do not use `lib` as a catch-all folder.
 
