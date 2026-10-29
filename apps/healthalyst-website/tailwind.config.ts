@@ -30,6 +30,7 @@ const tailwindConfiguration = {
         accent: {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
+          subtle: "hsl(var(--accent-subtle))",
         },
         muted: {
           DEFAULT: "hsl(var(--muted))",
@@ -75,7 +76,8 @@ const tailwindConfiguration = {
       },
       fontFamily: {
         sans: ["var(--font-sans)"],
-        serif: ["var(--font-serif)"],
+        // Young Serif for headings; Inter for everything else.
+        serif: ["var(--font-heading)", "Georgia", "serif"],
         mono: ["var(--font-sans)"],
       },
       borderRadius: {

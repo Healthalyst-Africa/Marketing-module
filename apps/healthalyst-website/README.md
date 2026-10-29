@@ -20,10 +20,7 @@ pnpm check-lint     # eslint ./src (alternative lint command)
 pnpm check-types    # tsc --noEmit
 pnpm check-format   # prettier --check .
 pnpm format         # prettier --write .
-pnpm test-all       # format + lint + types + tests + build
-pnpm test           # Vitest suite
-pnpm test:watch     # Vitest watch mode
-pnpm test:coverage  # Vitest coverage report
+pnpm test-all       # format + lint + types + build
 ```
 
 Run `pnpm test-all` before declaring a change done.
@@ -32,23 +29,21 @@ Run `pnpm test-all` before declaring a change done.
 
 `src/` is the application. Put new code in the matching layer:
 
-| Path                              | Holds                                                                                 |
-| --------------------------------- | ------------------------------------------------------------------------------------- |
-| `src/app/`                        | App Router routes (`page.tsx`, `layout.tsx`, `not-found.tsx`)                         |
-| `src/app/api/contact/`            | Route handler that validates and stores contact enquiries                             |
-| `db/`                             | SQL applied by hand to the enquiry database                                           |
-| `src/app/(homepage)/_components/` | Route-local components for the marketing page (header, footer, `home/`)               |
-| `src/components/ui/`              | Healthalyst-branded components (`button`, `input`, `select`, `textarea`, `accordion`) |
-| `src/components/layout/`          | Shared layout pieces (`logo.tsx`)                                                     |
-| `src/hooks/`                      | Custom hooks (`use-reveal.ts`)                                                        |
-| `src/lib/`                        | Shared helpers (`utilities.ts` → the `cn()` class merger)                             |
-| `src/store/`                      | Global state: Context + `useReducer` (`ProductsContext`, `Actions`, `Reducers`)       |
-| `src/utilities/`                  | Utilities (`scroll.ts`)                                                               |
-| `src/types/`, `src/data/`         | Shared types and static content (products, steps, FAQs, site copy)                    |
-| `public/`                         | Static assets served from the root                                                    |
+| Path                      | Holds                                                                                        |
+| ------------------------- | -------------------------------------------------------------------------------------------- |
+| `src/app/`                | Thin App Router routes (`page.tsx`, `layout.tsx`, `not-found.tsx`)                           |
+| `src/app/api/contact/`    | Route handler that validates and stores contact enquiries                                    |
+| `src/features/<feature>/` | A page or workflow: `components/`, `config/`, `services/`, `types/`, `utilities/`            |
+| `src/shared/<domain>/`    | Content and behaviour used by more than one feature (`products`, `contact`, `page-sections`) |
+| `src/config/`             | App-wide routes, company office details and theme palettes                                   |
+| `src/components/ui/`      | Branded wrappers composing `@healthalyst/ui` (`healthalyst-brand.tsx`)                       |
+| `db/`                     | SQL applied by hand to the enquiry database                                                  |
+| `public/`                 | Static assets served from the root                                                           |
 
-Route-local components stay next to their route under `_components/`; components reused
-across routes belong in `src/components/`.
+Features: `homepage`, `about`, `contact-enquiry` and `site-navigation` (header
+and footer). Route files only set metadata and render the feature's page
+component. Code used by one feature stays inside it; move it to `src/shared/`
+when a second feature needs it.
 
 All brand-neutral shadcn primitives belong in `packages/ui`, including components currently used by only this application. New shadcn
 components are routed there through `components.json`; keep brand-specific variants in
@@ -57,28 +52,31 @@ this app.
 ## Conventions
 
 - **Imports:** use the `~/` alias (maps to `src/`).
-- **State:** global state lives in `src/store` as Context + `useReducer`. Don't add Redux
-  or Zustand.
-- **Styling:** Tailwind, merged with the `cn()` helper from `src/lib/utilities.ts`. Prefer
+- **State:** product selection lives in `src/shared/products/store` as Context +
+  `useReducer`. Don't add Redux or Zustand.
+- **Styling:** Tailwind, merged with the `cn()` helper from `@healthalyst/ui/lib/utilities`. Prefer
   classes over inline `style` objects.
 - **Design tokens:** brand colours are `forest`, `gold`, `cream`, `sand`, `ink` and
-  `muted` in `tailwind.config.ts`; fonts are `font-serif` (Source Serif 4) for
-  headings and `font-sans` (Source Sans 3) for interface and body text, loaded
-  through `next/font/google`.
+  `muted` in `tailwind.config.ts`; the typeface is Inter for headings, interface and
+  body text, loaded through `next/font/google` (`font-serif` currently resolves
+  to Inter as well).
 - **Custom breakpoints:** `smallScreen` (600px) and `tablet` (900px) mirror the source design's
   collapse points.
-- **Components:** reuse `src/components/ui/*` for branded site components and
-  `@healthalyst/ui` for shared neutral primitives.
-- **Icons:** prefer `lucide-react`.
+- **Components:** compose `@healthalyst/ui` primitives and compositions. Render
+  buttons with `ActionButton` and button-styled links with `ActionLink`, and
+  choose their look through variants rather than class overrides.
+- **Icons:** import from `@healthalyst/icons`, never from the icon vendor.
 - **Naming:** kebab-case file names, PascalCase components, `useX` hooks.
 - **Lint:** unused imports and variables are errors. Prettier uses double quotes,
   semicolons and an 80-column width.
 
 ## Checks
 
-Vitest and Testing Library are configured. `pnpm test-all` runs formatting, lint,
-type checks, tests, and the production build. The test command permits an empty
-suite; successful execution without test files does not establish coverage.
+`pnpm test-all` runs formatting, lint, type checks and the production build.
+There are no automated tests for now: the maintainer tests the website
+manually, and no test files, test runs or test steps in continuous integration
+are added unless asked. Vitest and Testing Library remain installed, unused,
+for later.
 Follow the root `AGENTS.md` for naming rules and completion evidence.
 
 ## Environment

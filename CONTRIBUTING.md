@@ -97,11 +97,8 @@ environment declarations when introducing a variable that affects a build.
 | `pnpm check-format`                        | Check repository formatting                           |
 | `pnpm lint`                                | Run workspace lint tasks                              |
 | `pnpm check-types`                         | Check workspace TypeScript types                      |
-| `pnpm test`                                | Run configured workspace tests                        |
-| `pnpm test:watch`                          | Watch configured tests during development             |
-| `pnpm test:coverage`                       | Run configured tests with coverage reporting          |
 | `pnpm build`                               | Produce production builds                             |
-| `pnpm test-all`                            | Run formatting, lint, type checks, tests, and builds  |
+| `pnpm test-all`                            | Run formatting, lint, type checks, and builds         |
 | `pnpm --filter @healthalyst/website start` | Start the website after a successful production build |
 
 To format a contribution, pass only the files you changed to
@@ -113,29 +110,33 @@ format command.
 Paths beginning with `src/` below are relative to
 `apps/healthalyst-website/`.
 
-| Path                              | Responsibility                                                             |
-| --------------------------------- | -------------------------------------------------------------------------- |
-| `src/app/`                        | Routes, layouts, metadata, and page-level rendering                        |
-| `src/app/(homepage)/_components/` | Homepage header, footer, and landing page sections                         |
-| `src/components/ui/`              | HealthAlyst-branded wrappers composing shared primitives                   |
-| `src/components/layout/`          | Website layout compositions, including the logo                            |
-| `src/data/`                       | Marketing copy, product definitions, implementation steps, and FAQ content |
-| `src/types/`                      | Website domain types                                                       |
-| `src/store/`                      | Existing product selection context and reducer                             |
-| `src/hooks/`                      | Website-specific client hooks                                              |
-| `src/lib/` and `src/utilities/`   | Website helpers and scrolling behavior                                     |
-| `public/`                         | Publicly served assets                                                     |
-| `packages/ui/`                    | Product-neutral shadcn primitives, styles, hooks, and class utilities      |
-| `packages/eslint-config/`         | Shared lint configuration                                                  |
-| `packages/typescript-config/`     | Shared strict compiler presets                                             |
-| `packages/test-utilities/`        | Shared testing setup                                                       |
+| Path                            | Responsibility                                                                  |
+| ------------------------------- | ------------------------------------------------------------------------------- |
+| `src/app/`                      | Thin routes, layouts, metadata and the contact server handler                   |
+| `src/features/homepage/`        | Homepage sections, copy, FAQs and approach stages                               |
+| `src/features/about/`           | About page and its copy                                                         |
+| `src/features/contact-enquiry/` | Contact page, enquiry fields, validation, throttle, storage and acknowledgement |
+| `src/features/site-navigation/` | Site header, footer and their links                                             |
+| `src/shared/products/`          | Product catalogue, institutions, product icons and the product selection store  |
+| `src/shared/contact/`           | Contact page addresses used by several features                                 |
+| `src/shared/page-sections/`     | Sections reused across pages (closing call, principles story)                   |
+| `src/config/`                   | App-wide routes, company office details and theme palettes                      |
+| `src/components/ui/`            | HealthAlyst-branded wrappers, such as the brand mark                            |
+| `public/`                       | Publicly served assets                                                          |
+| `packages/ui/`                  | Product-neutral primitives, compositions, illustrations, styles and helpers     |
+| `packages/eslint-config/`       | Shared lint configuration                                                       |
+| `packages/typescript-config/`   | Shared strict compiler presets                                                  |
+| `packages/test-utilities/`      | Shared testing setup                                                            |
 
-Route-local compositions belong beside their route. Generic primitives belong in
-`packages/ui`, including primitives used by only one application. Brand tokens,
-marketing content, and product behavior stay in the website.
+Each feature keeps only the `components`, `config`, `services`, `types` and
+`utilities` folders it needs. Code used by one feature stays in that feature;
+move it to `src/shared/<domain>/` only when a second feature needs it. Generic
+primitives belong in `packages/ui/src/primitives`, including primitives used by
+only one application. Brand tokens, marketing content, and product behavior stay
+in the website.
 
 Use `~/` for website source imports. Import another workspace through its declared
-package exports, such as `@healthalyst/ui/components/button`; do not use relative
+package exports, such as `@healthalyst/ui/components/action-button`; do not use relative
 paths into another workspace's source. Applications must not import other
 applications.
 
@@ -288,8 +289,9 @@ its Tailwind 3 adaptations.
 
 ### Routes and visitor journeys
 
-For a new landing page, create the appropriate `page.tsx` under `src/app/`, with
-route-local compositions in `_components/`. Confirm its public address, audience,
+For a new landing page, create a feature under `src/features/` with its page
+component and copy, and a thin `page.tsx` under `src/app/(website)/` that sets
+the metadata and renders it. Confirm its public address, audience,
 metadata, navigation entry, and conversion destination in the contribution brief.
 Do not describe a planned page as an existing route.
 
@@ -374,17 +376,16 @@ The complete configured verification command is:
 pnpm test-all
 ```
 
-It runs formatting, lint, type checks, tests, and production builds. Individual
+It runs formatting, lint, type checks, and production builds. Individual
 commands are listed in [Local setup](#useful-commands). Run narrow checks first,
 then the applicable completion gates. Never hide a failure by disabling checks or
 claiming a command that was not run.
 
-Vitest and Testing Library are configured. The current checkout has no application
-test files, and the test script uses `--passWithNoTests`; a successful empty run
-is not coverage. When test work is authorized, place website tests beside the
-changed feature using the configured `*.test.ts`, `*.test.tsx`, `*.spec.ts`, or
-`*.spec.tsx` patterns. Keep reusable setup in `packages/test-utilities` and
-feature-specific fixtures and mocks in the website.
+There are no automated tests for now. The maintainer tests the website
+manually, so do not add test files, run test suites, or add test steps to
+`pnpm test-all`, continuous integration or Git hooks unless asked. Vitest,
+Testing Library and `packages/test-utilities` remain installed, unused, so tests
+can be introduced later.
 
 ### Browser evidence
 
@@ -452,8 +453,8 @@ repository. Hooks are configured at the monorepo root:
 - [`.husky/pre-push`](./.husky/pre-push) runs `pnpm build` for the monorepo before
   each push. A failed build blocks the push; resolve the failure before retrying.
 
-Full lint, type checks, tests, and builds remain in the existing verification
-commands and continuous integration. Local hooks enforce staged formatting,
+Full lint, type checks, and builds remain in the existing verification commands
+and continuous integration. Local hooks enforce staged formatting,
 commit-message checks, and the build before pushing. They do not replace the full
 verification gates or validate pull request titles on the hosting service.
 

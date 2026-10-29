@@ -1,7 +1,7 @@
 {
   "extends": "@healthalyst/typescript-config/react-library.json",
   "compilerOptions": {
-    "types": ["react"]
+    "types": ["react", "node"]
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"],
   "exclude": ["node_modules", "dist"]

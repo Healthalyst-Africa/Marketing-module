@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { Button } from "@healthalyst/ui/components/button";
+import { ActionLink } from "@healthalyst/ui/components/action-link";
 import { cn } from "@healthalyst/ui/lib/utilities";
 
 export interface DesignPreviewContent {
@@ -32,19 +32,15 @@ export function DesignPreview({
           {content.description}
         </p>
         <div className="flex flex-wrap gap-3">
-          <Button
-            asChild
-            className="h-auto min-h-11 whitespace-normal bg-accent text-accent-foreground hover:bg-accent/90 focus-visible:ring-accent focus-visible:ring-offset-primary"
-          >
+          <ActionLink className="h-auto min-h-11 whitespace-normal bg-accent text-accent-foreground hover:bg-accent/90 focus-visible:ring-accent focus-visible:ring-offset-primary">
             {content.primaryAction}
-          </Button>
-          <Button
-            asChild
-            variant="outline"
-            className="h-auto min-h-11 whitespace-normal border-primary-foreground/40 bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground focus-visible:ring-accent focus-visible:ring-offset-primary"
+          </ActionLink>
+          <ActionLink
+            variant="inverseOutline"
+            className="h-auto min-h-11 whitespace-normal border-primary-foreground/40 focus-visible:ring-accent"
           >
             {content.secondaryAction}
-          </Button>
+          </ActionLink>
         </div>
       </div>
       <div aria-hidden="true" className="h-3 bg-accent" />

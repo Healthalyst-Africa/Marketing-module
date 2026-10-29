@@ -1,14 +1,15 @@
 "use client";
 
 import { useId, type ReactElement } from "react";
-import { Button } from "@healthalyst/ui/components/button";
+import { ActionButton } from "@healthalyst/ui/components/action-button";
+import { ActionLink } from "@healthalyst/ui/components/action-link";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@healthalyst/ui/components/card";
+} from "@healthalyst/ui/primitives/card";
 import { ColorSwatch } from "@healthalyst/ui/components/color-swatch";
 import {
   DesignPreview,
@@ -23,21 +24,20 @@ import {
   FieldDescription,
   FieldGroup,
   FieldLabel,
-} from "@healthalyst/ui/components/field";
-import { Input } from "@healthalyst/ui/components/input";
-import { Textarea } from "@healthalyst/ui/components/textarea";
+} from "@healthalyst/ui/primitives/field";
+import { Input } from "@healthalyst/ui/primitives/input";
+import { Textarea } from "@healthalyst/ui/primitives/textarea";
 import {
   Alert,
   AlertDescription,
   AlertTitle,
-} from "@healthalyst/ui/components/alert";
+} from "@healthalyst/ui/primitives/alert";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@healthalyst/ui/components/accordion";
-import { Separator } from "@healthalyst/ui/components/separator";
+} from "@healthalyst/ui/primitives/accordion";
 import { useThemePreference } from "@healthalyst/ui/components/theme-preference-provider";
 
 export function DesignControlPanel({
@@ -63,7 +63,7 @@ export function DesignControlPanel({
 
   return (
     <main className="mx-auto min-h-screen max-w-[1400px] px-5 py-8 text-foreground sm:px-8 sm:py-12 lg:px-12">
-      <header className="mb-10 flex flex-col gap-6 border-b pb-8 lg:flex-row lg:items-end lg:justify-between">
+      <header className="mb-10 flex flex-col gap-6 pb-8 lg:flex-row lg:items-end lg:justify-between">
         <div className="max-w-2xl">
           <p className="mb-3 text-sm text-muted-foreground">
             Experimental design system
@@ -72,21 +72,19 @@ export function DesignControlPanel({
             Design control panel
           </h1>
           <p className="mt-4 max-w-[60ch] text-sm leading-relaxed text-muted-foreground sm:text-base">
-            Explore the website in a different colour palette. This is a
-            presentation preference for this browser; the original palette
-            remains the public default.
+            Explore the website in a different colour palette. Visitors without
+            a saved preference see the default palette.
           </p>
         </div>
         <div className="flex flex-wrap gap-3">
-          <Button asChild variant="outline">
-            {websiteLink}
-          </Button>
-          <Button
+          <ActionLink variant="outline">{websiteLink}</ActionLink>
+          <ActionButton
+            type="button"
             onClick={resetPalette}
             disabled={selectedIdentifier === defaultIdentifier}
           >
-            Reset original
-          </Button>
+            Reset to default
+          </ActionButton>
         </div>
       </header>
 
@@ -147,8 +145,6 @@ export function DesignControlPanel({
             </div>
           </section>
 
-          <Separator />
-
           <Card className="rounded-xl shadow-none">
             <CardHeader>
               <CardTitle>
@@ -197,9 +193,9 @@ export function DesignControlPanel({
                 </Field>
               </FieldGroup>
               <div>
-                <Button type="button" disabled>
+                <ActionButton type="button" disabled>
                   Disabled button
-                </Button>
+                </ActionButton>
               </div>
               <Alert
                 variant="destructive"
@@ -214,7 +210,7 @@ export function DesignControlPanel({
                 </AlertDescription>
               </Alert>
               <Accordion type="single" collapsible>
-                <AccordionItem value="preview-details" className="border-b-0">
+                <AccordionItem value="preview-details">
                   <AccordionTrigger>
                     How does the preview work?
                   </AccordionTrigger>
@@ -232,7 +228,7 @@ export function DesignControlPanel({
       <p role="status" aria-live="polite" className="sr-only">
         Selected palette: {selectedPalette?.name}.{" "}
         {selectedIdentifier === defaultIdentifier
-          ? "Original palette active."
+          ? "Default palette active."
           : persistenceAvailable
             ? "Preference saved."
             : "Preference could not be saved."}

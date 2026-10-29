@@ -13,6 +13,7 @@
   --muted-foreground: 0 0% 45%;
   --accent: 0 0% 96%;
   --accent-foreground: 0 0% 9%;
+  --accent-subtle: 0 0% 99%;
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 98%;
   --border: 0 0% 90%;
@@ -36,6 +37,7 @@
   --muted-foreground: 0 0% 64%;
   --accent: 0 0% 15%;
   --accent-foreground: 0 0% 98%;
+  --accent-subtle: 0 0% 6%;
   --destructive: 0 63% 31%;
   --destructive-foreground: 0 0% 98%;
   --border: 0 0% 15%;
@@ -43,40 +45,58 @@
   --ring: 0 0% 83%;
 }
 
-/* Shared reveal presentation; visibility is controlled by the application. */
-.reveal {
-  opacity: 0;
-  transform: translateY(20px);
-  transition:
-    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.reveal.show {
-  opacity: 1;
-  transform: translateY(0);
-}
-.reveal-1 {
-  transition-delay: 0.08s;
-}
-.reveal-2 {
-  transition-delay: 0.18s;
-}
-.reveal-3 {
-  transition-delay: 0.28s;
-}
-.reveal-4 {
-  transition-delay: 0.38s;
-}
-.reveal-5 {
-  transition-delay: 0.48s;
-}
-.reveal-6 {
-  transition-delay: 0.58s;
+/* A signal travelling along a connector drawn with pathLength="100". */
+@keyframes marketing-hub-signal {
+  from {
+    stroke-dashoffset: 12;
+  }
+  to {
+    stroke-dashoffset: -100;
+  }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .reveal {
-    transition: none;
-    transform: none;
+/* A ring expanding out of a hub as it sends a signal. */
+@keyframes marketing-hub-pulse {
+  from {
+    opacity: 0.45;
+    scale: 1;
+  }
+  to {
+    opacity: 0;
+    scale: 1.18;
+  }
+}
+
+/* A photograph rising into place as a page loads. */
+@keyframes marketing-rise {
+  from {
+    opacity: 0;
+    translate: 0 24px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+/*
+ * The full-width navigation panel rolls down to its content height when it
+ * opens and rolls back up when it closes; Radix supplies the height.
+ */
+@keyframes navigation-menu-roll-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-navigation-menu-viewport-height);
+  }
+}
+
+@keyframes navigation-menu-roll-up {
+  from {
+    height: var(--radix-navigation-menu-viewport-height);
+  }
+  to {
+    height: 0;
   }
 }

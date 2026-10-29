@@ -9,7 +9,7 @@ apps/
   healthalyst-website/       Official Healthalyst marketing website
 packages/
   eslint-config/              Shared ESLint flat configurations
-  test-utilities/             Shared Vitest setup
+  test-utilities/             Shared Vitest setup (unused; testing is manual)
   typescript-config/          Shared TypeScript presets
   ui/                         Brand-neutral shadcn components and styles
 ```
@@ -24,11 +24,10 @@ pnpm dev --filter @healthalyst/website
 pnpm build
 pnpm lint
 pnpm check-types
-pnpm test
 pnpm check-format
 pnpm test-all
 ```
 
 Create another app under `apps/` with a unique package name and its own `package.json`. Extend the shared ESLint and TypeScript presets, add the shared UI package as a dependency when needed, and define the app's tasks. Turborepo runs matching tasks across the workspace.
 
-Pull requests and pushes to `main` run formatting, lint, type checks, the app test suite, and production builds through GitHub Actions.
+Pull requests and pushes to `main` run formatting, lint, type checks and production builds through GitHub Actions. There are no automated tests for now; the maintainer tests the website manually.

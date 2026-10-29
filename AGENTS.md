@@ -46,17 +46,34 @@ code, repository policies, or branding into it.
 ## Non-negotiable shared shadcn rules
 
 - Use shadcn components as the standard foundation for interactive interface
-  primitives. All installed primitives belong in `packages/ui/src/components`,
-  even when only one application currently uses them.
+  primitives. All installed primitives belong in `packages/ui/src/primitives`,
+  even when only one application currently uses them. Dedicated HealthAlyst
+  compositions built from them belong in `packages/ui/src/components`, and
+  decorative SVG artwork in `packages/ui/src/illustrations`. Applications
+  consume compositions and illustrations, never primitives directly.
 - Every new or reworked reusable visual component, including page compositions,
   navigation, form layouts and presentation controls, belongs in `packages/ui`
   and is consumed through `@healthalyst/ui` exports. Compose the shared shadcn
   primitives; keep route entry points, content and application behaviour in the
   website. Do not introduce a separate application-local component foundation.
 - The package is exported as `@healthalyst/ui`. Import components through its
-  published exports, for example `@healthalyst/ui/components/button`. Never reach
-  into another workspace's source using relative paths or duplicate primitives
-  inside an application.
+  published exports, for example `@healthalyst/ui/components/action-button`.
+  Never reach into another workspace's source using relative paths or duplicate
+  primitives inside an application.
+- Render buttons through `ActionButton` from
+  `@healthalyst/ui/components/action-button` for actions and `ActionLink` from
+  `@healthalyst/ui/components/action-link` for navigation that looks like a
+  button. They are the only consumers of the shadcn `button` primitive; do not
+  import or render `Button` directly in applications or other shared
+  components. `ActionButton` owns loading, busy, disabled and icon behaviour.
+  Use links for navigation rather than wrapping a button in an anchor.
+- Choose appearance through primitive variants and properties, such as the
+  button's `variant`, `size` and `shape`, the form controls' `controlSize`, and
+  the navigation menu's `tone`. Do not restyle a primitive with class strings at
+  the call site or use the button's `unstyled` variant in compositions; when a
+  needed appearance is missing, add a semantic variant to the primitive. Call
+  sites may pass layout classes, such as width, grid placement, spacing and
+  responsive visibility.
 - Application-specific branded wrappers may live in
   `apps/healthalyst-website/src/components/ui`, but must compose the shared
   primitives. Keep HealthAlyst colours, typography, copy, layout, and business
@@ -88,22 +105,51 @@ code, repository policies, or branding into it.
   controls as custom clickable containers when a shared primitive exists.
 - Keep package exports, shared styles, Next.js transpilation, and Tailwind source
   scanning aligned when adding or moving components.
+- Import icons through the `@healthalyst/icons` workspace package, in
+  applications and in `packages/ui`. Do not import the icon vendor directly. Add
+  icons to the package with names that describe their purpose; the package owns
+  the vendor dependency. Route icon imports in generated shadcn code through it.
 
 ## Repository structure and tooling
 
-| Location                                  | Responsibility                                                         |
-| ----------------------------------------- | ---------------------------------------------------------------------- |
-| `apps/healthalyst-website/src/app`        | Next.js routes, layouts, metadata, route-local landing page sections   |
-| `apps/healthalyst-website/src/components` | Website compositions and branded wrappers                              |
-| `apps/healthalyst-website/src/data`       | Approved marketing content and product definitions                     |
-| `apps/healthalyst-website/src/hooks`      | Website-specific client hooks                                          |
-| `apps/healthalyst-website/src/store`      | Existing shared client state                                           |
-| `apps/healthalyst-website/src/types`      | Website domain types                                                   |
-| `apps/healthalyst-website/public`         | Files served directly by public paths                                  |
-| `packages/ui`                             | Shared shadcn primitives, neutral tokens, reusable interface utilities |
-| `packages/eslint-config`                  | Shared lint configuration                                              |
-| `packages/typescript-config`              | Shared strict compiler configuration                                   |
-| `packages/test-utilities`                 | Shared testing setup                                                   |
+| Location                                     | Responsibility                                                                 |
+| -------------------------------------------- | ------------------------------------------------------------------------------ |
+| `apps/healthalyst-website/src/app`           | Thin Next.js routes, layouts, metadata and server handlers                     |
+| `apps/healthalyst-website/src/features`      | Owned pages and workflows with their components, config, types and utilities   |
+| `apps/healthalyst-website/src/config`        | App-wide routes, company details and theme palettes                            |
+| `apps/healthalyst-website/src/shared`        | App-local content and behaviour used by more than one feature                  |
+| `apps/healthalyst-website/src/components/ui` | Thin branded wrappers, such as the HealthAlyst brand mark                      |
+| `apps/healthalyst-website/public`            | Files served directly by public paths                                          |
+| `packages/ui`                                | Shared shadcn primitives, compositions, illustrations, neutral tokens, helpers |
+| `packages/icons`                             | Shared icon API with purpose-based names; owns the icon vendor                 |
+| `packages/eslint-config`                     | Shared lint configuration                                                      |
+| `packages/typescript-config`                 | Shared strict compiler configuration                                           |
+| `packages/test-utilities`                    | Shared testing setup, unused while testing is manual                           |
+
+Inside the website, each feature holds only the folders it needs:
+
+```text
+src/features/<feature>/
+  components/   Render the page or workflow; the route renders its page component
+  config/       Copy, options, limits and presentation maps owned by the feature
+  services/     Server requests and storage (for example the enquiry database)
+  types/        Domain and request types
+  utilities/    Pure transformations and validation owned by the feature
+```
+
+Features are `homepage`, `about`, `contact-enquiry` and `site-navigation`.
+`shared/products` owns the product catalogue, institutions, product icons and
+the product selection store; `shared/contact` builds contact page addresses;
+`shared/page-sections` holds sections reused by several pages;
+`shared/requests` holds the per-address throttle and client-address reader
+shared by the server routes. Keep route
+files thin, put configuration beside its owner rather than in a global
+constants file, and do not use `lib` as a catch-all folder.
+
+`packages/ui/src` follows the same split as the frontend repository:
+`primitives` (shadcn registry code), `components` (compositions; private
+helpers of one composition live in a folder named after it), `illustrations`
+(decorative SVG artwork), `types`, `forms`, `config`, `hooks` and `lib`.
 
 - Read manifests rather than assuming versions. The current stack uses Next.js
   App Router, React, TypeScript, Tailwind 3, pnpm workspaces, and Turborepo.
@@ -140,8 +186,9 @@ code, repository policies, or branding into it.
 ## HealthAlyst landing page requirements
 
 - Preserve the approved HealthAlyst Africa identity and the website's existing
-  forest, gold, cream, and sand palette and typography. Use app theme tokens
-  rather than scattering new brand values across components.
+  forest, gold, cream, and sand palette. Use Young Serif for headings and Inter
+  for all other text, as recorded in `DESIGN.md`. Use app theme tokens rather than scattering new
+  brand values across components.
 - Keep product names, audiences, capabilities, and conversion messages consistent
   with approved content. Do not invent customer logos, testimonials, adoption
   numbers, clinical outcomes, certifications, regulatory compliance, or launch
@@ -211,15 +258,17 @@ pnpm install --frozen-lockfile
 pnpm check-format
 pnpm lint
 pnpm check-types
-pnpm test
 pnpm build
 pnpm test-all
 ```
 
-`pnpm test-all` includes tests. Vitest and Testing Library are configured; a
-successful `--passWithNoTests` run does not establish test coverage. The configured
-continuous integration workflow runs `pnpm test-all` on pull requests and pushes
-to `main`. Do not bypass failing checks or invent approvals, protected-branch
+There are no automated tests for now; the maintainer tests the website
+manually. Do not write test files, run `pnpm test`, or add test steps to
+`pnpm test-all`, continuous integration or Git hooks unless the user asks.
+Vitest and `packages/test-utilities` stay installed, unused, for later.
+`pnpm test-all` runs formatting, lint, type checks and the production build, and
+the configured continuous integration workflow runs it on pull requests and
+pushes to `main`. Do not bypass failing checks or invent approvals, protected-branch
 rules, hooks, or ticket systems that this repository does not configure.
 
 Do not commit, push, publish, deploy, send external messages, or mutate production
@@ -233,3 +282,14 @@ changes explicitly so reviewers can assess all affected applications.
 - [shadcn components configuration](https://ui.shadcn.com/docs/components-json)
 - [Turborepo documentation](https://turborepo.com/docs)
 - [Accessibility standard](https://www.w3.org/TR/WCAG22/)
+
+<!-- BEGIN:turborepo-agent-rules -->
+
+# This is NOT the Turborepo you know
+
+Turborepo configuration, task behavior, and CLI commands can vary between installed versions and may differ from your training data. Resolve the `turbo` package from this file's directory or relevant workspace; in monorepos, it may not be visible from the repository root. For example, run `node -p "require.resolve('turbo/package.json')"` from a workspace that depends on `turbo`.
+
+Read `docs/README.md` inside that installed package first, then read the relevant pages from its `docs/` directory before changing Turborepo configuration or commands. Heed deprecation notices. These bundled docs match the installed package version and are available without network access.
+
+This block is written and re-added by `turbo` before repository-scoped commands when an AI agent is detected. In the Turborepo source repository, its template is defined in `crates/turborepo-cli/src/cli/agent_guidance.rs`. Removing the managed block while updates are enabled means a later qualifying invocation will add it again. Set `"agentGuidance": false` in the root `turbo.json` or `turbo.jsonc` to opt out; this does not remove an existing block. Keep the block committed with your work to avoid an uncommitted change on the next agent invocation.
+<!-- END:turborepo-agent-rules -->
