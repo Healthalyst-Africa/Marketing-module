@@ -90,6 +90,22 @@ when approved testimonials arrive.
 | `testimonial-kwame-mensah.webp`  | 2,570 | `doctors-discussing.webp` (the doctor on the right)            | [Tima Miroshnichenko, Pexels](https://www.pexels.com/photo/men-in-white-coat-standing-beside-woman-in-white-coat-5452189/) |
 | `testimonial-fatima-bello.webp`  | 2,716 | Downloaded with the user's approval (800 × 1120, 56,602 bytes) | [G star Media, Pexels](https://www.pexels.com/photo/female-pharmacist-holding-medication-packages-38774686/)               |
 
+## Leadership portraits (development samples) — 29 October 2026
+
+640 × 800 (4:5) WebP crops in `public/images/team/` for the sample leadership
+cards on the About page, shown in development only (`isApproved: false`). The
+people pictured are stock models, not Healthalyst staff, and the cards carry
+placeholder names (shown unlabelled, in development only); replace both with real, permissioned portraits of the team.
+Cropped with sharp from photographs already in the site; nothing new was
+downloaded.
+
+| File                       | Bytes  | Crop of                                              | Source                                                                                                                     |
+| -------------------------- | ------ | ---------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `sample-leader-one.webp`   | 43,142 | `hero-hospital.webp` (the doctor with a folder)      | [RDNE Stock project, Pexels](https://www.pexels.com/photo/a-doctor-reading-a-document-6129198/)                            |
+| `sample-leader-two.webp`   | 22,460 | `doctors-discussing.webp` (the doctor in the centre) | [Tima Miroshnichenko, Pexels](https://www.pexels.com/photo/men-in-white-coat-standing-beside-woman-in-white-coat-5452189/) |
+| `sample-leader-three.webp` | 20,862 | `doctors-discussing.webp` (the doctor on the right)  | [Tima Miroshnichenko, Pexels](https://www.pexels.com/photo/men-in-white-coat-standing-beside-woman-in-white-coat-5452189/) |
+| `sample-leader-four.webp`  | 30,582 | `clinician-tablet.webp`                              | [Tima Miroshnichenko, Pexels](https://www.pexels.com/photo/a-braided-hair-woman-using-a-tablet-computer-5452188/)          |
+
 ## "Why HealthAlyst" pillar photographs — 20 October 2026
 
 Chosen at the user's request to represent each pillar, downloaded with the

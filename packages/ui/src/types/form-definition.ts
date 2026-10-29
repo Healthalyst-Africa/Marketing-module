@@ -13,9 +13,9 @@ interface FormFieldBase {
   width?: "half" | "full";
 }
 
-/** A single-line text control. */
+/** A single-line text control; `url` asks for a web address. */
 export interface TextFormFieldDefinition extends FormFieldBase {
-  kind: "text" | "email" | "tel";
+  kind: "text" | "email" | "tel" | "url";
   autoComplete?: string;
   /** Example value shown inside an empty control. Never a substitute for the label. */
   placeholder?: string;

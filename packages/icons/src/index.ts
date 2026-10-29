@@ -22,6 +22,7 @@ export {
   Handshake as PartnershipIcon,
   Info as InformationIcon,
   Languages as MultilingualIcon,
+  Linkedin as LinkedInIcon,
   LoaderCircle as LoaderIcon,
   Mail as EmailIcon,
   MapPin as LocationIcon,

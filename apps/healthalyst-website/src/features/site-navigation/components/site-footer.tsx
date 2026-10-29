@@ -17,11 +17,15 @@ import { scrollToSamePageSection } from "~/shared/navigation/utilities/scroll-to
 import type { SiteLink } from "~/features/site-navigation/types/site-navigation";
 
 function renderSiteLink(siteLink: SiteLink) {
+  // An entry without a published page is shown disabled: greyed out, not a
+  // link, with a not-allowed cursor, and announced as unavailable.
   if (!siteLink.destination) {
     return (
       <span
         key={siteLink.label}
-        className="inline-flex min-h-11 items-center text-sm text-muted-foreground"
+        role="link"
+        aria-disabled="true"
+        className="inline-flex min-h-11 cursor-not-allowed items-center text-sm text-muted-foreground/50"
       >
         {siteLink.label}
       </span>

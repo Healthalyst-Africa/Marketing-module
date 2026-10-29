@@ -24,7 +24,6 @@ export const CONTACT_FORM_CONTENT = {
   heading: "Send an enquiry",
   submitLabel: "Send enquiry",
   submittingLabel: "Sending enquiry…",
-  helperText: "All fields are required unless marked optional.",
   successHeading: "Enquiry sent",
   successMessage:
     "Thank you. Our team aims to respond within two business days.",
