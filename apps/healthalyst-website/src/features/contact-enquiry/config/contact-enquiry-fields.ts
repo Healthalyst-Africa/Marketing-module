@@ -88,9 +88,8 @@ export const CONTACT_ENQUIRY_FIELDS: readonly ContactEnquiryField[] = [
     name: "productInterest",
     kind: "select",
     label: "What would you like to discuss?",
-    description:
-      "Choose a product, or Full Product Suite if you are not sure yet.",
-    placeholder: "Select a product or topic",
+    placeholder:
+      "Choose a product, or Full Product Suite if you are not sure yet",
     options: CONTACT_PRODUCT_INTEREST_OPTIONS,
     required: true,
     maxLength: 160,

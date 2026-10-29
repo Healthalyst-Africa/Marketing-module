@@ -1,6 +1,10 @@
 import Link from "next/link";
+import { EmailIcon, PhoneIcon } from "@healthalyst/icons";
+import type { ReactNode } from "react";
 import { ActionLink } from "@healthalyst/ui/components/action-link";
 import { CareNetworkIllustration } from "@healthalyst/ui/illustrations/care-network-illustration";
+import { InvestmentIllustration } from "@healthalyst/ui/illustrations/investment-illustration";
+import { PartnershipIllustration } from "@healthalyst/ui/illustrations/partnership-illustration";
 import { MarketingEnquiryForm } from "@healthalyst/ui/components/marketing-contact";
 import { MarketingContentSection } from "@healthalyst/ui/components/marketing-content-section";
 import { MarketingLocationMap } from "@healthalyst/ui/components/marketing-location-map";
@@ -29,6 +33,15 @@ import type { ContactEnquiryPreset } from "~/features/contact-enquiry/utilities/
 /** Enquiry endpoint that validates and stores a contact submission. */
 const CONTACT_ENQUIRY_ENDPOINT = "/api/contact";
 
+/** One illustration per partnership and investment route. */
+const OTHER_ROUTE_ILLUSTRATIONS: Record<
+  (typeof CONTACT_OTHER_ROUTES)[number]["topic"],
+  ReactNode
+> = {
+  partnership: <PartnershipIllustration />,
+  investment: <InvestmentIllustration />,
+};
+
 /** Rows for whichever direct contact details the company has supplied. */
 function createContactDetailRecords(): MarketingRecord[] {
   const records: MarketingRecord[] = [];
@@ -36,6 +49,7 @@ function createContactDetailRecords(): MarketingRecord[] {
   if (CONTACT_DETAILS.email) {
     records.push({
       term: "Email",
+      icon: <EmailIcon />,
       description: (
         <a
           href={`mailto:${CONTACT_DETAILS.email}`}
@@ -50,6 +64,7 @@ function createContactDetailRecords(): MarketingRecord[] {
   if (CONTACT_DETAILS.phoneNumber) {
     records.push({
       term: "Phone",
+      icon: <PhoneIcon />,
       description: (
         <a
           href={`tel:${CONTACT_DETAILS.phoneNumber.replace(/\s+/g, "")}`}
@@ -84,19 +99,6 @@ export default function ContactPage({
   const contactDetailRecords = createContactDetailRecords();
 
   const asides: MarketingTaskAside[] = [
-    {
-      identifier: "other-routes",
-      heading: CONTACT_PAGE_CONTENT.otherRoutesHeading,
-      content: (
-        <MarketingRecordList
-          records={CONTACT_OTHER_ROUTES.map((route) => ({
-            term: route.term,
-            description: route.description,
-            action: <Link href={route.destination}>{route.actionLabel}</Link>,
-          }))}
-        />
-      ),
-    },
     ...(contactDetailRecords.length > 0
       ? [
           {
@@ -144,6 +146,22 @@ export default function ContactPage({
         }
         asides={asides}
       />
+      <MarketingContentSection
+        identifier={CONTACT_PAGE_CONTENT.otherRoutesIdentifier}
+        tone="subtle"
+        heading={CONTACT_PAGE_CONTENT.otherRoutesHeading}
+        introduction={<p>{CONTACT_PAGE_CONTENT.otherRoutesIntroduction}</p>}
+      >
+        <MarketingRecordList
+          className="grid gap-8 sm:grid-cols-2 lg:gap-12"
+          records={CONTACT_OTHER_ROUTES.map((route) => ({
+            term: route.term,
+            description: route.description,
+            illustration: OTHER_ROUTE_ILLUSTRATIONS[route.topic],
+            action: <Link href={route.destination}>{route.actionLabel}</Link>,
+          }))}
+        />
+      </MarketingContentSection>
       <MarketingContentSection
         identifier={CONTACT_OFFICE_MAP.identifier}
         heading={CONTACT_OFFICE_MAP.heading}

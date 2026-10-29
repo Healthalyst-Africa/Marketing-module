@@ -12,7 +12,10 @@ export const CONTACT_PAGE_CONTENT = {
     "Contact Healthalyst Africa about software for your hospital, laboratory, pharmacy, dental practice, imaging centre or supply organisation, or about partnership and investment.",
   heading: "Contact us",
   lede: "Tell us about your institution and what you need. Our team aims to respond within two business days.",
-  otherRoutesHeading: "Other ways to reach us",
+  otherRoutesIdentifier: "partnerships-and-investment",
+  otherRoutesHeading: "Partnerships and investment",
+  otherRoutesIntroduction:
+    "Not an institution looking for software? Partners and investors use the same form with their topic already chosen.",
   contactDetailsHeading: "Contact details",
   nextStepsHeading: "What happens next",
 } as const;
@@ -33,6 +36,7 @@ export const CONTACT_FORM_CONTENT = {
 /** Enquiries that use the same form with a topic already chosen. */
 export const CONTACT_OTHER_ROUTES = [
   {
+    topic: "partnership",
     term: "Partnerships",
     description:
       "Technology, implementation and development partners working in African healthcare.",
@@ -40,6 +44,7 @@ export const CONTACT_OTHER_ROUTES = [
     actionLabel: "Start a partnership enquiry",
   },
   {
+    topic: "investment",
     term: "Investors",
     description:
       "Funds and investors who would like to speak with the company.",
@@ -50,13 +55,17 @@ export const CONTACT_OTHER_ROUTES = [
 
 /**
  * Direct contact details. Each entry appears on the page only once the company
- * supplies it; nothing is shown in its place until then.
+ * supplies it; nothing is shown in its place until then. The phone number is a
+ * placeholder awaiting the company's line.
  */
 export const CONTACT_DETAILS: {
   email?: string;
   phoneNumber?: string;
   officeAddress?: string;
-} = {};
+} = {
+  email: "info@healthalystafrica.com",
+  phoneNumber: "+234 800 000 0000",
+};
 
 export const CONTACT_NEXT_STEPS: readonly MarketingSequenceStep[] = [
   {
