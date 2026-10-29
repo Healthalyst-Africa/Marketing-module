@@ -3,7 +3,6 @@ import type {
   NavigationLink,
   SiteLink,
 } from "~/features/site-navigation/types/site-navigation";
-import { CONTACT_TOPIC_DESTINATIONS } from "~/shared/contact/config/contact-destinations";
 
 /**
  * Routes whose site header starts in the brand colour. None at present: the
@@ -36,21 +35,12 @@ export const SOLUTIONS_MENU_CONTENT = {
  */
 export const FOOTER_COMPANY_LINKS: readonly SiteLink[] = [
   { label: "About us", destination: SITE_ROUTES.about },
-  { label: "Our approach", destination: `${SITE_ROUTES.about}#how-we-work` },
   { label: "Careers" },
-  { label: "Press and media" },
-  { label: "Partners", destination: CONTACT_TOPIC_DESTINATIONS.partnership },
+  { label: "Terms and conditions" },
+  { label: "Privacy policy" },
 ];
 
 export const FOOTER_CONNECT_LINKS: readonly SiteLink[] = [
   { label: "Contact us", destination: SITE_ROUTES.contact },
-  {
-    label: "Partnership enquiries",
-    destination: CONTACT_TOPIC_DESTINATIONS.partnership,
-  },
-  {
-    label: "Investor relations",
-    destination: CONTACT_TOPIC_DESTINATIONS.investment,
-  },
   { label: "Support", destination: SITE_ROUTES.contact },
 ];

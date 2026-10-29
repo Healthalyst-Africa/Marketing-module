@@ -4,7 +4,7 @@ import Ecosystem from "~/features/homepage/components/ecosystem";
 import FAQ from "~/features/homepage/components/faq";
 import Hero from "~/features/homepage/components/hero";
 import ProductSuite from "~/features/homepage/components/product-suite";
-import Testimonials from "~/features/homepage/components/testimonials";
+import Testimonials from "~/shared/page-sections/components/testimonials";
 import { HOMEPAGE_BENEFITS_CONTENT } from "~/features/homepage/config/homepage-content";
 import { ClosingCall } from "~/shared/page-sections/components/closing-call";
 import { PrinciplesStory } from "~/shared/page-sections/components/principles-story";

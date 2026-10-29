@@ -90,7 +90,11 @@ Dedicated visual components built from the primitives. Private helpers of one co
   an embedded map, loaded lazily)
 - `@healthalyst/ui/components/marketing-task-layout`
 - `@healthalyst/ui/components/marketing-sequence`
-- `@healthalyst/ui/components/marketing-record-list`
+- `@healthalyst/ui/components/marketing-record-list` (entries may take an
+  `illustration` or a ringed `icon`; links line up when laid out in columns)
+- `@healthalyst/ui/components/marketing-question-assistant` (an AI question
+  box for under an FAQ: posts one question to `endpoint` and shows the answer
+  with a contact link; pass it to `MarketingFAQ` as `assistant`)
 - `@healthalyst/ui/components/marketing-figure`
 - `@healthalyst/ui/components/marketing-closing-band`
 
@@ -129,6 +133,8 @@ or import it, and never copy GitLab's logo or any third-party brand logo.
 - `@healthalyst/ui/lib/form-control-variants` holds the surface, focus and
   height variants shared by the input, text area and select trigger.
 - `@healthalyst/ui/types/form-definition` describes form fields and their groups
+- `@healthalyst/ui/types/marketing-question-assistant` is the request and
+  response contract between the question assistant and its route
   for `DynamicFormFields`.
 - `@healthalyst/ui/forms/form-field-validation` checks defined fields against
   their controls and returns a message for each one that fails.

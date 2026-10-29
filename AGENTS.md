@@ -140,7 +140,9 @@ src/features/<feature>/
 Features are `homepage`, `about`, `contact-enquiry` and `site-navigation`.
 `shared/products` owns the product catalogue, institutions, product icons and
 the product selection store; `shared/contact` builds contact page addresses;
-`shared/page-sections` holds sections reused by several pages. Keep route
+`shared/page-sections` holds sections reused by several pages;
+`shared/requests` holds the per-address throttle and client-address reader
+shared by the server routes. Keep route
 files thin, put configuration beside its owner rather than in a global
 constants file, and do not use `lib` as a catch-all folder.
 

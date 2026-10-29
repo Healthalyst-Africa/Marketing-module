@@ -47,6 +47,8 @@ const buttonVariants = createClassVariants(
         small: "h-9 px-3 text-sm",
         large: "h-11 px-6 text-[15px]",
         extraLarge: "h-12 px-8 text-base",
+        /** A compact icon control inside a field, such as a send button. */
+        smallIcon: "size-8",
         icon: "size-10",
         largeIcon: "size-11 [&_svg]:size-5",
       },
