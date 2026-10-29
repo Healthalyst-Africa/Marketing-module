@@ -18,6 +18,7 @@ import {
   ORGANIZATION_APP_ROUTES,
 } from "~/config/organization-app";
 import { SITE_ROUTES } from "~/config/routes";
+import { scrollToSamePageSection } from "~/features/site-navigation/utilities/scroll-to-same-page-section";
 import { SOLUTION_GROUPS } from "~/shared/products/config/solution-groups";
 import { useProducts } from "~/shared/products/store/products-provider";
 
@@ -55,7 +56,14 @@ export default function SiteHeader() {
                 link: (
                   <Link
                     href={`${SITE_ROUTES.home}#products`}
-                    onClick={() => selectProduct(Math.max(productIndex, 0))}
+                    onClick={(clickEvent) => {
+                      selectProduct(Math.max(productIndex, 0));
+                      scrollToSamePageSection(
+                        clickEvent,
+                        `${SITE_ROUTES.home}#products`,
+                        currentPath
+                      );
+                    }}
                   />
                 ),
               },
@@ -87,6 +95,13 @@ export default function SiteHeader() {
             href={navigationLink.destination}
             aria-current={
               currentPath === navigationLink.destination ? "page" : undefined
+            }
+            onClick={(clickEvent) =>
+              scrollToSamePageSection(
+                clickEvent,
+                navigationLink.destination,
+                currentPath
+              )
             }
           >
             {navigationLink.label}
