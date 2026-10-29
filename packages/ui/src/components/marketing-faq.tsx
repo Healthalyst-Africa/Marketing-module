@@ -51,10 +51,10 @@ export function MarketingFAQ({
           <Accordion type="single" collapsible>
             {questions.map((question, index) => (
               <AccordionItem key={question.question} value={String(index)}>
-                <AccordionTrigger className="gap-5 py-6 text-left text-base font-medium leading-relaxed text-primary">
+                <AccordionTrigger className="gap-3 py-4 text-left text-[13px] font-medium leading-snug text-primary md:gap-5 md:py-6 md:text-base md:leading-relaxed">
                   {question.question}
                 </AccordionTrigger>
-                <AccordionContent className="max-w-[65ch] pb-6 text-base leading-[1.8] text-muted-foreground">
+                <AccordionContent className="max-w-[65ch] pb-4 text-[13px] leading-relaxed text-muted-foreground md:pb-6 md:text-base md:leading-[1.8]">
                   {question.answer}
                 </AccordionContent>
               </AccordionItem>

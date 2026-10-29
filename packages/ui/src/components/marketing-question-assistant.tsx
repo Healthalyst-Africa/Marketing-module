@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  useEffect,
   useId,
   useState,
   type FormEvent,
@@ -59,6 +60,7 @@ export function MarketingQuestionAssistant({
   endpoint,
   label,
   placeholder,
+  compactPlaceholder,
   submitLabel,
   submittingLabel,
   notice,
@@ -73,6 +75,11 @@ export function MarketingQuestionAssistant({
   /** Accessible name for the field; the placeholder is not a label. */
   label: string;
   placeholder: string;
+  /**
+   * A shorter placeholder for phones, so the empty field stays one line high
+   * with the send button centred beside it.
+   */
+  compactPlaceholder?: string;
   /** Accessible name for the send button. */
   submitLabel: string;
   /** Announced while the answer is on its way. */
@@ -97,6 +104,7 @@ export function MarketingQuestionAssistant({
     status: "idle",
   });
 
+  const isPhoneWidth = useIsPhoneWidth();
   const isAsking = assistantState.status === "asking";
   const canAsk = question.trim().length > 0 && !isAsking;
 
@@ -163,7 +171,13 @@ export function MarketingQuestionAssistant({
           rows={1}
           value={question}
           maxLength={maximumLength}
-          placeholder={placeholder}
+          placeholder={
+            isPhoneWidth && compactPlaceholder
+              ? compactPlaceholder
+              : placeholder
+          }
+          // Phone keyboards show "Send", since Enter sends the question.
+          enterKeyHint="send"
           aria-describedby={noticeIdentifier}
           onChange={(changeEvent) => setQuestion(changeEvent.target.value)}
           onKeyDown={handleKeyDown}
@@ -171,7 +185,7 @@ export function MarketingQuestionAssistant({
           // content sizing; elsewhere it stays one line and scrolls. The
           // smaller placeholder shares the text's 26 px line so both sit on
           // the send button's centre.
-          className="max-h-40 min-h-0 resize-none rounded-2xl pr-12 text-base leading-[26px] placeholder:leading-[26px] [field-sizing:content]"
+          className="max-h-40 min-h-0 resize-none rounded-2xl pr-12 text-base leading-[26px] placeholder:text-xs placeholder:leading-[26px] sm:placeholder:text-sm [field-sizing:content]"
         />
         <ActionButton
           type="submit"
@@ -190,12 +204,13 @@ export function MarketingQuestionAssistant({
       </form>
       <p
         id={noticeIdentifier}
-        className="mt-1.5 flex items-start gap-1.5 text-xs leading-[18px] text-muted-foreground"
+        className="mt-1.5 flex items-start gap-1 text-[10px] leading-[14px] text-muted-foreground sm:gap-1.5 sm:text-xs sm:leading-[18px]"
       >
-        {/* 12 px text on an 18 px line: a 12 px icon 3 px down sits on the first line. */}
+        {/* Centred on the first line: 10 px on a 14 px line on phones, 12 px
+            on an 18 px line from 640 px. */}
         <InformationIcon
           aria-hidden="true"
-          className="mt-[3px] size-3 shrink-0"
+          className="mt-0.5 size-2.5 shrink-0 sm:mt-[3px] sm:size-3"
         />
         <span className="italic">{notice}</span>
       </p>
@@ -203,16 +218,19 @@ export function MarketingQuestionAssistant({
       <div aria-live="polite">
         {isAsking && <p className="sr-only">{submittingLabel}</p>}
         {assistantState.status === "answered" && (
-          <div className="mt-6 rounded-2xl bg-accent-subtle p-5 md:p-6">
-            <p className="text-[13px] font-semibold uppercase tracking-[0.06em] text-muted-foreground">
+          <div className="mt-4 rounded-2xl bg-accent-subtle p-4 sm:mt-6 sm:p-5 md:p-6">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.06em] text-muted-foreground sm:text-[13px]">
               {answerLabel}
             </p>
-            <p className="mt-2 whitespace-pre-line text-base leading-[1.8] text-foreground">
+            <p className="mt-1.5 whitespace-pre-line text-[13px] leading-relaxed text-foreground sm:mt-2 sm:text-base sm:leading-[1.8]">
               {assistantState.answer}
             </p>
-            <p className="mt-4 flex flex-wrap items-center gap-x-3 text-[15px] text-muted-foreground">
+            <p className="mt-2 flex flex-wrap items-center gap-x-2 text-[13px] text-muted-foreground sm:mt-4 sm:gap-x-3 sm:text-[15px]">
               {contactPrompt}
-              <MarketingArrowLink link={contactLink} />
+              <MarketingArrowLink
+                link={contactLink}
+                size={isPhoneWidth ? "small" : "default"}
+              />
             </p>
           </div>
         )}
@@ -224,4 +242,28 @@ export function MarketingQuestionAssistant({
       </div>
     </div>
   );
+}
+
+/** Below Tailwind's `sm` breakpoint (640 px). */
+const PHONE_WIDTH_QUERY = "(max-width: 639px)";
+
+/**
+ * Whether the screen is phone width. False on the server and on the first
+ * render, so the page hydrates with the full placeholder before adjusting.
+ */
+function useIsPhoneWidth(): boolean {
+  const [isPhoneWidth, setIsPhoneWidth] = useState(false);
+
+  useEffect(() => {
+    const phoneWidthQuery = window.matchMedia(PHONE_WIDTH_QUERY);
+    const updatePhoneWidth = () => setIsPhoneWidth(phoneWidthQuery.matches);
+
+    updatePhoneWidth();
+    phoneWidthQuery.addEventListener("change", updatePhoneWidth);
+
+    return () =>
+      phoneWidthQuery.removeEventListener("change", updatePhoneWidth);
+  }, []);
+
+  return isPhoneWidth;
 }
