@@ -1,9 +1,11 @@
 import type { ReactNode } from "react";
 import { MarketingContainer } from "@healthalyst/ui/components/marketing-section";
+import { cn } from "@healthalyst/ui/lib/utilities";
 
 /**
  * The site footer: brand, description and address, link groups, and a closing
- * line.
+ * line. `decoration`, such as `ContourPatternIllustration`, sits behind the
+ * content as it does in `MarketingContentSection`.
  */
 export function MarketingFooter({
   brand,
@@ -13,6 +15,7 @@ export function MarketingFooter({
   groups,
   copyright,
   closingText,
+  decoration,
 }: {
   brand: ReactNode;
   description: string;
@@ -22,10 +25,19 @@ export function MarketingFooter({
   groups: readonly { heading: string; links: ReactNode }[];
   copyright: string;
   closingText: string;
+  decoration?: ReactNode;
 }) {
   return (
-    <footer className="bg-accent-subtle py-12 text-primary md:py-16">
-      <MarketingContainer>
+    <footer
+      className={cn(
+        "bg-accent-subtle py-12 text-primary md:py-16",
+        decoration !== undefined && "relative isolate overflow-hidden"
+      )}
+    >
+      {decoration}
+      <MarketingContainer
+        className={cn(decoration !== undefined && "relative")}
+      >
         <div className="mb-12 grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div className="col-span-2 lg:col-span-1">
             {brand}

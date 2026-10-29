@@ -29,6 +29,12 @@ const buttonVariants = createClassVariants(
           "border border-input bg-card text-foreground hover:bg-secondary hover:text-secondary-foreground",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        /**
+         * A control floating over the page: brand fill and a soft shadow that
+         * lifts it off whatever it passes over.
+         */
+        floating:
+          "bg-primary text-primary-foreground shadow-[0_2px_4px_rgba(15,23,20,0.08),0_8px_20px_rgba(15,23,20,0.14)] hover:bg-primary/90",
         ghost: "hover:bg-secondary hover:text-secondary-foreground",
         link: "text-primary underline-offset-4 hover:underline",
         /** The primary action on a brand-coloured field: inverted fill. */

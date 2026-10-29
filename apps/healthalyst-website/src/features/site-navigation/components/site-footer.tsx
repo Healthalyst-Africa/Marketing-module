@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { MarketingFooter } from "@healthalyst/ui/components/marketing-footer";
+import { ContourPatternIllustration } from "@healthalyst/ui/illustrations/contour-pattern-illustration";
 import { LogoMark } from "~/components/ui/healthalyst-brand";
 import { COMPANY_OFFICE_ADDRESS } from "~/config/company-office";
 import {
@@ -43,6 +44,8 @@ export default function SiteFooter() {
       location="Pan-African / Health technology"
       copyright={`© ${currentYear} Healthalyst Africa. All rights reserved.`}
       closingText="Building the digital infrastructure of African healthcare"
+      // The same contour field as the operating conditions band.
+      decoration={<ContourPatternIllustration className="text-accent" />}
       groups={[
         {
           heading: "Products",

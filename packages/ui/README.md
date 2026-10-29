@@ -92,6 +92,9 @@ Dedicated visual components built from the primitives. Private helpers of one co
 - `@healthalyst/ui/components/marketing-sequence`
 - `@healthalyst/ui/components/marketing-record-list` (entries may take an
   `illustration` or a ringed `icon`; links line up when laid out in columns)
+- `@healthalyst/ui/components/marketing-scroll-to-top` (a small green, shadowed
+  button fixed bottom right that returns to the top once the page has scrolled
+  a screen; focus moves to `focusTargetIdentifier`)
 - `@healthalyst/ui/components/marketing-question-assistant` (an AI question
   box for under an FAQ: posts one question to `endpoint` and shows the answer
   with a contact link; pass it to `MarketingFAQ` as `assistant`)
