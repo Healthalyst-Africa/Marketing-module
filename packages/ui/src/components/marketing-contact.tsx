@@ -33,7 +33,8 @@ interface MarketingEnquiryFormProperties {
   endpoint: string;
   submitLabel: string;
   submittingLabel: string;
-  helperText: string;
+  /** A note beside the send button, such as which fields are optional. */
+  helperText?: string;
   /** Heading of the confirmation that replaces the form once it is sent. */
   successHeading: string;
   successMessage: string;
@@ -41,8 +42,6 @@ interface MarketingEnquiryFormProperties {
   resetLabel: string;
   /** Fallback shown when the endpoint cannot be reached or reports no reason. */
   failureMessage: string;
-  /** Text shown beside the label of a field that may be left empty. */
-  optionalFieldLabel?: string;
 }
 
 /** Presentational state of the submit control between clicks. */
@@ -145,7 +144,6 @@ export function MarketingEnquiryForm({
   successMessage,
   resetLabel,
   failureMessage,
-  optionalFieldLabel = "Optional",
 }: MarketingEnquiryFormProperties) {
   const [submissionState, setSubmissionState] =
     useState<SubmissionState>("idle");
@@ -346,7 +344,7 @@ export function MarketingEnquiryForm({
         noValidate
         onSubmit={handleSubmission}
         aria-labelledby="enquiry-form-heading"
-        aria-describedby="enquiry-helper-text"
+        aria-describedby={helperText ? "enquiry-helper-text" : undefined}
         aria-busy={isSubmitting}
         className="mt-8 flex flex-col gap-10"
       >
@@ -387,23 +385,24 @@ export function MarketingEnquiryForm({
           defaultValues={defaultValues}
           fieldErrors={fieldErrors}
           disabled={isSubmitting}
-          optionalFieldLabel={optionalFieldLabel}
           onFieldChange={clearFieldError}
         />
         <div className="flex flex-col-reverse gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <p
-            id="enquiry-helper-text"
-            className="text-sm leading-relaxed text-muted-foreground"
-          >
-            {helperText}
-          </p>
+          {helperText && (
+            <p
+              id="enquiry-helper-text"
+              className="text-sm leading-relaxed text-muted-foreground"
+            >
+              {helperText}
+            </p>
+          )}
           <ActionButton
             type="submit"
             size="extraLarge"
             shape="pill"
             isLoading={isSubmitting}
             loadingText={submittingLabel}
-            className="w-full shrink-0 sm:w-auto"
+            className="w-full shrink-0 sm:ml-auto sm:w-auto"
           >
             {submitLabel}
           </ActionButton>

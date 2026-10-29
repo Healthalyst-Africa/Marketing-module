@@ -137,7 +137,8 @@ src/features/<feature>/
   utilities/    Pure transformations and validation owned by the feature
 ```
 
-Features are `homepage`, `about`, `contact-enquiry` and `site-navigation`.
+Features are `homepage`, `about`, `contact-enquiry`, `careers` and
+`site-navigation`.
 `shared/products` owns the product catalogue, institutions, product icons and
 the product selection store; `shared/contact` builds contact page addresses;
 `shared/page-sections` holds sections reused by several pages;

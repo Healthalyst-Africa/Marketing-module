@@ -88,6 +88,13 @@ Dedicated visual components built from the primitives. Private helpers of one co
   `illustration` shows it at 48 px, and its disc turns gold with the signal)
 - `@healthalyst/ui/components/marketing-location-map` (an address card beside
   an embedded map, loaded lazily)
+- `@healthalyst/ui/components/marketing-job-list` (open roles as a job board:
+  a count, team headings, and rows with title, location and contract type in
+  columns; the whole row links to the role)
+- `@healthalyst/ui/components/marketing-team` (white cards on a tinted band:
+  an inset portrait with a round LinkedIn badge on its bottom-right edge, then
+  the name, role and an optional line of background; two across, four on wide
+  screens)
 - `@healthalyst/ui/components/marketing-task-layout`
 - `@healthalyst/ui/components/marketing-sequence`
 - `@healthalyst/ui/components/marketing-record-list` (entries may take an
@@ -201,8 +208,8 @@ spacing.
   interface, and highlights options with the `secondary` tint.
 - Forms render fields with `DynamicFormFields` from a `FormFieldGroup` list
   rather than placing controls by hand. Each field has a `kind` (`text`,
-  `email`, `tel`, `textarea` or `select`), a persistent label, optional
-  guidance and its error message. The form owns submission: it sets
+  `email`, `tel`, `url`, `textarea` or `select`), a persistent label with a
+  red asterisk when it is required, optional guidance and its error message. The form owns submission: it sets
   `noValidate`, calls `findFormFieldErrors` before sending, shows the messages
   beside the fields and moves focus to the first rejected control, found with
   `createFormFieldIdentifier`. Radix keeps a hidden native select in the form

@@ -3,4 +3,5 @@ export const SITE_ROUTES = {
   home: "/",
   about: "/about",
   contact: "/contact",
+  careers: "/careers",
 } as const;
