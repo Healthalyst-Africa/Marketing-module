@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState, type ReactNode } from "react";
-import { ActionButton } from "@healthalyst/ui/components/action-button";
 import {
   Carousel,
   CarouselContent,
@@ -9,33 +8,35 @@ import {
   CarouselNext,
   CarouselPrevious,
   type CarouselController,
-} from "@healthalyst/ui/components/carousel";
+} from "@healthalyst/ui/primitives/carousel";
 import { MarketingIconBadge } from "@healthalyst/ui/components/marketing-icon-badge";
 import { cn } from "@healthalyst/ui/lib/utilities";
 
-/** One feature card: a ringed icon, a short title and a sentence. */
+/** One feature card: an illustration or ringed icon, a short title and a sentence. */
 export interface MarketingFeature {
   title: string;
   description: string;
   icon: ReactNode;
+  /**
+   * Optional illustration from `@healthalyst/ui/illustrations`, shown at
+   * 80 px in place of the ringed icon.
+   */
+  illustration?: ReactNode;
 }
 
 /**
- * Features as a horizontal carousel of cards with a row of chips that jump to
- * each one, plus previous and next controls. Cards are plain content, so
- * every feature can be read with the keyboard or a screen reader; arrow keys
- * move the carousel while it has focus. Nothing moves on its own.
+ * Features as a horizontal carousel of cards with previous and next controls.
+ * Cards are plain content, so every feature can be read with the keyboard or
+ * a screen reader; arrow keys move the carousel while it has focus. Nothing
+ * moves on its own.
  */
 export function MarketingFeatureCarousel({
   features,
   carouselLabel,
-  chipsLabel,
 }: {
   features: readonly MarketingFeature[];
   /** Accessible name for the carousel region. */
   carouselLabel: string;
-  /** Accessible name for the row of chips. */
-  chipsLabel: string;
 }) {
   const [carouselController, setCarouselController] =
     useState<CarouselController>();
@@ -61,31 +62,10 @@ export function MarketingFeatureCarousel({
 
   return (
     <div>
-      <div
-        role="group"
-        aria-label={chipsLabel}
-        className="hidden flex-wrap justify-center gap-2 sm:flex"
-      >
-        {features.map((feature, featureIndex) => (
-          <ActionButton
-            key={feature.title}
-            type="button"
-            variant={featureIndex === selectedIndex ? "default" : "outline"}
-            size="large"
-            shape="pill"
-            aria-pressed={featureIndex === selectedIndex}
-            onClick={() => carouselController?.scrollTo(featureIndex)}
-          >
-            {feature.title}
-          </ActionButton>
-        ))}
-      </div>
-
       <Carousel
         aria-label={carouselLabel}
         setController={setCarouselController}
         options={{ align: "start", containScroll: "keepSnaps" }}
-        className="sm:mt-10"
       >
         <CarouselContent>
           {features.map((feature, featureIndex) => (
@@ -102,7 +82,13 @@ export function MarketingFeatureCarousel({
                     : "ring-transparent"
                 )}
               >
-                <MarketingIconBadge icon={feature.icon} size="large" />
+                {feature.illustration ? (
+                  <span aria-hidden="true" className="block size-20 shrink-0">
+                    {feature.illustration}
+                  </span>
+                ) : (
+                  <MarketingIconBadge icon={feature.icon} size="large" />
+                )}
                 <h3 className="mt-6 text-xl font-semibold leading-snug tracking-[-0.01em] text-foreground">
                   {feature.title}
                 </h3>

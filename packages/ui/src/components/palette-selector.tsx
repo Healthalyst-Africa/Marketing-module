@@ -10,11 +10,11 @@ import {
   FieldLabel,
   FieldLegend,
   FieldSet,
-} from "@healthalyst/ui/components/field";
+} from "@healthalyst/ui/primitives/field";
 import {
   RadioGroup,
   RadioGroupItem,
-} from "@healthalyst/ui/components/radio-group";
+} from "@healthalyst/ui/primitives/radio-group";
 
 export interface DesignPaletteOption {
   identifier: string;

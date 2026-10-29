@@ -5,19 +5,19 @@ import { useEffect, useRef, useState } from "react";
 
 import { SuccessIcon } from "@healthalyst/icons";
 import { ActionButton } from "@healthalyst/ui/components/action-button";
-import { Alert, AlertDescription } from "@healthalyst/ui/components/alert";
-import { Card } from "@healthalyst/ui/components/card";
+import { Alert, AlertDescription } from "@healthalyst/ui/primitives/alert";
+import { Card } from "@healthalyst/ui/primitives/card";
 import {
   createFormFieldIdentifier,
   DynamicFormFields,
 } from "@healthalyst/ui/components/dynamic-form-fields";
-import type { FormFieldGroup } from "@healthalyst/ui/lib/form-definition";
-import { findFormFieldErrors } from "@healthalyst/ui/lib/form-field-validation";
+import type { FormFieldGroup } from "@healthalyst/ui/types/form-definition";
+import { findFormFieldErrors } from "@healthalyst/ui/forms/form-field-validation";
 import {
   MARKETING_ENQUIRY_WEBSITE_FIELD_NAME,
   type MarketingEnquirySubmissionStatus,
   type MarketingEnquirySubmissionResponse,
-} from "@healthalyst/ui/lib/marketing-enquiry";
+} from "@healthalyst/ui/forms/marketing-enquiry";
 
 interface MarketingEnquiryFormProperties {
   /** Identifier of the panel, so links can scroll straight to the form. */

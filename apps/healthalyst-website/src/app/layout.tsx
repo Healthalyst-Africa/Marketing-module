@@ -6,7 +6,7 @@ import { createThemeInitializationScript } from "@healthalyst/ui/lib/theme-prefe
 import {
   THEME_PREFERENCE_CONFIGURATION,
   WEBSITE_THEME_STYLES,
-} from "~/data/design-palettes";
+} from "~/config/design-palettes";
 import "@healthalyst/ui/styles.css";
 import "./globals.css";
 

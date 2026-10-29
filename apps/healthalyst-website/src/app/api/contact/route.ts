@@ -1,18 +1,18 @@
 import {
   MARKETING_ENQUIRY_WEBSITE_FIELD_NAME,
   type MarketingEnquirySubmissionResponse,
-} from "@healthalyst/ui/lib/marketing-enquiry";
+} from "@healthalyst/ui/forms/marketing-enquiry";
 
-import { sendContactEnquiryAcknowledgement } from "~/lib/contact-enquiry-acknowledgement";
+import { sendContactEnquiryAcknowledgement } from "~/features/contact-enquiry/services/contact-enquiry-acknowledgement";
 import {
   storeContactEnquiry,
   type ContactEnquiryStorageOutcome,
-} from "~/lib/contact-enquiry-storage";
+} from "~/features/contact-enquiry/services/contact-enquiry-storage";
 import {
   hasExceededContactEnquiryLimit,
   recordContactEnquiryAttempt,
-} from "~/lib/contact-enquiry-throttle";
-import { validateContactEnquirySubmission } from "~/lib/contact-enquiry-validation";
+} from "~/features/contact-enquiry/utilities/contact-enquiry-throttle";
+import { validateContactEnquirySubmission } from "~/features/contact-enquiry/utilities/contact-enquiry-validation";
 
 /**
  * Stores contact enquiries from the marketing form in Neon, then sends a

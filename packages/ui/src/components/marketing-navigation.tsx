@@ -19,7 +19,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
-} from "@healthalyst/ui/components/navigation-menu";
+} from "@healthalyst/ui/primitives/navigation-menu";
 import {
   Sheet,
   SheetContent,
@@ -27,7 +27,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@healthalyst/ui/components/sheet";
+} from "@healthalyst/ui/primitives/sheet";
 import { cn } from "@healthalyst/ui/lib/utilities";
 import { MarketingIconBadge } from "@healthalyst/ui/components/marketing-icon-badge";
 
@@ -37,8 +37,35 @@ export interface MarketingMenuItem {
   description: string;
   /** Optional icon, shown in a thin ring beside the title. */
   icon?: ReactNode;
+  /**
+   * Optional illustration from `@healthalyst/ui/illustrations`, shown at
+   * 48 px beside the title in place of the icon.
+   */
+  illustration?: ReactNode;
   /** A link element without children; the menu supplies the visible content. */
   link: ReactElement<{ children?: ReactNode; className?: string }>;
+}
+
+/**
+ * The picture beside a menu item: its illustration, or else its ringed icon.
+ * Items highlight with the illustration disc's colour, so the disc turns to
+ * the card colour while its item is hovered or focused.
+ */
+function MenuItemPicture({ item }: { item: MarketingMenuItem }) {
+  if (item.illustration) {
+    return (
+      <span
+        aria-hidden="true"
+        className="block size-12 shrink-0 group-hover/item:[--illustration-base:hsl(var(--card))] group-focus/item:[--illustration-base:hsl(var(--card))]"
+      >
+        {item.illustration}
+      </span>
+    );
+  }
+
+  return item.icon ? (
+    <MarketingIconBadge icon={item.icon} size="small" />
+  ) : null;
 }
 
 /** A labelled column of destinations in the dropdown. */
@@ -125,21 +152,22 @@ export function MarketingNavigation({
       >
         Skip to content
       </a>
-      <MarketingContainer className="relative flex h-16 items-center justify-between gap-6 md:h-[72px]">
+      {/* The header is the dropdown's positioned ancestor, so the panel spans the screen. */}
+      <MarketingContainer className="flex h-16 items-center justify-between gap-6 md:h-[72px]">
         {brand}
         <NavigationMenu
           aria-label="Main navigation"
           className="hidden flex-none lg:flex"
           delayDuration={150}
-          viewportPlacement="container"
+          viewportPlacement="screen"
         >
           <NavigationMenuList className="gap-1 space-x-0">
             <NavigationMenuItem>
               <NavigationMenuTrigger tone={barTone}>
                 {menu.label}
               </NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <div className="w-[min(1120px,calc(100vw-80px))] p-8">
+              <NavigationMenuContent switchMotion="none" className="md:w-full">
+                <MarketingContainer className="py-8">
                   {menu.heading && (
                     <p className="text-lg font-semibold tracking-[-0.01em] text-foreground">
                       {menu.heading}
@@ -147,10 +175,10 @@ export function MarketingNavigation({
                   )}
                   <div
                     className={cn(
-                      "grid gap-x-10",
+                      "grid gap-x-8",
                       menu.heading && "mt-10",
                       menu.feature
-                        ? "grid-cols-[repeat(3,minmax(0,1fr))_240px]"
+                        ? "grid-cols-[repeat(3,minmax(0,1fr))_220px]"
                         : "grid-cols-3"
                     )}
                   >
@@ -164,17 +192,12 @@ export function MarketingNavigation({
                             <li key={item.title}>
                               <NavigationMenuLink
                                 asChild
-                                className="flex items-start gap-4 rounded-[8px] px-3 py-3 text-foreground transition-colors duration-150 hover:bg-secondary focus:bg-secondary focus:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none"
+                                className="group/item flex items-start gap-3 rounded-[8px] px-3 py-3 text-foreground transition-colors duration-150 hover:bg-secondary focus:bg-secondary focus:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none"
                               >
                                 {cloneElement(item.link, {
                                   children: (
                                     <>
-                                      {item.icon && (
-                                        <MarketingIconBadge
-                                          icon={item.icon}
-                                          size="small"
-                                        />
-                                      )}
+                                      <MenuItemPicture item={item} />
                                       <span className="flex flex-col">
                                         <span className="block text-[15px] font-semibold leading-snug text-foreground">
                                           {item.title}
@@ -224,7 +247,7 @@ export function MarketingNavigation({
                       </div>
                     )}
                   </div>
-                </div>
+                </MarketingContainer>
               </NavigationMenuContent>
             </NavigationMenuItem>
             {navigationLinks.map((navigationLink) => (
@@ -284,15 +307,10 @@ export function MarketingNavigation({
                         <li key={item.title}>
                           {cloneElement(item.link, {
                             className:
-                              "flex items-start gap-4 rounded-lg px-3 py-3 -mx-3 transition-colors duration-150 hover:bg-secondary focus:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                              "group/item flex items-start gap-4 rounded-lg px-3 py-3 -mx-3 transition-colors duration-150 hover:bg-secondary focus:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                             children: (
                               <>
-                                {item.icon && (
-                                  <MarketingIconBadge
-                                    icon={item.icon}
-                                    size="small"
-                                  />
-                                )}
+                                <MenuItemPicture item={item} />
                                 <span className="flex flex-col">
                                   <span className="block text-[15px] font-semibold leading-snug text-foreground">
                                     {item.title}

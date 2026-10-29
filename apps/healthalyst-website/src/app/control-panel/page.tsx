@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { DesignControlPanel } from "@healthalyst/ui/components/design-control-panel";
-import { DESIGN_PALETTE_OPTIONS } from "~/data/design-palettes";
+import { DESIGN_PALETTE_OPTIONS } from "~/config/design-palettes";
 
 export const metadata: Metadata = {
   title: "Design control panel",

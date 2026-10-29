@@ -22,7 +22,7 @@ import { cn } from "@healthalyst/ui/lib/utilities";
  *   band, light text) or `subtle` (the subtle accent band). A page uses at
  *   most one of each band.
  * - `decoration` places a decorative layer, such as
- *   `MarketingContourPattern`, behind the content.
+ *   `ContourPatternIllustration`, behind the content.
  *
  * Sections are separated by space only, never by dividing lines.
  */

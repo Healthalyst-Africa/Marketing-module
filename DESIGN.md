@@ -4,7 +4,7 @@ This file records the design decisions every page follows. It complements
 `AGENTS.md` (engineering rules), `docs/design-case-studies.md` (the reference
 study behind these decisions) and `docs/website-revamp.md` (delivery record).
 Colour values are defaults: the application supplies them as semantic theme
-tokens in `apps/healthalyst-website/src/data/design-palettes.ts`, and
+tokens in `apps/healthalyst-website/src/config/design-palettes.ts`, and
 components use the token names, never raw values.
 
 Status: proposal for the product designer's review. Recording it here does not
@@ -222,9 +222,11 @@ white sections, one green band, one cream band).
    motion the first photograph and "African healthcare" stay still. This
    replaced a three-photograph card row that copied MyCover Genius too
    closely (the user's call).
-2. **Built for** (`MarketingChipRow`): a caption and six institution chips
-   with ringed icons, wrapping on wide screens, scrolling sideways on phones;
-   each opens its product in the suite.
+2. **Built for** (`MarketingIllustratedLinkRow`): a caption and six
+   institution cards, each a 72 px GitLab-style illustration above its label,
+   three a row on tablets and one row on wide screens (hidden on phones); the
+   illustration's disc takes a gold tint on hover and focus, and each card
+   opens its product in the suite.
 3. **Why HealthAlyst** (`MarketingScrollStory`): on wide screens the
    section heading, a photograph (5 of 12 columns, up to 440 px tall, 16 px
    corners) and a text window of the same height (columns 7 to 12) stay
@@ -253,7 +255,7 @@ white sections, one green band, one cream band).
    cards each: 64 px ringed icon, tagline, name, summary, gold-tick
    capabilities, enquiry link and a faint oversized icon in the corner; the
    selected product has a gold ring. The header menu and the chips select a
-   product through `ProductsContext`.
+   product through `ProductsProvider`.
 5. **One connected ecosystem**: the hub diagram with the six products and
    the approved LabConnect and PharmaDesk example under it.
 6. **How we work with you** (`MarketingNumberedSteps`): four columns of
@@ -261,9 +263,9 @@ white sections, one green band, one cream band).
    view; one "Start a conversation" pill. (No progress line: lines need the
    user's approval.)
 7. **Built for African operating conditions** (`MarketingFeatureCarousel`,
-   cream band): chips that select a card in an Embla carousel of five
-   feature cards (ringed 64 px icon, title, sentence), previous and next
-   controls, arrow keys; the selected card has a gold ring.
+   cream band): an Embla carousel of five feature cards (80 px
+   illustration, title, sentence) with previous and next controls and
+   arrow keys; the selected card has a gold ring.
 8. **Testimonials** (`MarketingTestimonials`), at the user's request in
    place of the statement and in its design: one quotation at a time in
    Young Serif at up to 56 px, gold quotation marks, its words lighting up in
@@ -379,7 +381,7 @@ lines anywhere unless the user explicitly approves one.
   touch screens it is always shown, and keyboard focus always reveals it.
 - Every transition is removed under `prefers-reduced-motion: reduce`, and the
   sending spinner stops.
-- **Hero pattern.** Green page header cards carry `MarketingCareNetwork`: a
+- **Hero pattern.** Green page header cards carry `CareNetworkIllustration`: a
   faint field of medical crosses (8–9% white) fading in from the right, and on
   tablet and desktop a network of six facilities joined to a gold hub (the
   shared record), with gold signals moving along the links over 6.5–10 s, the
