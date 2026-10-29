@@ -30,7 +30,9 @@ Flatiron Health, Commure, Helium Health, Hinge Health):
   footer background, so green is not the only colour in view.
 - **Plain, predictable structure.** Plain page headings ("Contact us"),
   navigation organised by who the visitor is, and one primary action
-  everywhere: "Contact us".
+  everywhere: "Get started", which opens sign-up in the organisation app
+  (account.healthalystafrica.com). Talking to the team is the secondary
+  action beside it.
 - **Proof over decoration.** Real photographs, named and sourced facts, and
   nothing invented. Where proof is missing, the page leaves the space out
   rather than filling it.
@@ -134,7 +136,8 @@ The description under a page or section heading is regular (400).
 ### Inner page with a task (contact page)
 
 ```
-white site header: logo, Solutions, How we work, About, Contact us
+white site header: logo, Solutions, About, FAQ, Contact us,
+                   Sign in (outline), Get started (filled)
 
 ╭────────────────────────────────────────────────────────────────────╮
 │ Contact us                 ← display, white on forest green        │
@@ -197,7 +200,9 @@ The green page header card, then white sections built with
   follow as one centred sentence (`#how-we-work`).
 - Lists of labelled items use record rows in two or three columns; real
   sequences use the gold stepper; a closing section repeats the main action
-  ("Contact us", green) with one outline secondary action.
+  ("Get started") with one outline secondary action ("Talk to our team").
+  A section offers at most two actions, and the contact page offers none
+  besides its enquiry form.
 - Sections the company cannot yet support with real material (leadership,
   partners, news) are left out rather than filled.
 
@@ -217,7 +222,7 @@ white sections, one green band, one cream band).
    and the photograph of that setting behind it crossfades in 1.2 s and
    zooms slowly over 7 s. A radial brand-colour wash (86% behind the text,
    40% at the edges) keeps the text readable and the setting recognisable.
-   Lede, a white "Talk to our team" pill, a "See our products" arrow link,
+   Lede, a white "Get started" pill, a "Talk to our team" arrow link,
    the static cross pattern and a pause control top right; under reduced
    motion the first photograph and "African healthcare" stay still. This
    replaced a three-photograph card row that copied MyCover Genius too
@@ -277,9 +282,9 @@ white sections, one green band, one cream band).
    labelled samples show in development.
 9. **Frequently asked questions** (`MarketingFAQ`): heading and line in five
    columns, accordion in seven.
-10. **Talk to our team** (`MarketingClosingBand`): a green card with the
-    heading, approved sentence, "Contact us" and "Start a partnership
-    enquiry", the cross pattern and a photograph on the right.
+10. **Ready to get started?** (`MarketingClosingBand`): a green card with
+    the heading, approved sentence, "Get started" and "Talk to our team",
+    the cross pattern and a photograph on the right.
 
 ## Shape and depth
 
@@ -305,8 +310,9 @@ lines anywhere unless the user explicitly approves one.
 - **Header.** Sticky, white, full width, 64 px on phones and 72 px from tablet
   up, with no bottom rule. It sits outside the page header card. A page listed
   in `BRAND_HEADER_ROUTES` would start it in the brand colour until the page
-  scrolls; none is listed at present. Items: Solutions menu, How we work,
-  About, and one solid "Contact us" button.
+  scrolls; none is listed at present. Items: Solutions menu, About, FAQ and
+  Contact us, then an outline "Sign in" and a solid "Get
+  started" button.
 - **Footer.** The subtle gold background `accent-subtle` (`#FFFCF5`), the
   fill of the step cards in the Healthalyst Africa Figma file, at the user's
   request (`bg-accent-subtle`).
