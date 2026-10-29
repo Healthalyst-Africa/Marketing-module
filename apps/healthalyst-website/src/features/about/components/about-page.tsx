@@ -13,7 +13,7 @@ import {
 } from "@healthalyst/ui/components/marketing-motion-pause";
 import { ABOUT_PAGE_CONTENT } from "~/features/about/config/about-page-content";
 import { ClosingCall } from "~/shared/page-sections/components/closing-call";
-import { PrinciplesStory } from "~/shared/page-sections/components/principles-story";
+import Testimonials from "~/shared/page-sections/components/testimonials";
 import { INSTITUTIONS } from "~/shared/products/config/institutions";
 import { SITE_ROUTES } from "~/config/routes";
 import { LogoMark } from "~/components/ui/healthalyst-brand";
@@ -112,11 +112,7 @@ export default function AboutPage() {
           {ABOUT_PAGE_CONTENT.approachSummary}
         </p>
       </MarketingContentSection>
-      <PrinciplesStory
-        identifier="what-guides-our-work"
-        heading={ABOUT_PAGE_CONTENT.principlesHeading}
-        introduction={ABOUT_PAGE_CONTENT.principlesIntroduction}
-      />
+      <Testimonials />
       <ClosingCall identifier="talk-to-our-team" />
     </>
   );

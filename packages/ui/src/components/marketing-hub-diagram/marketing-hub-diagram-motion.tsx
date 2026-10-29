@@ -146,7 +146,9 @@ export function MarketingHubDiagramMotion({
           <span
             key={`pulse-${signalCount}`}
             className={cn(
-              "absolute left-1/2 top-0 size-44 -translate-x-1/2 animate-[marketing-hub-pulse_0.9s_ease-out_forwards] rounded-[32px] border-2 border-accent lg:translate-x-0",
+              // Centred with auto margins, not a translate: the pulse's `scale`
+              // grows around the untranslated box and would drift sideways.
+              "absolute inset-x-0 top-0 mx-auto size-44 animate-[marketing-hub-pulse_0.9s_ease-out_forwards] rounded-[32px] border-2 border-accent lg:right-auto lg:mx-0",
               HUB_BOX_CLASSES
             )}
           />

@@ -2337,7 +2337,7 @@ time with a floating avatar overlapping its end slightly, the attribution,
 and previous and next buttons. **No testimonials are approved yet.** The
 user asked for generic testimonies; under the content rules
 (`AGENTS.md`: do not invent testimonials) the three entries in
-`HOMEPAGE_TESTIMONIALS` are labelled samples with `isApproved: false`. They
+`TESTIMONIALS` (now `shared/page-sections/config/testimonials-content.ts`) are labelled samples with `isApproved: false`. They
 render only in development, each marked "Sample testimonial"; production
 publishes only approved entries, so the section is absent there until an
 accountable company owner supplies real, permissioned quotes (quote, name,

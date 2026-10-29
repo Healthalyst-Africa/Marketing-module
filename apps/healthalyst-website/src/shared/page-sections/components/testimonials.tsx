@@ -1,15 +1,15 @@
 import Image from "next/image";
 import { MarketingTestimonials } from "@healthalyst/ui/components/marketing-testimonials";
 import {
-  HOMEPAGE_TESTIMONIALS,
-  HOMEPAGE_TESTIMONIALS_CONTENT,
-} from "~/features/homepage/config/homepage-content";
+  TESTIMONIALS,
+  TESTIMONIALS_CONTENT,
+} from "~/shared/page-sections/config/testimonials-content";
 
 /** Samples are shown in development only, so the design can be reviewed. */
 const SHOW_SAMPLE_TESTIMONIALS = process.env.NODE_ENV === "development";
 
 export default function Testimonials() {
-  const testimonials = HOMEPAGE_TESTIMONIALS.filter(
+  const testimonials = TESTIMONIALS.filter(
     (testimonial) => testimonial.isApproved || SHOW_SAMPLE_TESTIMONIALS
   ).map((testimonial) => ({
     quote: testimonial.quote,
@@ -35,9 +35,9 @@ export default function Testimonials() {
 
   return (
     <MarketingTestimonials
-      label={HOMEPAGE_TESTIMONIALS_CONTENT.label}
-      previousLabel={HOMEPAGE_TESTIMONIALS_CONTENT.previousLabel}
-      nextLabel={HOMEPAGE_TESTIMONIALS_CONTENT.nextLabel}
+      label={TESTIMONIALS_CONTENT.label}
+      previousLabel={TESTIMONIALS_CONTENT.previousLabel}
+      nextLabel={TESTIMONIALS_CONTENT.nextLabel}
       testimonials={testimonials}
     />
   );

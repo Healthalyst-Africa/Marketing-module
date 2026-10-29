@@ -36,7 +36,4 @@ export const ABOUT_PAGE_CONTENT = {
   audienceListLabel: "Institutions we build for",
   approachSummary:
     "We work with each organisation in four stages: we learn how your teams work, set the product up around your services and roles, connect it to the systems you already use so information is not entered twice, and train and support your staff from launch onwards.",
-  principlesHeading: "What guides our work",
-  principlesIntroduction:
-    "Four commitments shape every product we build and every institution we work with.",
 } as const;
