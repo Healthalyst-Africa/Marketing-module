@@ -10,6 +10,7 @@ import {
   CarouselPrevious,
   type CarouselController,
 } from "@healthalyst/ui/primitives/carousel";
+import { ActionLink } from "@healthalyst/ui/components/action-link";
 import { MarketingArrowLink } from "@healthalyst/ui/components/marketing-arrow-link";
 import { MarketingIconBadge } from "@healthalyst/ui/components/marketing-icon-badge";
 import {
@@ -33,6 +34,8 @@ export interface MarketingSuiteProduct {
   illustration?: ReactNode;
   /** A link element whose text names where it goes. */
   action: ReactElement<{ className?: string; children?: ReactNode }>;
+  /** Optional main call to action, a button in the card's top-right corner. */
+  primaryAction?: ReactElement;
 }
 
 /** A tab of the suite: a need and the products that meet it. */
@@ -45,7 +48,8 @@ export interface MarketingSuiteGroup {
 /**
  * Products grouped by need, for a brand-coloured band: pill tabs over cards.
  * Each card has an illustration (or a large ringed icon), the product's name, summary and
- * capabilities, and a link; a faint oversized icon marks its corner. On
+ * capabilities, an optional button in its top-right corner and a link; a
+ * faint oversized icon marks its corner. On
  * phones there are no tabs: the products form a carousel showing one card at
  * a time, with previous and next buttons and the card's position; swiping
  * selects the product shown, and selecting a product elsewhere scrolls to it.
@@ -148,6 +152,16 @@ export function MarketingProductSuite({
         <h3 className="mt-6 text-2xl font-semibold tracking-[-0.01em] text-foreground">
           {product.name}
         </h3>
+        {product.primaryAction && (
+          // Read after the product's name, shown in the top-right corner
+          // centred on the 80 px illustration.
+          <ActionLink
+            shape="pill"
+            className="absolute right-6 top-[44px] md:right-8 md:top-[52px]"
+          >
+            {product.primaryAction}
+          </ActionLink>
+        )}
         <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">
           {product.summary}
         </p>
@@ -166,7 +180,8 @@ export function MarketingProductSuite({
           ))}
         </ul>
         <div className="mt-auto pt-6">
-          <MarketingArrowLink link={product.action} />
+          {/* Smaller than the button, so the button leads. */}
+          <MarketingArrowLink link={product.action} size="small" />
         </div>
       </ElementType>
     );

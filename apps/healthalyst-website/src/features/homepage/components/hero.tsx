@@ -5,6 +5,10 @@ import { MarketingArrowLink } from "@healthalyst/ui/components/marketing-arrow-l
 import { CareNetworkIllustration } from "@healthalyst/ui/illustrations/care-network-illustration";
 import { MarketingRotatingHero } from "@healthalyst/ui/components/marketing-rotating-hero";
 import { HOMEPAGE_HERO_CONTENT } from "~/features/homepage/config/homepage-content";
+import {
+  ORGANIZATION_APP_ACTIONS,
+  ORGANIZATION_APP_ROUTES,
+} from "~/config/organization-app";
 import { SITE_ROUTES } from "~/config/routes";
 
 export default function Hero() {
@@ -37,14 +41,14 @@ export default function Hero() {
             shape="pill"
             className="w-full sm:w-auto"
           >
-            <Link href={SITE_ROUTES.contact}>
-              {HOMEPAGE_HERO_CONTENT.primaryAction}
-            </Link>
+            <a href={ORGANIZATION_APP_ROUTES.signUp}>
+              {ORGANIZATION_APP_ACTIONS.signUpLabel}
+            </a>
           </ActionLink>
           <MarketingArrowLink
             tone="inverse"
             link={
-              <Link href="#products">
+              <Link href={SITE_ROUTES.contact}>
                 {HOMEPAGE_HERO_CONTENT.secondaryAction}
               </Link>
             }

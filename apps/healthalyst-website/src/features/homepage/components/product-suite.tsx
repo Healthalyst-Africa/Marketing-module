@@ -12,6 +12,10 @@ import {
 import { PRODUCTS } from "~/shared/products/config/products";
 import { createContactDestination } from "~/shared/contact/utilities/create-contact-destination";
 import { useProducts } from "~/shared/products/store/products-provider";
+import {
+  ORGANIZATION_APP_ACTIONS,
+  ORGANIZATION_APP_ROUTES,
+} from "~/config/organization-app";
 
 export default function ProductSuite() {
   const { state, selectProduct } = useProducts();
@@ -40,6 +44,12 @@ export default function ProductSuite() {
           capabilities: product.capabilities,
           icon: PRODUCT_ICONS_BY_NAME[product.name],
           illustration: PRODUCT_ILLUSTRATIONS_BY_NAME[product.name],
+          primaryAction: (
+            <a href={ORGANIZATION_APP_ROUTES.signUp}>
+              {ORGANIZATION_APP_ACTIONS.signUpLabel}
+              <span className="sr-only"> with {product.name}</span>
+            </a>
+          ),
           action: (
             <Link href={createContactDestination(product.name)}>
               Enquire about {product.name}

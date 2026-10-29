@@ -121,14 +121,18 @@ export function MarketingNavigation({
   brand,
   menu,
   navigationLinks,
-  contactAction,
+  primaryAction,
+  secondaryAction,
   tone = "default",
 }: {
   brand: ReactElement;
   menu: MarketingMenu;
   /** Plain links after the dropdown; mark the current page with `aria-current="page"`. */
   navigationLinks: readonly { label: string; link: ReactElement }[];
-  contactAction: ReactElement;
+  /** The main call to action, such as a link to register. */
+  primaryAction: ReactElement;
+  /** An optional quieter action beside it, such as a link to sign in. */
+  secondaryAction?: ReactElement;
   tone?: MarketingNavigationTone;
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -263,13 +267,23 @@ export function MarketingNavigation({
           </NavigationMenuList>
         </NavigationMenu>
         <div className="flex items-center gap-2">
+          {secondaryAction && (
+            <ActionLink
+              variant={isInverse ? "inverseOutline" : "outline"}
+              size="large"
+              shape="pill"
+              className="hidden sm:inline-flex"
+            >
+              {secondaryAction}
+            </ActionLink>
+          )}
           <ActionLink
             variant={isInverse ? "inverse" : "default"}
             size="large"
             shape="pill"
             className="hidden sm:inline-flex"
           >
-            {contactAction}
+            {primaryAction}
           </ActionLink>
           <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
             <SheetTrigger asChild>
@@ -345,14 +359,25 @@ export function MarketingNavigation({
                   ))}
                 </ul>
               </nav>
-              <ActionLink
-                size="extraLarge"
-                shape="pill"
-                className="mt-auto shrink-0"
-                onClick={() => setMenuOpen(false)}
-              >
-                {contactAction}
-              </ActionLink>
+              <div className="mt-auto flex shrink-0 flex-col gap-3">
+                <ActionLink
+                  size="extraLarge"
+                  shape="pill"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {primaryAction}
+                </ActionLink>
+                {secondaryAction && (
+                  <ActionLink
+                    variant="outline"
+                    size="extraLarge"
+                    shape="pill"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    {secondaryAction}
+                  </ActionLink>
+                )}
+              </div>
             </SheetContent>
           </Sheet>
         </div>

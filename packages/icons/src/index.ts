@@ -6,6 +6,7 @@
 export {
   ArrowLeft as PreviousIcon,
   ArrowRight as ArrowRightIcon,
+  ArrowUp as ArrowUpIcon,
   ArrowUpRight as ArrowUpRightIcon,
   Building2 as FacilityScaleIcon,
   CalendarDays as SchedulingIcon,

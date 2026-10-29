@@ -13,14 +13,18 @@ import {
   SOLUTIONS_MENU_CONTENT,
 } from "~/features/site-navigation/config/site-navigation";
 import { INSTITUTIONS } from "~/shared/products/config/institutions";
+import {
+  ORGANIZATION_APP_ACTIONS,
+  ORGANIZATION_APP_ROUTES,
+} from "~/config/organization-app";
 import { SITE_ROUTES } from "~/config/routes";
+import { scrollToSamePageSection } from "~/shared/navigation/utilities/scroll-to-same-page-section";
 import { SOLUTION_GROUPS } from "~/shared/products/config/solution-groups";
 import { useProducts } from "~/shared/products/store/products-provider";
 
 export default function SiteHeader() {
   const currentPath = usePathname();
   const { selectProduct } = useProducts();
-  const isContactPage = currentPath === SITE_ROUTES.contact;
 
   return (
     <MarketingNavigation
@@ -52,7 +56,14 @@ export default function SiteHeader() {
                 link: (
                   <Link
                     href={`${SITE_ROUTES.home}#products`}
-                    onClick={() => selectProduct(Math.max(productIndex, 0))}
+                    onClick={(clickEvent) => {
+                      selectProduct(Math.max(productIndex, 0));
+                      scrollToSamePageSection(
+                        clickEvent,
+                        `${SITE_ROUTES.home}#products`,
+                        currentPath
+                      );
+                    }}
                   />
                 ),
               },
@@ -85,18 +96,27 @@ export default function SiteHeader() {
             aria-current={
               currentPath === navigationLink.destination ? "page" : undefined
             }
+            onClick={(clickEvent) =>
+              scrollToSamePageSection(
+                clickEvent,
+                navigationLink.destination,
+                currentPath
+              )
+            }
           >
             {navigationLink.label}
           </Link>
         ),
       }))}
-      contactAction={
-        <Link
-          href={SITE_ROUTES.contact}
-          aria-current={isContactPage ? "page" : undefined}
-        >
-          Contact us
-        </Link>
+      primaryAction={
+        <a href={ORGANIZATION_APP_ROUTES.signUp}>
+          {ORGANIZATION_APP_ACTIONS.signUpLabel}
+        </a>
+      }
+      secondaryAction={
+        <a href={ORGANIZATION_APP_ROUTES.signIn}>
+          {ORGANIZATION_APP_ACTIONS.signInLabel}
+        </a>
       }
     />
   );

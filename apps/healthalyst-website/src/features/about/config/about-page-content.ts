@@ -27,8 +27,8 @@ export const ABOUT_PAGE_CONTENT = {
     "We develop purpose-built software for the full spectrum of healthcare provision, from primary care scheduling to laboratory diagnostics, pharmaceutical management, dental practice operations, diagnostic imaging, and medical supply chains.",
     "Our platforms are designed from first principles for African operating conditions. They function in low-connectivity environments, support multiple languages, and scale from a single-facility deployment to continent-wide rollout.",
   ],
-  whatWeDoPrimaryAction: "Explore our products",
-  whatWeDoSecondaryAction: "See how we work",
+  /** Beside Get started, which uses the shared sign-up label. */
+  whatWeDoSecondaryAction: "Explore our products",
   imageAlternative: "A woman with braided hair using a tablet computer.",
   audienceHeading: "Who we build for",
   audienceIntroduction:

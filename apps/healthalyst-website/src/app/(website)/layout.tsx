@@ -1,4 +1,5 @@
 import type React from "react";
+import { MarketingScrollToTop } from "@healthalyst/ui/components/marketing-scroll-to-top";
 import SiteFooter from "~/features/site-navigation/components/site-footer";
 import SiteHeader from "~/features/site-navigation/components/site-header";
 import { ProductsProvider } from "~/shared/products/store/products-provider";
@@ -14,6 +15,10 @@ export default function SiteLayout({
         {children}
       </main>
       <SiteFooter />
+      <MarketingScrollToTop
+        label="Back to top"
+        focusTargetIdentifier="main-content"
+      />
     </ProductsProvider>
   );
 }

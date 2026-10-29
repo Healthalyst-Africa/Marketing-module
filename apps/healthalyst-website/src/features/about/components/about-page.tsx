@@ -15,6 +15,10 @@ import { ABOUT_PAGE_CONTENT } from "~/features/about/config/about-page-content";
 import { ClosingCall } from "~/shared/page-sections/components/closing-call";
 import Testimonials from "~/shared/page-sections/components/testimonials";
 import { INSTITUTIONS } from "~/shared/products/config/institutions";
+import {
+  ORGANIZATION_APP_ACTIONS,
+  ORGANIZATION_APP_ROUTES,
+} from "~/config/organization-app";
 import { SITE_ROUTES } from "~/config/routes";
 import { LogoMark } from "~/components/ui/healthalyst-brand";
 import { PRODUCT_ICONS_BY_NAME } from "~/shared/products/config/product-icons";
@@ -61,12 +65,12 @@ export default function AboutPage() {
         actions={
           <>
             <ActionLink size="extraLarge" shape="pill">
-              <Link href={`${SITE_ROUTES.home}#products`}>
-                {ABOUT_PAGE_CONTENT.whatWeDoPrimaryAction}
-              </Link>
+              <a href={ORGANIZATION_APP_ROUTES.signUp}>
+                {ORGANIZATION_APP_ACTIONS.signUpLabel}
+              </a>
             </ActionLink>
             <ActionLink variant="outline" size="extraLarge" shape="pill">
-              <Link href="#how-we-work">
+              <Link href={`${SITE_ROUTES.home}#products`}>
                 {ABOUT_PAGE_CONTENT.whatWeDoSecondaryAction}
               </Link>
             </ActionLink>
