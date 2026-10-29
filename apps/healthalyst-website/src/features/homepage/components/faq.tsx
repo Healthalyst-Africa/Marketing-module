@@ -20,6 +20,7 @@ export default function FAQ() {
           endpoint={FAQ_ASSISTANT_CONTENT.endpoint}
           label={FAQ_ASSISTANT_CONTENT.label}
           placeholder={FAQ_ASSISTANT_CONTENT.placeholder}
+          compactPlaceholder={FAQ_ASSISTANT_CONTENT.compactPlaceholder}
           submitLabel={FAQ_ASSISTANT_CONTENT.submitLabel}
           submittingLabel={FAQ_ASSISTANT_CONTENT.submittingLabel}
           notice={FAQ_ASSISTANT_CONTENT.notice}
