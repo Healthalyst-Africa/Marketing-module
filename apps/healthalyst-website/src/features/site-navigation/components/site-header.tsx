@@ -13,6 +13,10 @@ import {
   SOLUTIONS_MENU_CONTENT,
 } from "~/features/site-navigation/config/site-navigation";
 import { INSTITUTIONS } from "~/shared/products/config/institutions";
+import {
+  ORGANIZATION_APP_ACTIONS,
+  ORGANIZATION_APP_ROUTES,
+} from "~/config/organization-app";
 import { SITE_ROUTES } from "~/config/routes";
 import { SOLUTION_GROUPS } from "~/shared/products/config/solution-groups";
 import { useProducts } from "~/shared/products/store/products-provider";
@@ -20,7 +24,6 @@ import { useProducts } from "~/shared/products/store/products-provider";
 export default function SiteHeader() {
   const currentPath = usePathname();
   const { selectProduct } = useProducts();
-  const isContactPage = currentPath === SITE_ROUTES.contact;
 
   return (
     <MarketingNavigation
@@ -90,13 +93,15 @@ export default function SiteHeader() {
           </Link>
         ),
       }))}
-      contactAction={
-        <Link
-          href={SITE_ROUTES.contact}
-          aria-current={isContactPage ? "page" : undefined}
-        >
-          Contact us
-        </Link>
+      primaryAction={
+        <a href={ORGANIZATION_APP_ROUTES.signUp}>
+          {ORGANIZATION_APP_ACTIONS.signUpLabel}
+        </a>
+      }
+      secondaryAction={
+        <a href={ORGANIZATION_APP_ROUTES.signIn}>
+          {ORGANIZATION_APP_ACTIONS.signInLabel}
+        </a>
       }
     />
   );

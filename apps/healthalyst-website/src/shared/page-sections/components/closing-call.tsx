@@ -3,13 +3,16 @@ import Link from "next/link";
 import { CareNetworkIllustration } from "@healthalyst/ui/illustrations/care-network-illustration";
 import { MarketingClosingBand } from "@healthalyst/ui/components/marketing-closing-band";
 import { CLOSING_CALL_CONTENT } from "~/shared/page-sections/config/closing-call-content";
-import { CONTACT_TOPIC_DESTINATIONS } from "~/shared/contact/config/contact-destinations";
+import {
+  ORGANIZATION_APP_ACTIONS,
+  ORGANIZATION_APP_ROUTES,
+} from "~/config/organization-app";
 import { SITE_ROUTES } from "~/config/routes";
 
 /**
- * The "Talk to our team" closing band, shared by the homepage and the About
- * page: an invitation to enquire that links to the contact page, where the
- * full enquiry form lives.
+ * The closing band shared by the homepage and the About page: Get started
+ * opens sign-up in the organisation app, and Talk to our team the contact
+ * page for those who want to speak to someone first.
  */
 export function ClosingCall({
   identifier,
@@ -24,12 +27,12 @@ export function ClosingCall({
       description={CLOSING_CALL_CONTENT.description}
       decoration={<CareNetworkIllustration showNetwork={false} />}
       action={
-        <Link href={SITE_ROUTES.contact}>
-          {CLOSING_CALL_CONTENT.primaryAction}
-        </Link>
+        <a href={ORGANIZATION_APP_ROUTES.signUp}>
+          {ORGANIZATION_APP_ACTIONS.signUpLabel}
+        </a>
       }
       secondaryAction={
-        <Link href={CONTACT_TOPIC_DESTINATIONS.partnership}>
+        <Link href={SITE_ROUTES.contact}>
           {CLOSING_CALL_CONTENT.secondaryAction}
         </Link>
       }

@@ -12,9 +12,9 @@ export const BRAND_HEADER_ROUTES: readonly string[] = [];
 
 /** Header links shown after the Solutions menu. */
 export const NAVIGATION_LINKS: NavigationLink[] = [
-  // Points to the About page while the homepage section is hidden.
-  { label: "How we work", destination: `${SITE_ROUTES.about}#how-we-work` },
   { label: "About", destination: SITE_ROUTES.about },
+  { label: "FAQ", destination: `${SITE_ROUTES.home}#faq` },
+  { label: "Contact us", destination: SITE_ROUTES.contact },
 ];
 
 /** The header's Solutions menu, listing products by the institution they serve. */

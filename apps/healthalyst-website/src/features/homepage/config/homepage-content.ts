@@ -12,8 +12,8 @@ export const HOMEPAGE_HERO_CONTENT = {
   spokenEnding:
     "hospitals, laboratories, pharmacies, dental practices, imaging centres and medical suppliers",
   lede: "Purpose-built products that run the daily work of the institutions delivering care across Africa.",
-  primaryAction: "Talk to our team",
-  secondaryAction: "See our products",
+  /** Beside Get started, which uses the shared sign-up label. */
+  secondaryAction: "Talk to our team",
   /** Each institution type and the photograph shown behind it. */
   slides: [
     { word: "hospitals", source: "/images/hero-hospital.webp" },
