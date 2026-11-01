@@ -137,7 +137,6 @@ export default function ContactPage({
             endpoint={CONTACT_ENQUIRY_ENDPOINT}
             submitLabel={CONTACT_FORM_CONTENT.submitLabel}
             submittingLabel={CONTACT_FORM_CONTENT.submittingLabel}
-            helperText={CONTACT_FORM_CONTENT.helperText}
             successHeading={CONTACT_FORM_CONTENT.successHeading}
             successMessage={CONTACT_FORM_CONTENT.successMessage}
             resetLabel={CONTACT_FORM_CONTENT.resetLabel}

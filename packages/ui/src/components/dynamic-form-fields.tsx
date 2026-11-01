@@ -40,8 +40,6 @@ interface DynamicFormFieldsProperties {
   /** Messages shown beside rejected fields, keyed by field name. */
   fieldErrors?: Readonly<Record<string, string>>;
   disabled?: boolean;
-  /** Text shown beside the label of a field that may be left empty. */
-  optionalFieldLabel?: string;
   /** Colour of the group legends. */
   legendTone?: "default" | "accent";
   /** Called when the visitor changes a field, for example to clear its message. */
@@ -54,7 +52,6 @@ function DynamicFormField({
   defaultValue,
   errorMessage,
   disabled,
-  optionalFieldLabel,
   onFieldChange,
 }: {
   field: FormFieldDefinition;
@@ -62,7 +59,6 @@ function DynamicFormField({
   defaultValue?: string;
   errorMessage?: string;
   disabled: boolean;
-  optionalFieldLabel: string;
   onFieldChange?: (fieldName: string) => void;
 }) {
   const descriptionIdentifier = `${controlIdentifier}-description`;
@@ -90,10 +86,10 @@ function DynamicFormField({
     >
       <FieldLabel htmlFor={controlIdentifier}>
         {field.label}
-        {!field.required && " "}
-        {!field.required && (
-          <span className="font-normal text-muted-foreground">
-            {optionalFieldLabel}
+        {/* Hidden from screen readers: the control itself is announced as required. */}
+        {field.required && (
+          <span aria-hidden="true" className="-ml-1 text-destructive">
+            *
           </span>
         )}
       </FieldLabel>
@@ -175,7 +171,6 @@ export function DynamicFormFields({
   defaultValues = {},
   fieldErrors = {},
   disabled = false,
-  optionalFieldLabel = "Optional",
   legendTone = "default",
   onFieldChange,
 }: DynamicFormFieldsProperties) {
@@ -209,7 +204,6 @@ export function DynamicFormFields({
               defaultValue={defaultValues[field.name]}
               errorMessage={fieldErrors[field.name]}
               disabled={disabled}
-              optionalFieldLabel={optionalFieldLabel}
               onFieldChange={onFieldChange}
             />
           ))}

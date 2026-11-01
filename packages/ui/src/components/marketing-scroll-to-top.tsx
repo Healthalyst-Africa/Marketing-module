@@ -6,8 +6,8 @@ import { ActionButton } from "@healthalyst/ui/components/action-button";
 import { cn } from "@healthalyst/ui/lib/utilities";
 
 /**
- * A small round button fixed to the bottom-right corner that returns to the
- * top of the page. It appears once the visitor has scrolled a screen's height
+ * A small round button that returns to the top of the page, placed inside
+ * `MarketingFloatingActions` so it stays in the bottom-right corner. It appears once the visitor has scrolled a screen's height
  * and is hidden from the keyboard and assistive technology until then. The
  * page's own `scroll-behavior` sets the motion, so reduced motion jumps.
  * Focus moves to `focusTargetIdentifier`, such as the main landmark, so
@@ -55,9 +55,9 @@ export function MarketingScrollToTop({
       tabIndex={isVisible ? undefined : -1}
       onClick={scrollToTop}
       className={cn(
-        "fixed bottom-5 right-5 z-40 transition-[opacity,transform] duration-200 motion-reduce:transition-none md:bottom-8 md:right-8",
+        "transition-[opacity,transform] duration-200 motion-reduce:transition-none",
         isVisible
-          ? "translate-y-0 opacity-100"
+          ? "pointer-events-auto translate-y-0 opacity-100"
           : "pointer-events-none translate-y-2 opacity-0"
       )}
     >

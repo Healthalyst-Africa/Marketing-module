@@ -1,5 +1,6 @@
 import type { MarketingSequenceStep } from "@healthalyst/ui/components/marketing-sequence";
 import { COMPANY_OFFICE_ADDRESS } from "~/config/company-office";
+import { COMPANY_PHONE_NUMBER } from "~/config/company-phone";
 import { CONTACT_TOPIC_DESTINATIONS } from "~/shared/contact/config/contact-destinations";
 
 /**
@@ -24,7 +25,6 @@ export const CONTACT_FORM_CONTENT = {
   heading: "Send an enquiry",
   submitLabel: "Send enquiry",
   submittingLabel: "Sending enquiry…",
-  helperText: "All fields are required unless marked optional.",
   successHeading: "Enquiry sent",
   successMessage:
     "Thank you. Our team aims to respond within two business days.",
@@ -55,8 +55,7 @@ export const CONTACT_OTHER_ROUTES = [
 
 /**
  * Direct contact details. Each entry appears on the page only once the company
- * supplies it; nothing is shown in its place until then. The phone number is a
- * placeholder awaiting the company's line.
+ * supplies it; nothing is shown in its place until then.
  */
 export const CONTACT_DETAILS: {
   email?: string;
@@ -64,7 +63,7 @@ export const CONTACT_DETAILS: {
   officeAddress?: string;
 } = {
   email: "info@healthalystafrica.com",
-  phoneNumber: "+234 800 000 0000",
+  phoneNumber: COMPANY_PHONE_NUMBER,
 };
 
 export const CONTACT_NEXT_STEPS: readonly MarketingSequenceStep[] = [

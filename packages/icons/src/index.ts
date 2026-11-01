@@ -22,6 +22,7 @@ export {
   Handshake as PartnershipIcon,
   Info as InformationIcon,
   Languages as MultilingualIcon,
+  Linkedin as LinkedInIcon,
   LoaderCircle as LoaderIcon,
   Mail as EmailIcon,
   MapPin as LocationIcon,
@@ -44,3 +45,4 @@ export {
   Workflow as IntegrationIcon,
   X as CloseIcon,
 } from "lucide-react";
+export { WhatsAppIcon } from "./whatsapp-icon";

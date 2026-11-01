@@ -203,8 +203,15 @@ The green page header card, then white sections built with
   ("Get started") with one outline secondary action ("Talk to our team").
   A section offers at most two actions, and the contact page offers none
   besides its enquiry form.
-- Sections the company cannot yet support with real material (leadership,
-  partners, news) are left out rather than filled.
+- Sections the company cannot yet support with real material (partners,
+  news) are left out rather than filled. Leadership and testimonials are
+  built but publish only approved entries: their labelled samples show in
+  development alone, so in production each section is absent until real,
+  permissioned material is added. Leadership sits on the About page after
+  "Who we build for" on the cream band (`MarketingTeam`): white cards with the
+  colour portrait inset, a round brand-green LinkedIn badge on the portrait's
+  bottom-right edge, then the name in bold and the role beneath. No
+  ornaments: no outline shapes, eyebrow capitals or staggered rows.
 
 ### Homepage (rebuilt 20 October 2026)
 
@@ -339,8 +346,9 @@ lines anywhere unless the user explicitly approves one.
   like buttons use `ActionLink`.
 - **Text links with a destination.** Brand colour, semibold, a 16 px arrow
   icon that moves 2 px right on hover over 200 ms; underline on hover.
-- **Fields.** Visible label above the control; optional fields say "Optional"
-  beside the label; guidance between label and control; error message below
+- **Fields.** Visible label above the control; required fields carry a red
+  asterisk after the label (hidden from screen readers, which announce the
+  control as required) and optional fields carry no marker; guidance between label and control; error message below
   the control with `aria-invalid`. Borders are soft (the control outline at
   35%, at the user's request) and darken to full strength on hover; a 2 px focus ring,
   offset like the buttons', on keyboard focus. Every control shares this

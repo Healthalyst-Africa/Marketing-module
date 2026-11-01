@@ -35,12 +35,11 @@ export const SOLUTIONS_MENU_CONTENT = {
  */
 export const FOOTER_COMPANY_LINKS: readonly SiteLink[] = [
   { label: "About us", destination: SITE_ROUTES.about },
-  { label: "Careers" },
+  { label: "Careers", destination: SITE_ROUTES.careers },
   { label: "Terms and conditions" },
   { label: "Privacy policy" },
 ];
 
 export const FOOTER_CONNECT_LINKS: readonly SiteLink[] = [
   { label: "Contact us", destination: SITE_ROUTES.contact },
-  { label: "Support", destination: SITE_ROUTES.contact },
 ];
