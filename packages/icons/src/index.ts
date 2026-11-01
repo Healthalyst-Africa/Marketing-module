@@ -45,3 +45,4 @@ export {
   Workflow as IntegrationIcon,
   X as CloseIcon,
 } from "lucide-react";
+export { WhatsAppIcon } from "./whatsapp-icon";

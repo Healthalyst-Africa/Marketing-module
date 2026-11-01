@@ -57,6 +57,8 @@ const buttonVariants = createClassVariants(
         smallIcon: "size-8",
         icon: "size-10",
         largeIcon: "size-11 [&_svg]:size-5",
+        /** A prominent floating icon control, such as a chat link. */
+        extraLargeIcon: "size-14 [&_svg]:size-7",
       },
       shape: {
         default: "rounded-md",
