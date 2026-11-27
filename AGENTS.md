@@ -270,7 +270,8 @@ manually. Do not write test files, run `pnpm test`, or add test steps to
 Vitest and `packages/test-utilities` stay installed, unused, for later.
 `pnpm test-all` runs formatting, lint, type checks and the production build, and
 the configured continuous integration workflow runs it on pull requests and
-pushes to `main`. Do not bypass failing checks or invent approvals, protected-branch
+pushes to `main` and `dev`. The rulesets in `.github/settings/` protect both
+branches. Do not bypass failing checks or invent approvals, protected-branch
 rules, hooks, or ticket systems that this repository does not configure.
 
 Do not commit, push, publish, deploy, send external messages, or mutate production

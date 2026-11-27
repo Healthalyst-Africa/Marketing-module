@@ -1,0 +1,12 @@
+{
+  "name": "names-have-no-abbreviations",
+  "description": "New code uses complete words for every name, as AGENTS.md requires, with no single-letter or shorthand identifiers.",
+  "prompt": "In apps/healthalyst-website/src/shared/text/estimate-reading-time.ts, add and export a function that takes an article's text and returns the estimated reading time in whole minutes at 200 words per minute, with a minimum of one minute. Follow the repository rules, then run the type checks for the website.",
+  "allowedTools": "Read,Glob,Grep,Edit,Write,Bash(pnpm --filter *)",
+  "checks": [
+    "node evals/checks/reading-time-uses-complete-names.mjs",
+    "pnpm --filter @healthalyst/website check-types"
+  ],
+  "maximumTurns": 15,
+  "maximumBudgetInDollars": 1
+}
